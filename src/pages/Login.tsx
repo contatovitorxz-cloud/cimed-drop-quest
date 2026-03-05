@@ -39,9 +39,9 @@ const Login = () => {
     <div className="fixed inset-0 flex flex-col bg-[#FFD400]">
       <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
         {/* Logo */}
-        <div className="mb-10 animate-bounce-in flex items-center justify-center gap-0.5 w-full">
+        <div className="mb-10 animate-bounce-in flex items-center justify-center w-full">
           <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
-          <span className="text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
+          <span className="-ml-1 text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
         </div>
 
         <p className="text-black/60 text-sm mb-8 font-['Nunito']">
