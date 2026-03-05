@@ -1,9 +1,10 @@
 
 
-# Simplificar Onboarding
+# Ajuste do Botão "Começar" no Onboarding
 
-Remover os slides de explicação e transformar o Onboarding numa tela simples: fundo amarelo (#FFD400), logo CIMED centralizada em preto, frase "Encontre, jogue e descubra" abaixo, e botão "Começar" na parte inferior que vai direto pro login.
+## Mudanças em `src/pages/Onboarding.tsx`
 
-## Arquivo alterado
-- `src/pages/Onboarding.tsx` - Remover sistema de slides, dots e botão "Pular". Substituir por tela estática com logo + botão "Começar" que navega para `/login`.
+1. **Texto branco** - Trocar `text-accent` (preto) por `text-white` no botão
+2. **Hover com zoom** - Remover `hover:opacity-90` e substituir por `hover:scale-105 transition-transform duration-200` para efeito de zoom ao passar o mouse/dedo
+3. **Cor fixa** - Manter `bg-accent-foreground` (preto) sem mudança de cor no hover
 
