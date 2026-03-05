@@ -41,7 +41,7 @@ const Login = () => {
         {/* Logo */}
         <div className="mb-10 animate-bounce-in flex items-center justify-center w-full">
           <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
-          <span className="-ml-1 text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
+          <span className="text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
         </div>
 
         <p className="text-black/60 text-sm mb-8 font-['Nunito']">
