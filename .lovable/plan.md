@@ -1,16 +1,9 @@
 
 
-# Redesign do Onboarding
+# Simplificar Onboarding
 
-## Mudanças
+Remover os slides de explicação e transformar o Onboarding numa tela simples: fundo amarelo (#FFD400), logo CIMED centralizada em preto, frase "Encontre, jogue e descubra" abaixo, e botão "Começar" na parte inferior que vai direto pro login.
 
-1. **Botões amarelos** - Trocar `gradient-orange` / `glow-orange` por `gradient-yellow` / `glow-yellow` com texto preto
-2. **Dots amarelos** - Indicador ativo em amarelo (`bg-accent`) ao invés de laranja
-3. **Logo Cimed** - Adicionar o símbolo da Cimed no topo da tela (canto superior esquerdo ou centralizado)
-4. **Ícones com fundo amarelo** - O quadrado do ícone usa gradiente amarelo com ícone preto
-5. **Tipografia melhorada** - Título maior e mais bold, descrição com mais espaçamento e legibilidade
-6. **Layout refinado** - Mais espaço entre elementos, animações mais suaves, botão "Pular" mais visível
-
-### Arquivos alterados
-- `src/pages/Onboarding.tsx` - Todas as mudanças visuais acima
+## Arquivo alterado
+- `src/pages/Onboarding.tsx` - Remover sistema de slides, dots e botão "Pular". Substituir por tela estática com logo + botão "Começar" que navega para `/login`.
 
