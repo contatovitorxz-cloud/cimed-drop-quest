@@ -37,18 +37,18 @@ const Login = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-[#FFD400]">
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
         {/* Logo */}
-        <div className="mb-10 animate-bounce-in flex items-center justify-center gap-2">
-          <img src={cimedSymbol} alt="Cimed GO" className="w-10 h-10 object-contain" />
-          <span className="text-3xl font-black text-black tracking-tight leading-none">CIMEDGO</span>
+        <div className="mb-10 animate-bounce-in flex items-center justify-center gap-3 w-full">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
+          <span className="text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
         </div>
 
-        <p className="text-black/60 text-sm mb-8">
+        <p className="text-black/60 text-sm mb-8 font-['Nunito']">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
-        <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
+        <form onSubmit={handleSubmit} className="w-full space-y-4">
           {isSignUp && (
             <div className="relative animate-fade-up">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
