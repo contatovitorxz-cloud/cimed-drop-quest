@@ -36,72 +36,72 @@ const Login = () => {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-background">
+    <div className="fixed inset-0 flex flex-col bg-[#FFD400]">
       <div className="flex-1 flex flex-col items-center justify-center px-6">
         {/* Logo */}
         <div className="mb-10 animate-bounce-in">
           <img src={cimedSymbol} alt="Cimed GO" className="w-20 h-20 object-contain" />
         </div>
 
-        <h1 className="text-3xl font-black mb-2">
-          <span className="text-gradient-orange">CIMED</span> GO
+        <h1 className="text-4xl font-black mb-2 text-black tracking-tight">
+          CIMEDGO
         </h1>
-        <p className="text-muted-foreground text-sm mb-8">
+        <p className="text-black/60 text-sm mb-8">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
           {isSignUp && (
             <div className="relative animate-fade-up">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <Input
                 placeholder="Nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="pl-11 h-14 bg-secondary border-border rounded-xl text-foreground"
+                className="pl-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
               />
             </div>
           )}
 
           <div className="relative animate-fade-up" style={{ animationDelay: '0.05s' }}>
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
             <Input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="pl-11 h-14 bg-secondary border-border rounded-xl text-foreground"
+              className="pl-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
             />
           </div>
 
           <div className="relative animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
             <Input
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="pl-11 pr-11 h-14 bg-secondary border-border rounded-xl text-foreground"
+              className="pl-11 pr-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
 
           <Button type="submit" disabled={loading}
-                  className="w-full h-14 text-lg font-bold gradient-orange border-0 rounded-xl glow-orange animate-fade-up"
+                  className="w-full h-14 text-lg font-bold bg-black hover:bg-black text-white border-0 rounded-xl hover:scale-105 transition-transform duration-200 animate-fade-up"
                   style={{ animationDelay: '0.15s' }}>
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </Button>
         </form>
 
         <button onClick={() => setIsSignUp(!isSignUp)}
-                className="mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                className="mt-6 text-sm text-black/60 hover:text-black transition-colors">
           {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
-          <span className="text-primary font-semibold">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
+          <span className="text-black font-semibold">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
         </button>
       </div>
     </div>
