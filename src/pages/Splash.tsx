@@ -10,8 +10,7 @@ const Splash = () => {
     const t1 = setTimeout(() => setPhase('text'), 800);
     const t2 = setTimeout(() => setPhase('exit'), 2200);
     const t3 = setTimeout(() => {
-      const hasOnboarded = localStorage.getItem('cimed-onboarded');
-      navigate(hasOnboarded ? '/login' : '/onboarding', { replace: true });
+      navigate('/onboarding', { replace: true });
     }, 2800);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [navigate]);
