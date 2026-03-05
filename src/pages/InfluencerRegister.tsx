@@ -100,16 +100,18 @@ const InfluencerRegister = () => {
         <Input placeholder="Cidade" value={form.city} onChange={e => update('city', e.target.value)}
           required className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400" />
 
-        <Select value={form.followers} onValueChange={v => update('followers', v)} required>
-          <SelectTrigger className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black">
-            <SelectValue placeholder="Número de seguidores" />
-          </SelectTrigger>
-          <SelectContent>
-            {followerRanges.map(r => (
-              <SelectItem key={r} value={r}>{r}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Input
+          placeholder="Número de seguidores"
+          value={form.followers}
+          onChange={e => {
+            const raw = e.target.value.replace(/\D/g, '');
+            const formatted = raw ? Number(raw).toLocaleString('pt-BR') : '';
+            update('followers', formatted);
+          }}
+          inputMode="numeric"
+          required
+          className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400"
+        />
 
         {/* Platforms */}
         <div>
