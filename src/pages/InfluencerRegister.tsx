@@ -113,18 +113,11 @@ const InfluencerRegister = () => {
           className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400"
         />
 
-        {/* Platforms */}
-        <div>
-          <p className="text-sm font-semibold text-black mb-2 font-['Nunito']">Plataformas que trabalha</p>
-          <div className="flex flex-wrap gap-3">
-            {platforms.map(p => (
-              <label key={p} className="flex items-center gap-2 cursor-pointer">
-                <Checkbox checked={form.platforms.includes(p)} onCheckedChange={() => togglePlatform(p)} />
-                <span className="text-sm text-black font-['Nunito']">{p}</span>
-              </label>
-            ))}
-          </div>
-        </div>
+        <Input placeholder="Plataformas que trabalha (ex: TikTok, Instagram, YouTube)"
+          value={form.platforms.join(', ')}
+          onChange={e => setForm(f => ({ ...f, platforms: e.target.value.split(',').map(s => s.trim()).filter(Boolean) }))}
+          required
+          className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400" />
 
         <Input placeholder="Nicho de trabalho" value={form.niche} onChange={e => update('niche', e.target.value)}
           required className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400" />
