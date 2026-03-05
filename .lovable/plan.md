@@ -1,27 +1,21 @@
 
 
-# Criar página de Termos de Uso do Programa Influencer Cimed
+# Adicionar campos de Email e Senha ao formulário de Influencer
 
-## Novo arquivo: `src/pages/TermsOfUse.tsx`
+O objetivo é adicionar campos de email e senha no formulário de inscrição do influencer, para que ao enviar a inscrição, uma conta seja criada automaticamente via Supabase Auth, permitindo login posterior.
 
-Página dedicada com texto explicativo cobrindo:
+## Alterações
 
-1. **Objeto do Programa** — descrição do programa de influenciadores Cimed GO
-2. **Requisitos do Influenciador** — conhecimento da marca Cimed, alinhamento com valores
-3. **Cessão de Direitos de Imagem** — autorização de uso de imagem, voz, nome e likeness pela Cimed em materiais promocionais, redes sociais, etc.
-4. **Propriedade Intelectual** — conteúdo criado para a Cimed, uso da marca e logotipos
-5. **Conduta e Responsabilidades** — representação adequada da marca, proibição de conteúdo ofensivo
-6. **Confidencialidade** — informações sobre lançamentos e estratégias
-7. **Rescisão** — condições de desligamento do programa
-8. **Política de Privacidade (resumo)** — coleta e uso de dados pessoais (LGPD)
+### `src/pages/InfluencerRegister.tsx`
 
-Layout: header amarelo igual ao formulário, conteúdo com scroll, botão de voltar.
+1. Adicionar campos `email` e `password` ao estado do formulário
+2. Adicionar dois novos inputs (Email e Senha) logo após o campo "Nome completo", com ícones de Mail e Lock
+3. Adicionar toggle de visibilidade da senha (olho aberto/fechado)
+4. No `handleSubmit`, chamar `supabase.auth.signUp()` com o email e senha fornecidos, passando os demais dados do formulário como metadata do usuário
+5. Após sucesso, exibir toast e redirecionar para `/login`
+6. Importar `supabase` client e ícones necessários (`Lock`, `Eye`, `EyeOff`)
 
-## Alteração: `src/pages/InfluencerRegister.tsx`
+### Posicionamento dos campos
 
-- Links "Termos de Uso" e "Política de Privacidade" passam a navegar para `/termos-de-uso` (abrindo em nova aba ou navegando).
-
-## Alteração: `src/App.tsx`
-
-- Adicionar rota `/termos-de-uso` apontando para `TermsOfUse`.
+Os campos de email e senha ficarão logo após "Nome completo" e antes de "Idade / CPF", seguindo o mesmo estilo visual (h-14, bg-gray-50, rounded-xl).
 
