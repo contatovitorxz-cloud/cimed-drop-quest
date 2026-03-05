@@ -25,6 +25,7 @@ const platforms = ['TikTok', 'Instagram', 'YouTube', 'Kwai'];
 const InfluencerRegister = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [form, setForm] = useState({
     name: '',
     age: '',
@@ -126,8 +127,16 @@ const InfluencerRegister = () => {
           onChange={e => update('reason', e.target.value)} required
           className="min-h-[100px] bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400 resize-none" />
 
-        <Button type="submit" disabled={loading}
-          className="w-full h-14 text-lg font-bold bg-[#FFD400] hover:bg-[#FFD400]/90 text-black rounded-xl hover:scale-105 transition-transform duration-200 mt-2">
+        <label className="flex items-start gap-3 cursor-pointer mt-2">
+          <Checkbox checked={acceptedTerms} onCheckedChange={(v) => setAcceptedTerms(!!v)}
+            className="mt-0.5 border-gray-300 data-[state=checked]:bg-[#FFD400] data-[state=checked]:border-[#FFD400] data-[state=checked]:text-black" />
+          <span className="text-sm text-black/70 font-['Nunito'] leading-tight">
+            Li e aceito os <a href="#" className="underline font-semibold text-black">Termos de Uso</a> e <a href="#" className="underline font-semibold text-black">Política de Privacidade</a>
+          </span>
+        </label>
+
+        <Button type="submit" disabled={loading || !acceptedTerms}
+          className="w-full h-14 text-lg font-bold bg-[#FFD400] hover:bg-[#FFD400]/90 text-black rounded-xl hover:scale-105 transition-transform duration-200 mt-2 disabled:opacity-40">
           {loading ? 'Enviando...' : 'Enviar inscrição'}
         </Button>
       </form>
