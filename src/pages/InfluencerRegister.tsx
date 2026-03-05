@@ -131,7 +131,7 @@ const InfluencerRegister = () => {
           <Checkbox checked={acceptedTerms} onCheckedChange={(v) => setAcceptedTerms(!!v)}
             className="mt-0.5 border-gray-300 data-[state=checked]:bg-[#FFD400] data-[state=checked]:border-[#FFD400] data-[state=checked]:text-black" />
           <span className="text-sm text-black/70 font-['Nunito'] leading-tight">
-            Li e aceito os <a href="#" className="underline font-semibold text-black">Termos de Uso</a> e <a href="#" className="underline font-semibold text-black">Política de Privacidade</a>
+            Li e aceito os <a href="/termos-de-uso" target="_blank" className="underline font-semibold text-black">Termos de Uso</a> e <a href="/termos-de-uso" target="_blank" className="underline font-semibold text-black">Política de Privacidade</a>
           </span>
         </label>
 
