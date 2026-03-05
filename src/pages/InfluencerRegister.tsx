@@ -1,12 +1,24 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/hooks/use-toast';
 import cimedSymbol from '@/assets/cimed-symbol.png';
 import { ArrowLeft, Mail } from 'lucide-react';
+
+const followerRanges = [
+  'Menos de 1.000',
+  '1.000 - 10.000',
+  '10.000 - 50.000',
+  '50.000 - 100.000',
+  '100.000 - 500.000',
+  '500.000 - 1M',
+  '1M - 5M',
+  '5M+',
+];
 
 const platforms = ['TikTok', 'Instagram', 'YouTube', 'Kwai'];
 
@@ -88,9 +100,16 @@ const InfluencerRegister = () => {
         <Input placeholder="Cidade" value={form.city} onChange={e => update('city', e.target.value)}
           required className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400" />
 
-        <Input placeholder="Número de seguidores" type="number" value={form.followers}
-          onChange={e => update('followers', e.target.value)} required
-          className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black placeholder:text-gray-400" />
+        <Select value={form.followers} onValueChange={v => update('followers', v)} required>
+          <SelectTrigger className="h-14 bg-gray-50 border-gray-200 rounded-xl text-black">
+            <SelectValue placeholder="Número de seguidores" />
+          </SelectTrigger>
+          <SelectContent>
+            {followerRanges.map(r => (
+              <SelectItem key={r} value={r}>{r}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Platforms */}
         <div>
