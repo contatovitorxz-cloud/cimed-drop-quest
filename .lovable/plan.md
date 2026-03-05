@@ -1,13 +1,27 @@
 
 
-# Adicionar Termos de Uso ao formulário de Influencer
+# Criar página de Termos de Uso do Programa Influencer Cimed
 
-## Alteração em `src/pages/InfluencerRegister.tsx`
+## Novo arquivo: `src/pages/TermsOfUse.tsx`
 
-Adicionar um checkbox de "Termos de Uso" antes do botão "Enviar inscrição":
+Página dedicada com texto explicativo cobrindo:
 
-- Novo estado `acceptedTerms` (boolean, default `false`)
-- Checkbox com label: "Li e aceito os Termos de Uso e Política de Privacidade"
-- Botão "Enviar inscrição" fica `disabled` enquanto `acceptedTerms` for `false`
-- Estilo consistente com o resto do formulário (Nunito, cores preto/amarelo)
+1. **Objeto do Programa** — descrição do programa de influenciadores Cimed GO
+2. **Requisitos do Influenciador** — conhecimento da marca Cimed, alinhamento com valores
+3. **Cessão de Direitos de Imagem** — autorização de uso de imagem, voz, nome e likeness pela Cimed em materiais promocionais, redes sociais, etc.
+4. **Propriedade Intelectual** — conteúdo criado para a Cimed, uso da marca e logotipos
+5. **Conduta e Responsabilidades** — representação adequada da marca, proibição de conteúdo ofensivo
+6. **Confidencialidade** — informações sobre lançamentos e estratégias
+7. **Rescisão** — condições de desligamento do programa
+8. **Política de Privacidade (resumo)** — coleta e uso de dados pessoais (LGPD)
+
+Layout: header amarelo igual ao formulário, conteúdo com scroll, botão de voltar.
+
+## Alteração: `src/pages/InfluencerRegister.tsx`
+
+- Links "Termos de Uso" e "Política de Privacidade" passam a navegar para `/termos-de-uso` (abrindo em nova aba ou navegando).
+
+## Alteração: `src/App.tsx`
+
+- Adicionar rota `/termos-de-uso` apontando para `TermsOfUse`.
 
