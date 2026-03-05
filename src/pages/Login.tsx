@@ -101,6 +101,10 @@ const Login = () => {
           {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
           <span className="text-black font-semibold">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
         </button>
+
+        <button className="mt-3 text-sm text-black/60 hover:text-black transition-colors">
+          Você é influencer? <span className="text-black font-semibold">Inscreva-se</span>
+        </button>
       </div>
     </div>
   );
