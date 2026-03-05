@@ -15,6 +15,7 @@ import Drops from "./pages/Drops";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
 import InfluencerRegister from "./pages/InfluencerRegister";
+import TermsOfUse from "./pages/TermsOfUse";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/influencer" element={<InfluencerRegister />} />
+            <Route path="/termos-de-uso" element={<TermsOfUse />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
