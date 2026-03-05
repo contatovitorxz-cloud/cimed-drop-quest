@@ -100,10 +100,10 @@ const InfluencerRegister = () => {
           <img src={cimedSymbol} alt="Cimed" className="w-8 h-8 object-contain" />
           <span className="text-lg font-black text-black tracking-tight font-['Nunito']">CIMEDGO</span>
         </div>
-        <button className="flex items-center gap-1 text-sm font-semibold text-black bg-black/10 hover:bg-black/20 rounded-lg px-3 py-1.5 transition-colors">
-          <Mail className="w-4 h-4" />
+        <a href="mailto:contato@cimed.com.br" className="flex items-center gap-2 text-sm font-bold text-black bg-black/10 hover:bg-black/20 rounded-full px-4 py-2 transition-all hover:scale-105 backdrop-blur-sm border border-black/10">
+          <Mail className="w-4 h-4" strokeWidth={2.5} />
           Contato
-        </button>
+        </a>
       </div>
 
       {/* Form */}
