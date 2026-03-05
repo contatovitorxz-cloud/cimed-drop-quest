@@ -1,9 +1,10 @@
 
 
-# Centralizar a Logo
-
-O bloco da logo já tem `flex items-center justify-center w-full`, mas o `-ml-1` no texto está puxando o conjunto levemente para a esquerda. Vou remover o `-ml-1` e usar `gap-0` ou ajustar para que fique visualmente centralizado.
+# Adicionar link "Você é influencer? Inscreva-se"
 
 ## Mudança em `src/pages/Login.tsx`
-- Remover `-ml-1` do span do texto "CIMEDGO" para que o flex `justify-center` centralize corretamente o conjunto ícone + texto
+- Adicionar um novo texto/link logo abaixo do botão "Não tem conta? **Criar conta**" (linha 99-103)
+- O texto será: "Você é influencer? **Inscreva-se**"
+- Mesmo estilo visual do link acima (`text-sm text-black/60`), com "Inscreva-se" em negrito
+- Por enquanto será um link visual (sem rota definida), podendo ser conectado a uma página futura
 
