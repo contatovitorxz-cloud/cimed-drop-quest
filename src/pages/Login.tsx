@@ -39,13 +39,11 @@ const Login = () => {
     <div className="fixed inset-0 flex flex-col bg-[#FFD400]">
       <div className="flex-1 flex flex-col items-center justify-center px-6">
         {/* Logo */}
-        <div className="mb-10 animate-bounce-in">
-          <img src={cimedSymbol} alt="Cimed GO" className="w-20 h-20 object-contain" />
+        <div className="mb-10 animate-bounce-in flex items-center gap-3">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-12 h-12 object-contain" />
+          <span className="text-4xl font-black text-black tracking-tight">CIMEDGO</span>
         </div>
 
-        <h1 className="text-4xl font-black mb-2 text-black tracking-tight">
-          CIMEDGO
-        </h1>
         <p className="text-black/60 text-sm mb-8">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
