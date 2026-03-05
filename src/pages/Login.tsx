@@ -97,12 +97,13 @@ const Login = () => {
         </form>
 
         <button onClick={() => setIsSignUp(!isSignUp)}
-                className="mt-6 text-sm text-black/60 hover:text-black transition-colors">
+                className="mt-6 text-sm text-black/60 hover:text-black transition-colors text-center w-full">
           {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
           <span className="text-black font-semibold">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
         </button>
 
-        <button className="mt-3 text-sm text-black/60 hover:text-black transition-colors">
+        <button onClick={() => navigate('/influencer')}
+                className="mt-3 text-sm text-black/60 hover:text-black transition-colors text-center w-full">
           Você é influencer? <span className="text-black font-semibold">Inscreva-se</span>
         </button>
       </div>
