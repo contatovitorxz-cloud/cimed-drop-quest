@@ -1,10 +1,13 @@
 
 
-# Ajuste do Botão "Começar" no Onboarding
+# Redesign da Tela de Login
 
-## Mudanças em `src/pages/Onboarding.tsx`
+## Mudanças em `src/pages/Login.tsx`
 
-1. **Texto branco** - Trocar `text-accent` (preto) por `text-white` no botão
-2. **Hover com zoom** - Remover `hover:opacity-90` e substituir por `hover:scale-105 transition-transform duration-200` para efeito de zoom ao passar o mouse/dedo
-3. **Cor fixa** - Manter `bg-accent-foreground` (preto) sem mudança de cor no hover
+1. **Fundo amarelo** - Trocar `bg-background` (preto) por `bg-[#FFD400]` (amarelo da marca)
+2. **Logo "CIMEDGO"** - Tudo junto, sem espaço, texto preto, fonte black, estilo logo. Remover o gradiente laranja e o span separado
+3. **Botão "Entrar" preto** - Trocar `gradient-orange` por `bg-black hover:bg-black hover:scale-105`, manter texto branco
+4. **Inputs** - Fundo branco (`bg-white`), bordas cinza claro, texto preto, ícones cinza escuro
+5. **Textos auxiliares** - Cor preta/cinza escuro para contrastar com fundo amarelo
+6. **Link "Criar conta"** - Manter em destaque mas com cor preta ao invés de laranja
 
