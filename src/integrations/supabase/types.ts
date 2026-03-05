@@ -14,7 +14,243 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      challenges: {
+        Row: {
+          active: boolean
+          challenge_type: string
+          created_at: string
+          description: string | null
+          goal: number
+          id: string
+          reward_type: string
+          reward_value: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          challenge_type?: string
+          created_at?: string
+          description?: string | null
+          goal?: number
+          id?: string
+          reward_type?: string
+          reward_value?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          challenge_type?: string
+          created_at?: string
+          description?: string | null
+          goal?: number
+          id?: string
+          reward_type?: string
+          reward_value?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      drops: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          pharmacy_id: string | null
+          product_id: string | null
+          quantity: number
+          title: string
+          type: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          pharmacy_id?: string | null
+          product_id?: string | null
+          quantity?: number
+          title: string
+          type?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          pharmacy_id?: string | null
+          product_id?: string | null
+          quantity?: number
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drops_pharmacy_id_fkey"
+            columns: ["pharmacy_id"]
+            isOneToOne: false
+            referencedRelation: "pharmacies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "drops_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pharmacies: {
+        Row: {
+          active: boolean
+          address: string
+          created_at: string
+          id: string
+          lat: number
+          lng: number
+          logo_url: string | null
+          name: string
+        }
+        Insert: {
+          active?: boolean
+          address: string
+          created_at?: string
+          id?: string
+          lat: number
+          lng: number
+          logo_url?: string | null
+          name: string
+        }
+        Update: {
+          active?: boolean
+          address?: string
+          created_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          logo_url?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: number | null
+          rarity: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number | null
+          rarity?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number | null
+          rarity?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          id: string
+          level: number
+          total_points: number
+          updated_at: string
+          username: string | null
+          xp: number
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          id: string
+          level?: number
+          total_points?: number
+          updated_at?: string
+          username?: string | null
+          xp?: number
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          level?: number
+          total_points?: number
+          updated_at?: string
+          username?: string | null
+          xp?: number
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_icon: string
+          badge_name: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_icon?: string
+          badge_name: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_icon?: string
+          badge_name?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_points: {
+        Row: {
+          created_at: string
+          id: string
+          points: number
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          points: number
+          reason: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          points?: number
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
