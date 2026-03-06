@@ -56,6 +56,21 @@ function calcBearing(from: [number, number], to: [number, number]): number {
   return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
 }
 
+const ThemeAwareTileLayer = () => {
+  const [isDark, setIsDark] = useState(document.documentElement.classList.contains('dark'));
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+  const url = isDark
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  return <TileLayer url={url} attribution="" />;
+};
+
 const MapFollower = ({ position, shouldFollow, onDrag }: { position: [number, number]; shouldFollow: boolean; onDrag: () => void }) => {
   const map = useMap();
   const isZoomingRef = useRef(false);
@@ -198,7 +213,7 @@ const Home = () => {
             zoomControl={false}
             attributionControl={false}
           >
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" attribution="" />
+            <ThemeAwareTileLayer />
             <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
