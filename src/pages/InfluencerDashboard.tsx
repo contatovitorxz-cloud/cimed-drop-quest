@@ -1,42 +1,56 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Eye, MousePointerClick, TrendingUp, Plus, QrCode, Gift, BarChart3, ArrowLeft } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Eye, MousePointerClick, ShoppingBag, Plus, QrCode, Megaphone, X } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import EmptyState from '@/components/ui/empty-state';
+import cimedSymbol from '@/assets/cimed-symbol.png';
 import {
   mockInfluencerMetrics,
-  mockInfluencerCampaigns,
-  mockInfluencerQRCodes,
   mockInfluencerPerformance,
 } from '@/data/mockData';
 
 const InfluencerDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('7d');
+  const [period, setPeriod] = useState('7d');
 
   const username = user?.user_metadata?.username || user?.email?.split('@')[0] || 'Creator';
   const initials = username.slice(0, 1).toUpperCase();
+
+  const metrics = [
+    { icon: Eye, label: 'Visualizações', value: mockInfluencerMetrics[0]?.value ?? 12500 },
+    { icon: MousePointerClick, label: 'Cliques', value: mockInfluencerMetrics[1]?.value ?? 620 },
+    { icon: ShoppingBag, label: 'Conversões', value: mockInfluencerMetrics[2]?.value ?? 218 },
+  ];
+
+  const periodLabel: Record<string, string> = {
+    '7d': 'Últimos 7 dias',
+    '30d': 'Últimos 30 dias',
+    '90d': 'Últimos 90 dias',
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <div className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border px-4 py-3">
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate('/home')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div className="w-10 h-10 rounded-full gradient-yellow flex items-center justify-center text-lg font-bold text-accent-foreground">{initials}</div>
-          <div className="flex-1">
-            <h1 className="text-sm font-bold">{username}</h1>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-green-400" />
-              <span className="text-xs text-muted-foreground">Influenciador Verificado</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
+            <div>
+              <span className="text-sm font-bold">Cimed GO</span>
+              <span className="text-[10px] text-muted-foreground ml-1.5">Creator Hub</span>
             </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full gradient-yellow flex items-center justify-center text-sm font-bold text-accent-foreground">
+              {initials}
+            </div>
+            <button onClick={() => navigate('/home')} className="text-muted-foreground hover:text-foreground transition-colors">
+              <X className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
@@ -44,8 +58,10 @@ const InfluencerDashboard = () => {
       <div className="px-4 pb-8 space-y-5 pt-4">
         {/* Welcome */}
         <div>
-          <h2 className="text-xl font-bold">Bem-vindo ao <span className="text-gradient-orange">Creator Hub</span></h2>
-          <p className="text-sm text-muted-foreground mt-0.5">Gerencie seus drops, campanhas e desempenho</p>
+          <h2 className="text-xl font-bold">
+            Bem-vindo, <span className="text-accent">{username}</span>!
+          </h2>
+          <p className="text-sm text-muted-foreground mt-0.5">Crie drops e campanhas para a Cimed.</p>
         </div>
 
         {/* CTA */}
@@ -56,107 +72,50 @@ const InfluencerDashboard = () => {
 
         {/* Metrics */}
         <div className="grid grid-cols-3 gap-3">
-          {mockInfluencerMetrics.map((m) => {
-            const Icon = m.icon === 'eye' ? Eye : m.icon === 'click' ? MousePointerClick : TrendingUp;
-            return (
-              <Card key={m.label} className="border-border bg-card">
-                <CardContent className="p-3 text-center space-y-1">
-                  <Icon className="w-5 h-5 mx-auto text-accent" />
-                  <p className="text-lg font-bold">{m.value.toLocaleString('pt-BR')}</p>
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{m.label}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {metrics.map((m) => (
+            <Card key={m.label} className="border-border bg-card">
+              <CardContent className="p-3 text-center space-y-1">
+                <m.icon className="w-5 h-5 mx-auto text-accent" />
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{m.label}</p>
+                <p className="text-lg font-bold">{m.value.toLocaleString('pt-BR')}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="campaigns" className="space-y-4">
-          <TabsList className="w-full bg-secondary grid grid-cols-3">
-            <TabsTrigger value="campaigns" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              <Gift className="w-3.5 h-3.5 mr-1" /> Campanhas
-            </TabsTrigger>
-            <TabsTrigger value="qrcodes" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              <QrCode className="w-3.5 h-3.5 mr-1" /> QR Codes
-            </TabsTrigger>
-            <TabsTrigger value="drops" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-              <BarChart3 className="w-3.5 h-3.5 mr-1" /> Drops
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="campaigns">
-            {mockInfluencerCampaigns.length === 0 ? (
-              <EmptyState icon={Gift} title="Nenhuma campanha" description="Crie seu primeiro drop para iniciar uma campanha." />
-            ) : (
-              <div className="space-y-3">
-                {mockInfluencerCampaigns.map((c) => (
-                  <Card key={c.id} className="border-border bg-card">
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-sm">{c.name}</h3>
-                      <p className="text-xs text-muted-foreground">{c.pharmacy}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="qrcodes">
-            {mockInfluencerQRCodes.length === 0 ? (
-              <EmptyState icon={QrCode} title="Nenhum QR Code" description="Seus QR Codes aparecerão aqui após criar campanhas." />
-            ) : (
-              <div className="space-y-3">
-                {mockInfluencerQRCodes.map((qr) => (
-                  <Card key={qr.id} className="border-border bg-card">
-                    <CardContent className="p-4 flex items-center gap-3">
-                      <QrCode className="w-5 h-5 text-accent" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-sm">{qr.label}</h3>
-                        <p className="text-xs text-muted-foreground">{qr.scans} scans</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="drops">
-            {mockInfluencerCampaigns.length === 0 ? (
-              <EmptyState icon={BarChart3} title="Nenhum drop criado" description="Seus drops aparecerão aqui após serem criados." />
-            ) : (
-              <div className="space-y-3">
-                {mockInfluencerCampaigns.map((c) => (
-                  <Card key={c.id} className="border-border bg-card">
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-sm">{c.name}</h3>
-                      <p className="text-xs text-muted-foreground">{c.remaining}/{c.total} restantes</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-3">
+          <Card className="border-border bg-card cursor-pointer hover:border-accent/50 transition-colors">
+            <CardContent className="p-4 space-y-2">
+              <Megaphone className="w-6 h-6 text-accent" />
+              <h3 className="font-semibold text-sm">Campanhas</h3>
+              <p className="text-xs text-muted-foreground">Gerencie suas campanhas.</p>
+            </CardContent>
+          </Card>
+          <Card className="border-border bg-card cursor-pointer hover:border-accent/50 transition-colors">
+            <CardContent className="p-4 space-y-2">
+              <QrCode className="w-6 h-6 text-accent" />
+              <h3 className="font-semibold text-sm">Meus QR Codes</h3>
+              <p className="text-xs text-muted-foreground">Ver e gerenciar QR Codes ativos.</p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Performance Chart */}
         <Card className="border-border bg-card">
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-bold">Análise de Desempenho</CardTitle>
-              <div className="flex gap-1">
-                {(['7d', '30d', '90d'] as const).map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setPeriod(p)}
-                    className={`px-2.5 py-1 rounded-md text-[10px] font-medium transition-colors ${
-                      period === p ? 'bg-accent text-accent-foreground' : 'bg-secondary text-muted-foreground hover:text-foreground'
-                    }`}
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
+              <Select value={period} onValueChange={setPeriod}>
+                <SelectTrigger className="w-[150px] h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7d">Últimos 7 dias</SelectItem>
+                  <SelectItem value="30d">Últimos 30 dias</SelectItem>
+                  <SelectItem value="90d">Últimos 90 dias</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardHeader>
           <CardContent className="pt-0">
@@ -168,14 +127,13 @@ const InfluencerDashboard = () => {
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={mockInfluencerPerformance}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(0,0%,20%)" />
-                    <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'hsl(0,0%,60%)' }} />
-                    <YAxis tick={{ fontSize: 10, fill: 'hsl(0,0%,60%)' }} />
-                    <Tooltip contentStyle={{ background: 'hsl(0,0%,10%)', border: '1px solid hsl(0,0%,20%)', borderRadius: 8, fontSize: 12 }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                    <YAxis tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                    <Tooltip contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 8, fontSize: 12, color: 'hsl(var(--foreground))' }} />
                     <Legend wrapperStyle={{ fontSize: 10 }} />
-                    <Line type="monotone" dataKey="cliques" stroke="hsl(48,100%,50%)" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="conversoes" stroke="hsl(25,100%,50%)" strokeWidth={2} dot={false} />
-                    <Line type="monotone" dataKey="engajamento" stroke="hsl(142,76%,46%)" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="cliques" stroke="hsl(var(--accent))" strokeWidth={2} dot={false} />
+                    <Line type="monotone" dataKey="conversoes" stroke="hsl(var(--foreground))" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
