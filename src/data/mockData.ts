@@ -379,3 +379,115 @@ export const dropTypeColors: Record<string, string> = {
   free: 'from-green-600 to-emerald-500',
   kit: 'from-blue-600 to-cyan-500',
 };
+
+// ===== INFLUENCER DASHBOARD MOCK DATA =====
+export interface InfluencerMetric {
+  label: string;
+  value: number;
+  change: number;
+  icon: 'eye' | 'click' | 'conversion';
+}
+
+export const mockInfluencerMetrics: InfluencerMetric[] = [
+  { label: 'Visualizações', value: 48230, change: 12.3, icon: 'eye' },
+  { label: 'Cliques', value: 6841, change: 8.7, icon: 'click' },
+  { label: 'Conversões', value: 1247, change: 23.1, icon: 'conversion' },
+];
+
+export interface InfluencerCampaign {
+  id: string;
+  name: string;
+  pharmacy: string;
+  status: 'active' | 'paused' | 'ended';
+  views: number;
+  clicks: number;
+  conversions: number;
+  total: number;
+  remaining: number;
+}
+
+export const mockInfluencerCampaigns: InfluencerCampaign[] = [
+  { id: 'ic1', name: '200 Carmeds Grátis!', pharmacy: 'Drogasil Paulista', status: 'active', views: 18400, clicks: 3200, conversions: 153, total: 200, remaining: 47 },
+  { id: 'ic2', name: '50% OFF Carmed BT21', pharmacy: 'Droga Raia Consolação', status: 'active', views: 12300, clicks: 2100, conversions: 82, total: 100, remaining: 18 },
+  { id: 'ic3', name: 'Kit Carmed Exclusivo', pharmacy: 'Pague Menos Liberdade', status: 'ended', views: 9800, clicks: 1540, conversions: 30, total: 30, remaining: 0 },
+];
+
+export interface InfluencerQRCode {
+  id: string;
+  label: string;
+  pharmacy: string;
+  scans: number;
+  active: boolean;
+}
+
+export const mockInfluencerQRCodes: InfluencerQRCode[] = [
+  { id: 'qr1', label: 'QR Drogasil Paulista', pharmacy: 'Drogasil Paulista', scans: 342, active: true },
+  { id: 'qr2', label: 'QR Droga Raia Consolação', pharmacy: 'Droga Raia Consolação', scans: 218, active: true },
+  { id: 'qr3', label: 'QR Pague Menos', pharmacy: 'Pague Menos Liberdade', scans: 156, active: false },
+];
+
+export const mockInfluencerPerformance = [
+  { day: 'Seg', cliques: 820, conversoes: 45, engajamento: 320 },
+  { day: 'Ter', cliques: 1100, conversoes: 68, engajamento: 450 },
+  { day: 'Qua', cliques: 950, conversoes: 52, engajamento: 380 },
+  { day: 'Qui', cliques: 1350, conversoes: 89, engajamento: 520 },
+  { day: 'Sex', cliques: 1600, conversoes: 112, engajamento: 680 },
+  { day: 'Sáb', cliques: 1900, conversoes: 134, engajamento: 820 },
+  { day: 'Dom', cliques: 1450, conversoes: 98, engajamento: 610 },
+];
+
+// ===== ADMIN DASHBOARD MOCK DATA =====
+export interface AdminMetric {
+  label: string;
+  value: number;
+  change: number;
+}
+
+export const mockAdminMetrics: AdminMetric[] = [
+  { label: 'Usuários Ativos', value: 12847, change: 23.5 },
+  { label: 'Missões Completas', value: 5612, change: 18.7 },
+  { label: 'Scans QR Code', value: 34210, change: 15.2 },
+  { label: 'Drops Resgatados', value: 8923, change: 42.1 },
+];
+
+export const mockAdminGrowth = [
+  { month: 'Jan', usuarios: 3200, scans: 8400, drops: 1200, missoes: 800 },
+  { month: 'Fev', usuarios: 4800, scans: 12300, drops: 2100, missoes: 1400 },
+  { month: 'Mar', usuarios: 6100, scans: 18500, drops: 3400, missoes: 2100 },
+  { month: 'Abr', usuarios: 7900, scans: 22100, drops: 4800, missoes: 2900 },
+  { month: 'Mai', usuarios: 9500, scans: 27800, drops: 6200, missoes: 3800 },
+  { month: 'Jun', usuarios: 12847, scans: 34210, drops: 8923, missoes: 5612 },
+];
+
+export interface AdminCampaign {
+  id: string;
+  name: string;
+  pharmacy: string;
+  claimed: number;
+  total: number;
+  status: 'active' | 'paused' | 'ended';
+}
+
+export const mockAdminCampaigns: AdminCampaign[] = [
+  { id: 'ac1', name: 'Carmed Fini Edição Limitada', pharmacy: 'Drogasil Paulista', claimed: 153, total: 200, status: 'active' },
+  { id: 'ac2', name: 'Kit Carmed Colecionador', pharmacy: 'Droga Raia Consolação', claimed: 27, total: 30, status: 'active' },
+  { id: 'ac3', name: '50% OFF Carmed BT21', pharmacy: 'Pague Menos Liberdade', claimed: 82, total: 100, status: 'paused' },
+  { id: 'ac4', name: 'Carmed Barbie Exclusivo', pharmacy: 'Farmácia Venâncio', claimed: 50, total: 50, status: 'ended' },
+  { id: 'ac5', name: 'Lavitan Energia Promo', pharmacy: 'Drogaria São Paulo', claimed: 34, total: 150, status: 'active' },
+];
+
+export interface AdminInfluencer {
+  id: string;
+  name: string;
+  avatar: string;
+  followers: number;
+  status: 'approved' | 'pending' | 'suspended';
+}
+
+export const mockAdminInfluencers: AdminInfluencer[] = [
+  { id: 'ai1', name: 'Virginia Fonseca', avatar: '👸', followers: 48200000, status: 'approved' },
+  { id: 'ai2', name: 'Lucas Neto', avatar: '🎮', followers: 32100000, status: 'approved' },
+  { id: 'ai3', name: 'Bianca Andrade', avatar: '💄', followers: 18500000, status: 'approved' },
+  { id: 'ai4', name: 'Felipe Neto', avatar: '🎬', followers: 45800000, status: 'pending' },
+  { id: 'ai5', name: 'Camila Loures', avatar: '🎤', followers: 12300000, status: 'suspended' },
+];
