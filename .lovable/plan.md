@@ -1,17 +1,17 @@
 
 
-## Plano: Restaurar ícones amarelos com logo Cimed
+## Plano: Restaurar todos os marcadores do mapa conforme referência
 
-Na referência, os marcadores de farmácia são círculos amarelos/dourados com o símbolo da Cimed dentro, em vez de fundo branco.
+O design de referência mostra todos os tipos de marcadores no mapa: farmácias, drops com badge, drop raro e missões. Preciso reverter a remoção feita anteriormente.
 
-### Mudança em `src/index.css`
+### Mudança em `src/pages/Home.tsx`
 
-**`.marker-pharmacy`** (linha 138-148):
-- Trocar `background: white` para `background: linear-gradient(135deg, #FFD400, #FFC000)` (amarelo dourado)
-- Trocar `border: 2px solid hsl(var(--accent))` para `border: 2px solid rgba(255, 212, 0, 0.6)` (borda amarela sutil)
-- Adicionar `box-shadow` com glow amarelo para combinar com o estilo dos outros markers
+Restaurar os 3 blocos de marcadores que foram removidos no último diff:
+- `mockMapDrops` com `createDropIcon`
+- `mockMapRareDrops` com `rareDropIcon`
+- `mockMapMissions` com `missionIcon`
 
 | Arquivo | Ação |
 |---|---|
-| `src/index.css` | Alterar estilo `.marker-pharmacy` para fundo amarelo |
+| `src/pages/Home.tsx` | Restaurar marcadores de drops, drops raros e missões |
 
