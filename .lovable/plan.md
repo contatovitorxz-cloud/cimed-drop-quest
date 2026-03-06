@@ -1,31 +1,24 @@
 
 
-## Plano: Mapa branco com ruas amarelas
+## Plano: Corrigir filtros do mapa — mais branco, ruas amarelas sutis
 
-O mapa atual usa tiles padrão do OpenStreetMap. Para deixar o fundo mais branco e as ruas amarelas, vou aplicar filtros CSS no tile layer do Leaflet.
+O problema: os filtros CSS atuais (`saturate(0.15) sepia(0.5)`) estão deixando o mapa com tom marrom/sépia demais em vez de branco limpo com ruas amarelas.
 
-### Abordagem
+### Correção em `src/index.css`
 
-Usar CSS filters no `.leaflet-tile-pane` para:
-1. Aumentar brilho e saturação para branquear o fundo
-2. Aplicar `hue-rotate` para puxar as cores das ruas para amarelo
-3. Complementar com um overlay CSS semi-transparente branco sobre o mapa para clarear ainda mais o fundo
+**`.leaflet-tile-pane`** — ajustar filtros:
+- Aumentar `brightness` para `1.35` (branquear mais)
+- Aumentar `saturate` para `0.4` (manter um pouco mais de cor nas ruas)
+- Reduzir `sepia` para `0.35` (menos marrom)
+- Ajustar `hue-rotate` para `15deg` (puxar para amarelo dourado em vez de marrom)
 
-**`src/index.css`**
-- Adicionar filtros CSS no `.leaflet-tile-pane` dentro de `.pokemon-go-map` ou globalmente:
-  - `brightness(1.15)` para clarear
-  - `saturate(0.3)` para dessaturar cores de fundo
-  - `sepia(0.4)` + `hue-rotate(-10deg)` para puxar tons para amarelo nas ruas
-- Adicionar pseudo-elemento ou overlay branco semi-transparente sobre os tiles para branquear o fundo geral
+**`.leaflet-container::after`** — aumentar overlay branco:
+- Mudar de `rgba(255, 255, 255, 0.15)` para `rgba(255, 255, 255, 0.25)` para branquear mais o fundo
 
-**`src/pages/Home.tsx`**
-- Trocar o tile provider para CartoDB Positron (mapa muito branco/limpo) — `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png`
-- Aplicar CSS filter amarelo apenas nas linhas de rua via classe customizada no container
-
-### Arquivos
+**`.leaflet-container`** — fundo base branco:
+- Mudar `background` de `#f0f0f0` para `#ffffff`
 
 | Arquivo | Ação |
 |---|---|
-| `src/pages/Home.tsx` | Trocar tile URL para CartoDB Positron (fundo branco) |
-| `src/index.css` | Adicionar filtros CSS para amarelecer ruas e branquear fundo |
+| `src/index.css` | Ajustar 3 regras CSS de filtro do mapa |
 
