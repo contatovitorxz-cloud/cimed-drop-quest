@@ -158,13 +158,13 @@
 .marker-rare {
   width: 42px;
   height: 42px;
-  background: linear-gradient(135deg, #4DA6FF, #0066FF);
+  background: linear-gradient(135deg, #FFD400, #FFC200);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid rgba(77, 166, 255, 0.6);
-  box-shadow: 0 0 16px rgba(0, 102, 255, 0.5), 0 0 32px rgba(0, 102, 255, 0.2);
+  border: 3px solid rgba(255, 212, 0, 0.6);
+  box-shadow: 0 0 16px rgba(255, 212, 0, 0.5), 0 0 32px rgba(255, 212, 0, 0.2);
   animation: float 4s ease-in-out infinite;
 }
 .marker-rare span {
