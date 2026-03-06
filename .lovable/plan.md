@@ -1,12 +1,14 @@
 
 
-# Substituir emojis dos marcadores pela logo Cimed
+## Correção do bug de zoom no mapa
 
-## Mudança
+O problema é que o `Circle` (pulse ring) ao redor do jogador tem raio de 25 metros, que fica enorme quando o zoom é alto. A solução é remover completamente esse círculo.
 
-### `src/pages/Home.tsx`
-- Alterar os 4 ícones de marcador (`pharmacyIcon`, `dropIcon`, `rareIcon`, `missionIcon`) para usar a imagem da logo Cimed (`/images/cimed-symbol.png`) dentro da bolinha amarela, em vez dos emojis/símbolos atuais (`+`, `🎁`, `💊`, `⭐`)
-- O HTML de cada `DivIcon` passará a ter uma `<img src="/images/cimed-symbol.png">` estilizada com tamanho adequado (~20px) dentro do `div` do marcador
+### Mudança
 
-Todas as bolinhas manterão o estilo amarelo com glow, apenas o conteúdo interno muda para a logo Cimed.
+**`src/components/game/PlayerAvatar.tsx`**:
+- Remover o componente `<Circle>` (pulse ring) por completo, deixando apenas o `<Marker>` do personagem
+- Remover o import de `Circle` do react-leaflet
+
+Isso elimina qualquer elemento que escale com o zoom do mapa, mantendo apenas o avatar do jogador com tamanho fixo.
 
