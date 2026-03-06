@@ -4,6 +4,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -31,7 +32,8 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent>
+      <SidebarContent className="bg-sidebar">
+        {/* Logo */}
         <div className={`px-4 py-5 border-b border-sidebar-border ${collapsed ? 'px-2' : ''}`}>
           <div className={`${collapsed ? 'text-center' : ''}`}>
             <span className="font-['Nunito'] font-black text-xl text-accent" style={{ fontWeight: 900 }}>
@@ -43,6 +45,7 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
         </div>
 
         <SidebarGroup>
+          {!collapsed && <SidebarGroupLabel className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest px-4 mb-1">Menu</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
@@ -51,11 +54,15 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       onClick={() => onSectionChange(item.key)}
-                      className={`cursor-pointer ${isActive ? 'bg-accent text-accent-foreground font-semibold' : 'hover:bg-sidebar-accent/50'}`}
+                      className={`cursor-pointer transition-all duration-150 ${
+                        isActive
+                          ? 'bg-accent text-accent-foreground font-bold shadow-sm'
+                          : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                      }`}
                     >
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {!collapsed && <span className="flex-1">{item.title}</span>}
-                      {!collapsed && item.hasSubmenu && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground ml-auto" />}
+                      <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-accent-foreground' : ''}`} />
+                      {!collapsed && <span className="flex-1 text-sm">{item.title}</span>}
+                      {!collapsed && item.hasSubmenu && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
