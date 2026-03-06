@@ -19,6 +19,8 @@ import Social from "./pages/Social";
 import ScanHistory from "./pages/ScanHistory";
 import Analytics from "./pages/Analytics";
 import InfluencerRegister from "./pages/InfluencerRegister";
+import InfluencerDashboard from "./pages/InfluencerDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import TermsOfUse from "./pages/TermsOfUse";
 import NotFound from "./pages/NotFound";
 
@@ -47,6 +49,8 @@ const App = () => (
             <Route path="/scan-history" element={<ScanHistory />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/influencer" element={<InfluencerRegister />} />
+            <Route path="/influencer-dashboard" element={<InfluencerDashboard />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/termos-de-uso" element={<TermsOfUse />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
