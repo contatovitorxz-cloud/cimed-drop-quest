@@ -82,12 +82,12 @@ const MapFollower = ({
   useMapEvents({
     dragstart: () => onDrag(),
     zoomstart: () => { isZoomingRef.current = true; },
-    zoomend: () => { isZoomingRef.current = false; },
+    zoomend: () => { setTimeout(() => { isZoomingRef.current = false; }, 300); },
   });
 
   useEffect(() => {
     if (shouldFollow && !isZoomingRef.current) {
-      map.setView(position, map.getZoom(), { animate: true });
+      map.setView(position, map.getZoom(), { animate: false });
     }
   }, [position, shouldFollow, map]);
 
@@ -172,24 +172,42 @@ const Home = () => {
   }, []);
 
   // Smooth interpolation for position and heading
+  const isAnimatingRef = useRef(false);
+
   useEffect(() => {
+    if (isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
     let active = true;
 
     const animate = () => {
       if (!active) return;
 
+      let posConverged = false;
+      let headConverged = false;
+
       setDisplayPosition((prev) => {
         const dLat = playerPosition[0] - prev[0];
         const dLng = playerPosition[1] - prev[1];
-        if (Math.abs(dLat) < 0.000001 && Math.abs(dLng) < 0.000001) return prev;
+        if (Math.abs(dLat) < 0.000001 && Math.abs(dLng) < 0.000001) {
+          posConverged = true;
+          return prev;
+        }
         return [prev[0] + dLat * 0.1, prev[1] + dLng * 0.1];
       });
 
       setDisplayHeading((prev) => {
         const next = lerpAngle(prev, heading, 0.08);
-        if (Math.abs(next - prev) < 0.01) return prev;
+        if (Math.abs(next - prev) < 0.01) {
+          headConverged = true;
+          return prev;
+        }
         return next;
       });
+
+      if (posConverged && headConverged) {
+        isAnimatingRef.current = false;
+        return;
+      }
 
       animFrameRef.current = requestAnimationFrame(animate);
     };
@@ -197,6 +215,7 @@ const Home = () => {
     animFrameRef.current = requestAnimationFrame(animate);
     return () => {
       active = false;
+      isAnimatingRef.current = false;
       cancelAnimationFrame(animFrameRef.current);
     };
   }, [playerPosition, heading]);
