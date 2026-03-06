@@ -130,30 +130,16 @@ const PlayerAvatar = ({ position, heading = 0, isMoving = false }: PlayerAvatarP
 
   return (
     <>
-      {/* Interaction radius */}
-      <Circle
-        center={position}
-        radius={200}
-        pathOptions={{
-          color: '#0066FF',
-          fillColor: '#0066FF',
-          fillOpacity: 0.04,
-          weight: 1,
-          opacity: 0.15,
-          dashArray: '6 4',
-        }}
-      />
-
       {/* Pulse ring */}
       <Circle
         center={position}
-        radius={40}
+        radius={25}
         pathOptions={{
           color: '#FFD400',
           fillColor: '#FFD400',
-          fillOpacity: 0.08,
-          weight: 1.5,
-          opacity: 0.25,
+          fillOpacity: 0.06,
+          weight: 1,
+          opacity: 0.2,
         }}
       />
 
