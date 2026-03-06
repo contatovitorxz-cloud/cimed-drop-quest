@@ -1,24 +1,41 @@
 
 
-# Avatar 3D — Bonequinho com camisa amarela "CIMED"
+# Reformulação do Mapa e Avatar
 
-## Problema
-O avatar atual é um círculo azul simples. O usuário quer um bonequinho estilo 3D com camisa amarela escrita "CIMED".
+## Problemas Identificados
 
-## Solução
+1. **Avatar feio**: O SVG inline é muito detalhado e fica distorcido na perspectiva 3D. Na referência, o avatar é um personagem fofo e simples sobre um disco brilhante dourado.
 
-### `src/components/game/PlayerAvatar.tsx`
-Substituir os `CircleMarker` do jogador por um `DivIcon` customizado com um bonequinho SVG inline:
+2. **Ícone de presente sobrepondo o avatar**: O primeiro drop (`mockDrops[0]`) usa `mockPharmacies[0]` que tem as mesmas coordenadas do `FALLBACK_POSITION` (-23.5629, -46.6544). Por isso o 🎁 aparece em cima do boneco.
 
-- **Corpo**: SVG de um personagem estilizado visto de cima/frente (estilo chibi/cartoon simples)
-  - Cabeça redonda com rosto simples
-  - Corpo com camisa amarela (#FFD400) com texto "CIMED" no centro
-  - Braços e pernas simples
-  - Sombra circular abaixo para dar efeito 3D
-- **Rotação**: O DivIcon inteiro gira conforme o `heading` (direção do jogador)
-- **Manter**: O `Circle` de raio de interação (200m) e o círculo de pulse continuam
-- **Remover**: Os dois `CircleMarker` (azul e branco) que representavam o avatar antigo
-- **Seta direcional**: Integrar a seta no próprio bonequinho (apontando para frente)
+3. **Perspectiva do mapa exagerada**: Os valores de `rotateX`, `scale` e `perspective` precisam de refinamento para um visual mais limpo.
 
-O SVG será inline no `DivIcon.html` para máxima customização e performance.
+---
+
+## Mudanças
+
+### 1. `src/components/game/PlayerAvatar.tsx` — Avatar completamente novo
+
+Substituir o SVG complexo por um design inspirado na referência:
+- **Disco dourado brilhante** como base (círculo com glow amarelo)
+- **Personagem simplificado** estilo emoji/chibi — cabeça grande redonda, corpo pequeno com camisa amarela CIMED, bracinhos curtos
+- Tamanho menor (~48x48px) para não ficar desproporcional no mapa 3D
+- Remover a seta direcional (fica estranho na perspectiva)
+- Manter os `Circle` de raio de interação mas com opacidade mais sutil
+- Adicionar animação CSS de idle (leve flutuação)
+
+### 2. `src/pages/Home.tsx` — Corrigir sobreposição de markers
+
+- Filtrar markers de drops/farmácias/missões que estejam muito próximos da posição do jogador (< 50m) para não sobrepor o avatar
+- Ou alternativamente, ajustar o `zIndexOffset` do avatar marker para ficar sempre acima
+
+### 3. `src/index.css` — Refinar perspectiva e adicionar estilo do avatar
+
+- Ajustar `.pokemon-go-map` para perspectiva mais suave (reduzir `rotateX` para ~25deg, ajustar scale)
+- Adicionar `.player-character-icon` com animação de flutuação e garantir que fica acima dos outros markers via z-index
+- Remover `rotate-slow` dos markers raros que ficam estranhos na perspectiva 3D
+
+### 4. `src/data/mockData.ts` — Afastar drops do ponto do jogador
+
+- Mover as coordenadas do primeiro drop para não coincidir com a posição fallback do jogador
 
