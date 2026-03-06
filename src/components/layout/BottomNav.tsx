@@ -14,7 +14,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border safe-bottom">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
@@ -27,8 +27,8 @@ const BottomNav = () => {
                 onClick={() => navigate(tab.path)}
                 className="relative -mt-5"
               >
-                <div className="absolute inset-0 bg-accent rounded-full blur-lg opacity-30" />
-                <div className={`relative w-14 h-14 rounded-full flex items-center justify-center border-[3px] shadow-lg active:scale-95 transition-transform ${
+                <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-40 center-tab-pulse" />
+                <div className={`relative w-14 h-14 rounded-full flex items-center justify-center border-[3px] shadow-lg shadow-accent/30 active:scale-95 transition-transform ${
                   active
                     ? 'bg-accent border-accent/60 text-accent-foreground'
                     : 'bg-secondary border-border text-accent'
@@ -50,6 +50,7 @@ const BottomNav = () => {
                 <Icon className={`w-5 h-5 ${active ? 'text-accent' : 'text-muted-foreground'}`} strokeWidth={active ? 2 : 1.5} />
               </div>
               <span className={`text-[10px] font-semibold ${active ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
+              {active && <div className="w-4 h-0.5 rounded-full bg-accent mt-0.5" />}
             </button>
           );
         })}
