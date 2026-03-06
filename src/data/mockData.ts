@@ -56,6 +56,15 @@ export const mockPharmacies: Pharmacy[] = [
   { id: '4', name: 'Drogaria São Paulo', address: 'Av. Brigadeiro, 1500', lat: -23.5700, lng: -46.6480, distance: '1.5km' },
   { id: '5', name: 'Farmácia Venâncio', address: 'Rua Augusta, 800', lat: -23.5530, lng: -46.6560, distance: '2km' },
   { id: '6', name: 'Droga Raia Vila Mariana', address: 'Rua Domingos de Morais, 200', lat: -23.5880, lng: -46.6380, distance: '3.5km' },
+  { id: '7', name: 'Drogasil Augusta', address: 'Rua Augusta, 2200', lat: -23.5535, lng: -46.6590, distance: '1.8km' },
+  { id: '8', name: 'Droga Raia Moema', address: 'Av. Moema, 400', lat: -23.6010, lng: -46.6620, distance: '4.5km' },
+  { id: '9', name: 'Pague Menos Tatuapé', address: 'Rua Tuiuti, 1500', lat: -23.5380, lng: -46.5760, distance: '6km' },
+  { id: '10', name: 'Drogaria São Paulo Pinheiros', address: 'Rua dos Pinheiros, 900', lat: -23.5670, lng: -46.6930, distance: '3.2km' },
+  { id: '11', name: 'Farmácia Venâncio Itaim', address: 'Rua João Cachoeira, 350', lat: -23.5820, lng: -46.6730, distance: '2.8km' },
+  { id: '12', name: 'Ultrafarma Centro', address: 'Av. São João, 1200', lat: -23.5410, lng: -46.6400, distance: '3km' },
+  { id: '13', name: 'Drogasil Butantã', address: 'Av. Corifeu de Azevedo Marques, 500', lat: -23.5720, lng: -46.7210, distance: '5.5km' },
+  { id: '14', name: 'Panvel Santana', address: 'Rua Voluntários da Pátria, 2100', lat: -23.5100, lng: -46.6290, distance: '7km' },
+  { id: '15', name: 'Drogaria Onofre Bela Vista', address: 'Rua Rui Barbosa, 600', lat: -23.5730, lng: -46.6400, distance: '1.5km' },
 ];
 
 export const mockProducts: Product[] = [
