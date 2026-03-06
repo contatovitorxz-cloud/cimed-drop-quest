@@ -197,17 +197,23 @@
   font-size: 16px;
 }
 
-/* Pokemon GO 3D perspective + compass rotation */
+/* Pokemon GO 3D perspective */
 .pokemon-go-map {
-  perspective: 800px;
-  perspective-origin: 50% 90%;
+  perspective: 1000px;
+  perspective-origin: 50% 85%;
   overflow: hidden;
   background: linear-gradient(180deg, #87CEEB 0%, #B8E0F0 30%, #d4eef8 50%, #e8f4ec 70%, #c8e6c0 100%);
 }
 
+/* Player avatar float animation */
+.player-character-icon {
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
 .pokemon-go-map .leaflet-container {
-  transform: rotateX(30deg) rotateZ(var(--map-heading, 0deg)) scale(1.6);
-  transform-origin: 50% 75%;
+  transform: rotateX(25deg) scale(1.4);
+  transform-origin: 50% 70%;
   transition: transform 0.3s ease-out;
 }
 

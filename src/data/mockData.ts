@@ -50,7 +50,7 @@ export interface UserBadge {
 
 // São Paulo area pharmacies
 export const mockPharmacies: Pharmacy[] = [
-  { id: '1', name: 'Drogasil Paulista', address: 'Av. Paulista, 1000', lat: -23.5629, lng: -46.6544, distance: '350m' },
+  { id: '1', name: 'Drogasil Paulista', address: 'Av. Paulista, 1000', lat: -23.5645, lng: -46.6520, distance: '350m' },
   { id: '2', name: 'Droga Raia Consolação', address: 'Rua da Consolação, 2300', lat: -23.5560, lng: -46.6625, distance: '800m' },
   { id: '3', name: 'Pague Menos Liberdade', address: 'Rua da Liberdade, 500', lat: -23.5580, lng: -46.6350, distance: '1.2km' },
   { id: '4', name: 'Drogaria São Paulo', address: 'Av. Brigadeiro, 1500', lat: -23.5700, lng: -46.6480, distance: '1.5km' },
