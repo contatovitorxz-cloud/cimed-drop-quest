@@ -2,12 +2,13 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { mockPharmacies, mockDrops, mockMissions, mockRareProducts, mockInfluencerDrops } from '@/data/mockData';
-import { Navigation, Gift, Target, Trophy, ChevronRight, Sparkles, MapPin } from 'lucide-react';
+import { mockPharmacies } from '@/data/mockData';
+import { Navigation, Gift, Target, Trophy, ChevronRight, MapPin } from 'lucide-react';
 import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -18,12 +19,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const cimedImg = `<img src="/images/cimed-symbol.png" style="width:26px;height:26px;object-fit:contain;" />`;
-
 const pharmacyIcon = new L.DivIcon({ html: `<div class="marker-pharmacy">${cimedImg}</div>`, className: '', iconSize: [40, 40], iconAnchor: [20, 20] });
-const dropIcon = new L.DivIcon({ html: `<div class="marker-drop">${cimedImg}</div>`, className: '', iconSize: [44, 44], iconAnchor: [22, 22] });
-const rareIcon = new L.DivIcon({ html: `<div class="marker-rare">${cimedImg}</div>`, className: '', iconSize: [38, 38], iconAnchor: [19, 19] });
-const missionIcon = new L.DivIcon({ html: `<div class="marker-mission">${cimedImg}</div>`, className: '', iconSize: [36, 36], iconAnchor: [18, 18] });
-const influencerIcon = new L.DivIcon({ html: `<div class="marker-influencer">${cimedImg}</div>`, className: '', iconSize: [48, 48], iconAnchor: [24, 24] });
 
 function lerpAngle(a: number, b: number, t: number): number {
   let diff = ((b - a + 540) % 360) - 180;
@@ -59,6 +55,9 @@ const FALLBACK_POSITION: [number, number] = [-23.5629, -46.6544];
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const username = user?.user_metadata?.username || user?.email?.split('@')[0] || 'Jogador';
+
   const [playerPosition, setPlayerPosition] = useState<[number, number]>(FALLBACK_POSITION);
   const [displayPosition, setDisplayPosition] = useState<[number, number]>(FALLBACK_POSITION);
   const [heading, setHeading] = useState(0);
@@ -137,9 +136,9 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', distance: '130m' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', distance: undefined },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', distance: undefined },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops' },
+    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
+    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
   ];
 
   return (
@@ -149,16 +148,16 @@ const Home = () => {
       <div className="px-4 pt-[72px] space-y-3">
         {/* Level Card */}
         <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border shadow-lg shadow-black/20">
-          <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
-            <Gift className="w-6 h-6 text-accent" />
+          <div className="w-12 h-12 rounded-xl gradient-orange flex items-center justify-center flex-shrink-0 text-primary-foreground font-black text-sm">
+            1
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-foreground font-bold text-sm">Nível 4 · Caçador de Carmed</p>
-            <p className="text-accent text-xs font-semibold mb-1.5">1.250 pontos</p>
+            <p className="text-foreground font-bold text-sm">Olá, {username}</p>
+            <p className="text-muted-foreground text-xs mb-1.5">Nível 1 · 0 pontos</p>
             <div className="w-full h-1.5 rounded-full bg-secondary overflow-hidden">
-              <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: '62%' }} />
+              <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: '0%' }} />
             </div>
-            <p className="text-muted-foreground text-[9px] mt-0.5">750 XP para o nível 5</p>
+            <p className="text-muted-foreground text-[9px] mt-0.5">1.000 XP para o nível 2</p>
           </div>
         </div>
 
@@ -169,73 +168,38 @@ const Home = () => {
             <span className="text-xs font-semibold text-muted-foreground">Explorar mapa</span>
           </div>
           <div className="relative rounded-2xl overflow-hidden border border-border shadow-lg shadow-black/20" style={{ height: 300 }}>
-          <MapContainer
-            center={playerPosition}
-            zoom={15}
-            minZoom={13}
-            maxZoom={19}
-            className="h-full w-full"
-            zoomControl={false}
-            attributionControl={false}
-          >
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" attribution="" />
-            <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
-            <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
+            <MapContainer
+              center={playerPosition}
+              zoom={15}
+              minZoom={13}
+              maxZoom={19}
+              className="h-full w-full"
+              zoomControl={false}
+              attributionControl={false}
+            >
+              <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" attribution="" />
+              <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
+              <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
-            {mockPharmacies.map((p) => (
-              <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
-                <Popup className="game-popup">
-                  <div className="p-2 min-w-[200px]">
-                    <h3 className="font-bold text-sm">{p.name}</h3>
-                    <p className="text-[10px] text-gray-500">{p.address}</p>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-            {mockDrops.map((d) => (
-              <Marker key={`drop-${d.id}`} position={[d.pharmacy.lat, d.pharmacy.lng]} icon={dropIcon}>
-                <Popup className="game-popup">
-                  <div className="p-2"><h3 className="font-bold text-sm">{d.title}</h3></div>
-                </Popup>
-              </Marker>
-            ))}
-            {mockRareProducts.map((rp) => (
-              <Marker key={`rare-${rp.id}`} position={[rp.lat, rp.lng]} icon={rareIcon}>
-                <Popup className="game-popup">
-                  <div className="p-2"><h3 className="font-bold text-sm">{rp.product.name}</h3></div>
-                </Popup>
-              </Marker>
-            ))}
-            {mockMissions.map((m) => (
-              <Marker key={`mission-${m.id}`} position={[m.lat, m.lng]} icon={missionIcon}>
-                <Popup className="game-popup">
-                  <div className="p-2"><h3 className="font-bold text-sm">{m.title}</h3></div>
-                </Popup>
-              </Marker>
-            ))}
-            {mockInfluencerDrops.map((id) => (
-              <Marker key={`inf-${id.id}`} position={[id.lat, id.lng]} icon={influencerIcon}>
-                <Popup className="game-popup">
-                  <div className="p-2">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Sparkles className="w-3 h-3 text-amber-500" />
-                      <span className="text-[10px] font-bold text-amber-500">INFLUENCIADOR</span>
+              {mockPharmacies.map((p) => (
+                <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
+                  <Popup className="game-popup">
+                    <div className="p-2 min-w-[200px]">
+                      <h3 className="font-bold text-sm">{p.name}</h3>
+                      <p className="text-[10px] text-gray-500">{p.address}</p>
                     </div>
-                    <h3 className="font-bold text-sm">{id.title}</h3>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
 
-          {/* Recenter button */}
-          <button
-            onClick={handleRecenter}
-            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg shadow-black/30 active:scale-95 transition-transform"
-          >
-            <Navigation className="w-5 h-5 text-accent" />
-          </button>
-        </div>
+            <button
+              onClick={handleRecenter}
+              className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg shadow-black/30 active:scale-95 transition-transform"
+            >
+              <Navigation className="w-5 h-5 text-accent" />
+            </button>
+          </div>
         </div>
 
         {/* Action Cards */}
@@ -253,17 +217,7 @@ const Home = () => {
                 <p className="text-foreground font-bold text-sm">{card.title}</p>
                 <p className="text-muted-foreground text-xs">{card.subtitle}</p>
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                {card.distance && (
-                  <span className="text-[10px] text-muted-foreground font-medium">{card.distance}</span>
-                )}
-                {card.badge && (
-                  <span className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-[10px] font-bold animate-pulse">
-                    {card.badge}
-                  </span>
-                )}
-                <ChevronRight className="w-5 h-5 text-accent" />
-              </div>
+              <ChevronRight className="w-5 h-5 text-accent flex-shrink-0" />
             </button>
           ))}
         </div>

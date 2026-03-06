@@ -1,9 +1,14 @@
 import { useState } from 'react';
 import type { MissionMock } from '@/data/mockData';
 import { Progress } from '@/components/ui/progress';
-import { ChevronDown, ChevronUp, MapPin, Check, Clock } from 'lucide-react';
+import { ChevronDown, ChevronUp, MapPin, Check, Clock, Trophy, Map, Star, Smartphone, Gift, Footprints, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  trophy: Trophy, map: Map, star: Star, smartphone: Smartphone,
+  gift: Gift, footprints: Footprints, target: Target,
+};
 
 const MissionCard = ({ mission }: { mission: MissionMock }) => {
   const [expanded, setExpanded] = useState(false);
@@ -30,12 +35,14 @@ const MissionCard = ({ mission }: { mission: MissionMock }) => {
     special: 'Especial',
   };
 
+  const Icon = iconMap[mission.icon] || Target;
+
   return (
     <div className={`rounded-2xl border overflow-hidden transition-all ${isCompleted ? 'border-green-500/30 bg-green-500/5' : 'border-border bg-card'}`}>
       <button onClick={() => setExpanded(!expanded)} className="w-full p-4 text-left">
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-2xl shrink-0">
-            {mission.icon}
+          <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shrink-0">
+            <Icon className="w-6 h-6 text-accent" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
@@ -44,7 +51,7 @@ const MissionCard = ({ mission }: { mission: MissionMock }) => {
               </span>
               {isCompleted && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400">
-                  ✓ Completa
+                  Completa
                 </span>
               )}
             </div>
@@ -53,11 +60,9 @@ const MissionCard = ({ mission }: { mission: MissionMock }) => {
             <div className="mt-3">
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-muted-foreground">{completedSteps}/{totalSteps} etapas</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-semibold">
-                    +{mission.rewardValue} {mission.rewardType === 'points' ? 'pts' : mission.rewardType === 'badge' ? 'badge' : 'prêmio'}
-                  </span>
-                </div>
+                <span className="text-primary font-semibold">
+                  +{mission.rewardValue} {mission.rewardType === 'points' ? 'pts' : mission.rewardType === 'badge' ? 'badge' : 'prêmio'}
+                </span>
               </div>
               <Progress value={pct} className="h-2 bg-secondary [&>div]:gradient-orange" />
             </div>

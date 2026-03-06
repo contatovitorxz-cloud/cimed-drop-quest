@@ -24,13 +24,10 @@ const InfluencerDropCard = ({ drop }: { drop: InfluencerDropMock }) => {
 
   return (
     <div className="rounded-2xl border border-accent/30 overflow-hidden bg-card relative">
-      {/* Gold shimmer top */}
       <div className="bg-gradient-to-r from-accent/20 via-accent/40 to-accent/20 p-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[length:200%_100%] animate-shimmer"
-          style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,212,0,0.1), transparent)' }} />
         <div className="flex items-center gap-3 relative z-10">
-          <div className="w-12 h-12 rounded-full bg-accent/30 flex items-center justify-center text-2xl shrink-0">
-            {drop.influencerAvatar}
+          <div className="w-12 h-12 rounded-full bg-accent/30 flex items-center justify-center text-accent text-sm font-bold shrink-0">
+            {drop.influencerInitials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
@@ -47,10 +44,7 @@ const InfluencerDropCard = ({ drop }: { drop: InfluencerDropMock }) => {
       </div>
 
       <div className="p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl">{drop.product.image_url}</span>
-          <h3 className="font-black text-sm">{drop.title}</h3>
-        </div>
+        <h3 className="font-black text-sm mb-1">{drop.title}</h3>
         <p className="text-xs text-muted-foreground italic">"{drop.teaserMessage}"</p>
 
         <div className="mt-3 flex items-center justify-between">
