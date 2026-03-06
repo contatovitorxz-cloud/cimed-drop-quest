@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -47,15 +47,51 @@ const missionIcon = new L.DivIcon({
   iconAnchor: [18, 18],
 });
 
-// Component that follows the player position
-const MapFollower = ({ position, shouldFollow }: { position: [number, number]; shouldFollow: boolean }) => {
+// Offset the map center so avatar appears in the lower third
+const OFFSET_FACTOR = 0.0012; // ~120m north offset at zoom 17
+
+function getOffsetCenter(pos: [number, number], heading: number): [number, number] {
+  const rad = (heading * Math.PI) / 180;
+  return [
+    pos[0] + OFFSET_FACTOR * Math.cos(rad),
+    pos[1] + OFFSET_FACTOR * Math.sin(rad),
+  ];
+}
+
+// Interpolate angle (shortest path)
+function lerpAngle(a: number, b: number, t: number): number {
+  let diff = ((b - a + 540) % 360) - 180;
+  return a + diff * t;
+}
+
+// Calculate bearing between two GPS points
+function calcBearing(from: [number, number], to: [number, number]): number {
+  const dLng = ((to[1] - from[1]) * Math.PI) / 180;
+  const lat1 = (from[0] * Math.PI) / 180;
+  const lat2 = (to[0] * Math.PI) / 180;
+  const y = Math.sin(dLng) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+}
+
+// Component that follows the player with offset
+const MapFollower = ({
+  position,
+  heading,
+  shouldFollow,
+}: {
+  position: [number, number];
+  heading: number;
+  shouldFollow: boolean;
+}) => {
   const map = useMap();
 
   useEffect(() => {
     if (shouldFollow) {
-      map.flyTo(position, map.getZoom(), { animate: true, duration: 1 });
+      const center = getOffsetCenter(position, heading);
+      map.setView(center, map.getZoom(), { animate: true });
     }
-  }, [position, shouldFollow, map]);
+  }, [position, heading, shouldFollow, map]);
 
   return null;
 };
@@ -64,15 +100,34 @@ const FALLBACK_POSITION: [number, number] = [-23.5629, -46.6544];
 
 const Home = () => {
   const [playerPosition, setPlayerPosition] = useState<[number, number]>(FALLBACK_POSITION);
+  const [displayPosition, setDisplayPosition] = useState<[number, number]>(FALLBACK_POSITION);
+  const [heading, setHeading] = useState(0);
+  const [displayHeading, setDisplayHeading] = useState(0);
   const [followPlayer, setFollowPlayer] = useState(true);
   const [gpsActive, setGpsActive] = useState(false);
+  const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
+  const animFrameRef = useRef<number>(0);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
+  // GPS tracking
   useEffect(() => {
     if (!navigator.geolocation) return;
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
         const newPos: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        const prev = prevPositionRef.current;
+
+        // Calculate heading from movement if distance is significant (~2m)
+        const dist = Math.sqrt(
+          Math.pow(newPos[0] - prev[0], 2) + Math.pow(newPos[1] - prev[1], 2)
+        );
+        if (dist > 0.00002) {
+          const bearing = calcBearing(prev, newPos);
+          setHeading(bearing);
+        }
+
+        prevPositionRef.current = newPos;
         setPlayerPosition(newPos);
         setGpsActive(true);
       },
@@ -82,7 +137,7 @@ const Home = () => {
       },
       {
         enableHighAccuracy: true,
-        maximumAge: 3000,
+        maximumAge: 2000,
         timeout: 10000,
       }
     );
@@ -90,17 +145,74 @@ const Home = () => {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
+  // Device orientation (compass) on mobile
+  useEffect(() => {
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      // webkitCompassHeading for iOS, alpha for Android
+      const compassHeading = (e as any).webkitCompassHeading ?? (e.alpha != null ? (360 - e.alpha) % 360 : null);
+      if (compassHeading != null) {
+        setHeading(compassHeading);
+      }
+    };
+
+    // Request permission on iOS 13+
+    if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      (DeviceOrientationEvent as any).requestPermission().then((response: string) => {
+        if (response === 'granted') {
+          window.addEventListener('deviceorientation', handleOrientation, true);
+        }
+      });
+    } else {
+      window.addEventListener('deviceorientation', handleOrientation, true);
+    }
+
+    return () => window.removeEventListener('deviceorientation', handleOrientation, true);
+  }, []);
+
+  // Smooth interpolation for position and heading
+  useEffect(() => {
+    let active = true;
+
+    const animate = () => {
+      if (!active) return;
+
+      setDisplayPosition((prev) => [
+        prev[0] + (playerPosition[0] - prev[0]) * 0.1,
+        prev[1] + (playerPosition[1] - prev[1]) * 0.1,
+      ]);
+
+      setDisplayHeading((prev) => lerpAngle(prev, heading, 0.08));
+
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+    return () => {
+      active = false;
+      cancelAnimationFrame(animFrameRef.current);
+    };
+  }, [playerPosition, heading]);
+
+  // Apply CSS rotation to map container
+  useEffect(() => {
+    if (mapContainerRef.current) {
+      mapContainerRef.current.style.setProperty('--map-heading', `${-displayHeading}deg`);
+    }
+  }, [displayHeading]);
+
   const handleRecenter = useCallback(() => {
     setFollowPlayer(true);
   }, []);
 
   return (
     <div className="fixed inset-0 bg-background">
-      {/* Map with 3D perspective */}
-      <div className="absolute inset-0 pb-16 pokemon-go-map">
+      {/* Map with 3D perspective + compass rotation */}
+      <div ref={mapContainerRef} className="absolute inset-0 pb-16 pokemon-go-map">
         <MapContainer
-          center={playerPosition}
+          center={getOffsetCenter(playerPosition, heading)}
           zoom={17}
+          minZoom={15}
+          maxZoom={19}
           className="h-full w-full"
           zoomControl={false}
           attributionControl={false}
@@ -110,8 +222,8 @@ const Home = () => {
             attribution=""
           />
 
-          <MapFollower position={playerPosition} shouldFollow={followPlayer} />
-          <PlayerAvatar position={playerPosition} />
+          <MapFollower position={displayPosition} heading={displayHeading} shouldFollow={followPlayer} />
+          <PlayerAvatar position={displayPosition} heading={displayHeading} />
 
           {/* Pharmacy markers */}
           {mockPharmacies.map((p) => (
