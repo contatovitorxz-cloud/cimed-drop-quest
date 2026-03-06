@@ -1,22 +1,23 @@
 
 
-# Mapa dark mode com recentralização ao clicar no ícone
+# Limpar HUD e remover partículas
 
 ## Mudanças
 
-### 1. `src/index.css` — Tema escuro no mapa
-- Trocar o TileLayer filter de `saturate(1.4) brightness(1.08)` para `brightness(0.15) invert(1) contrast(1.5) hue-rotate(200deg) saturate(0.3)` — isso transforma os tiles claros em um visual dark elegante
-- Mudar `.leaflet-container` background de `#f0f0f0` para `#0a0a0a` (preto)
+### 1. `src/pages/Home.tsx` — Remover FloatingParticles
+- Remover import e uso do `<FloatingParticles />`
+- Remover prop `gpsActive` do `<GameHUD />`
 
-### 2. `src/pages/Home.tsx` — TileLayer dark + arrastar desativa follow
-- Trocar o TileLayer URL para `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png` (tiles nativamente escuros do CartoDB — mais bonito que filtro CSS)
-- Remover o filtro CSS dos tiles já que o tile já é dark
-- Adicionar evento `dragstart` no mapa para setar `setFollowPlayer(false)` — assim o usuário pode arrastar livremente
-- O botão de recentralizar (Navigation, já existente no GameHUD) já chama `handleRecenter` que seta `followPlayer = true`, fazendo o mapa voltar ao jogador
+### 2. `src/components/game/GameHUD.tsx` — Remover barra de perfil, temperatura e GPS
+- Remover todo o bloco "Top Left - Profile" (nível, username, XP bar)
+- Remover todo o bloco "Top Right - GPS + Weather" (28°C e GPS)
+- Remover props `level`, `xp`, `maxXp`, `username`, `gpsActive` da interface
+- Manter apenas: botão QR Code (centro inferior), botões de ação (direita inferior), botão de recentralizar (esquerda inferior)
+- Remover imports não usados (`Sun`)
 
-### 3. `src/index.css` — Ajustar filtro dos tiles
-- Remover ou simplificar o filtro em `.leaflet-tile-pane` já que os tiles dark não precisam de saturação extra
+### 3. `src/index.css` — Remover CSS de partículas
+- Remover `@keyframes particle-float` e estilos relacionados (se existirem)
 
 ## Resultado
-Mapa escuro/dark elegante. Usuário pode arrastar para explorar. Ao clicar no ícone de navegação (canto inferior esquerdo), volta a seguir o personagem.
+Interface limpa: apenas o mapa, os marcadores, o botão de escanear QR, os botões de ação lateral e o botão de recentralizar. Sem partículas flutuantes, sem barra de jogador, sem temperatura, sem indicador GPS.
 
