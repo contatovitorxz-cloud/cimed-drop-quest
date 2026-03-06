@@ -1,37 +1,25 @@
 
 
-## Plano: Redesign do InfluencerDashboard conforme referência
+## Plano: Ajustar dados e detalhes visuais para ficar idêntico à referência
 
-Baseado na imagem de referência, o layout precisa ser reestruturado para ficar mais limpo e direto.
+Comparando o screenshot atual com a imagem de referência, as diferenças são:
 
-### Mudanças em `src/pages/InfluencerDashboard.tsx`
+### 1. Dados mock com valores reais
+Os métricas mostram "0" porque `mockInfluencerMetrics` tem `value: 0` e o operador `??` não trata zero como fallback. A referência mostra 12.500, 620 e 218.
 
-#### Header
-- Remover seta de voltar, manter apenas logo "Cimed GO / Creator Hub" à esquerda e avatar com botão X à direita (como na imagem)
+O gráfico mostra "Dados disponíveis após primeiras atividades" porque `mockInfluencerPerformance` está vazio. A referência mostra linhas de Cliques e Conversões com dados.
 
-#### Welcome
-- Texto maior: "Bem-vindo, **{nome}**!" com nome em amarelo/accent
-- Subtítulo: "Crie drops e campanhas para a Cimed."
+### 2. Mudanças
 
-#### CTA "Criar Drop"
-- Manter botão amarelo grande, sem mudança significativa
+#### `src/data/mockData.ts`
+- Atualizar `mockInfluencerMetrics` com valores: 12500, 620, 218
+- Preencher `mockInfluencerPerformance` com 7 dias de dados para cliques e conversões
 
-#### Métricas
-- 3 cards lado a lado com ícones distintos: Eye (Visualizações), MousePointerClick (Cliques), ShoppingBag/Package (Conversões)
-- Labels acima dos valores, layout com bordas arredondadas
-
-#### Ações rápidas (NOVO - substitui as Tabs)
-- Remover o sistema de Tabs (Campanhas/QR Codes/Drops)
-- Substituir por 2 cards de ação lado a lado:
-  - **Campanhas** — ícone megafone, "Gerencie suas campanhas."
-  - **Meus QR Codes** — ícone QR, "Ver e gerenciar QR Codes ativos."
-
-#### Gráfico de Desempenho
-- Manter o chart mas trocar o seletor de período de botões (7d/30d/90d) para um dropdown "Últimos 7 dias"
-- Mostrar apenas 2 linhas: Cliques (amarelo) e Conversões (branco)
-- Remover a linha de engajamento
+#### `src/pages/InfluencerDashboard.tsx`
+- Trocar `??` por `||` nos valores das métricas (para fallback funcionar com zero também, caso necessário no futuro)
 
 | Arquivo | Ação |
 |---|---|
-| `src/pages/InfluencerDashboard.tsx` | Redesign completo do layout conforme referência |
+| `src/data/mockData.ts` | Preencher métricas e performance com dados reais |
+| `src/pages/InfluencerDashboard.tsx` | Ajuste menor no fallback de valores |
 
