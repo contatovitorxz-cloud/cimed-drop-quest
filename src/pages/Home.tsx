@@ -17,14 +17,14 @@ L.Icon.Default.mergeOptions({
 });
 
 const pharmacyIcon = new L.DivIcon({
-  html: `<div style="width:36px;height:36px;background:linear-gradient(135deg,#FF6A00,#FFD400);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #0F0F0F;box-shadow:0 0 12px rgba(255,106,0,0.4)"><img src="/images/cimed-symbol.png" style="width:20px;height:20px;object-fit:contain" /></div>`,
+  html: `<div style="width:36px;height:36px;background:linear-gradient(135deg,#FFD400,#FFC200);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #0F0F0F;box-shadow:0 0 12px rgba(255,212,0,0.5)"><img src="/images/cimed-symbol.png" style="width:20px;height:20px;object-fit:contain" /></div>`,
   className: '',
   iconSize: [36, 36],
   iconAnchor: [18, 18],
 });
 
 const dropIcon = new L.DivIcon({
-  html: `<div style="width:40px;height:40px;background:linear-gradient(135deg,#FFD400,#FF6A00);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #0F0F0F;box-shadow:0 0 20px rgba(255,212,0,0.5);animation:pulse 2s infinite"><img src="/images/cimed-symbol.png" style="width:22px;height:22px;object-fit:contain" /></div>`,
+  html: `<div style="width:40px;height:40px;background:linear-gradient(135deg,#FFD400,#FFC200);border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid #0F0F0F;box-shadow:0 0 20px rgba(255,212,0,0.6);animation:pulse 2s infinite"><img src="/images/cimed-symbol.png" style="width:22px;height:22px;object-fit:contain" /></div>`,
   className: '',
   iconSize: [40, 40],
   iconAnchor: [20, 20],
