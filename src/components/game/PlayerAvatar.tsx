@@ -6,13 +6,15 @@ import { useMemo } from 'react';
 interface PlayerAvatarProps {
   position: [number, number];
   heading?: number;
+  isMoving?: boolean;
 }
 
-const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
+const PlayerAvatar = ({ position, heading = 0, isMoving = false }: PlayerAvatarProps) => {
   const characterIcon = useMemo(() => {
+    const walkingClass = isMoving ? ' walking' : '';
     return new L.DivIcon({
       html: `
-        <div class="player-character-icon" style="width:64px;height:82px;position:relative;">
+        <div class="player-character-icon${walkingClass}" style="width:64px;height:82px;position:relative;">
           <!-- Golden glowing disc on ground -->
           <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:54px;height:18px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,212,0,0.7) 0%,rgba(255,212,0,0.35) 40%,rgba(255,212,0,0.1) 65%,transparent 100%);filter:blur(1.5px);"></div>
           <div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:40px;height:12px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,230,100,0.6) 0%,transparent 70%);"></div>
@@ -124,7 +126,7 @@ const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
       iconSize: [64, 82],
       iconAnchor: [32, 76],
     });
-  }, []);
+  }, [isMoving]);
 
   return (
     <>
