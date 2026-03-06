@@ -205,8 +205,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-background">
-      {/* Map with 3D perspective + compass rotation */}
+    <div className="fixed inset-0">
+      {/* Map with 3D perspective + compass rotation + sky background */}
       <div ref={mapContainerRef} className="absolute inset-0 pb-16 pokemon-go-map">
         <MapContainer
           center={getOffsetCenter(playerPosition, heading)}
