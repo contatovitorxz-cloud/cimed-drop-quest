@@ -213,9 +213,9 @@ export interface InfluencerMetric {
 }
 
 export const mockInfluencerMetrics: InfluencerMetric[] = [
-  { label: 'Visualizações', value: 0, change: 0, icon: 'eye' },
-  { label: 'Cliques', value: 0, change: 0, icon: 'click' },
-  { label: 'Conversões', value: 0, change: 0, icon: 'conversion' },
+  { label: 'Visualizações', value: 12500, change: 8.2, icon: 'eye' },
+  { label: 'Cliques', value: 620, change: 5.1, icon: 'click' },
+  { label: 'Conversões', value: 218, change: 12.3, icon: 'conversion' },
 ];
 
 export interface InfluencerCampaign {
@@ -242,7 +242,15 @@ export interface InfluencerQRCode {
 
 export const mockInfluencerQRCodes: InfluencerQRCode[] = [];
 
-export const mockInfluencerPerformance: { day: string; cliques: number; conversoes: number; engajamento: number }[] = [];
+export const mockInfluencerPerformance: { day: string; cliques: number; conversoes: number }[] = [
+  { day: 'Seg', cliques: 85, conversoes: 32 },
+  { day: 'Ter', cliques: 72, conversoes: 28 },
+  { day: 'Qua', cliques: 110, conversoes: 45 },
+  { day: 'Qui', cliques: 95, conversoes: 38 },
+  { day: 'Sex', cliques: 130, conversoes: 52 },
+  { day: 'Sáb', cliques: 68, conversoes: 25 },
+  { day: 'Dom', cliques: 60, conversoes: 18 },
+];
 
 // ===== ADMIN DASHBOARD MOCK DATA =====
 export interface AdminMetric {
