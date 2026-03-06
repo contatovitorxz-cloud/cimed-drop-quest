@@ -290,7 +290,7 @@
 }
 
 .leaflet-tile-pane {
-  filter: brightness(1.2) saturate(0.15) sepia(0.5) hue-rotate(-10deg);
+  filter: brightness(1.35) saturate(0.4) sepia(0.35) hue-rotate(15deg);
 }
 
 .leaflet-container {
@@ -301,7 +301,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
   pointer-events: none;
   z-index: 399;
 }
@@ -317,7 +317,7 @@
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #f0f0f0 !important;
+  background: #ffffff !important;
   height: 100%;
   width: 100%;
   border-radius: inherit;
