@@ -74,10 +74,10 @@ const InfluencerDashboard = () => {
         <div className="grid grid-cols-3 gap-3">
           {metrics.map((m) => (
             <Card key={m.label} className="border-border bg-card">
-              <CardContent className="p-3 text-center space-y-1">
-                <m.icon className="w-5 h-5 mx-auto text-accent" />
-                <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{m.label}</p>
-                <p className="text-lg font-bold">{m.value.toLocaleString('pt-BR')}</p>
+              <CardContent className="p-4 text-center space-y-2">
+                <m.icon className="w-7 h-7 mx-auto text-accent" />
+                <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-medium">{m.label}</p>
+                <p className="text-xl font-extrabold">{m.value.toLocaleString('pt-BR')}</p>
               </CardContent>
             </Card>
           ))}
