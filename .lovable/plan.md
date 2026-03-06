@@ -1,15 +1,17 @@
 
 
-## Plano: Remover filtros do mapa
+## Plano: Restaurar ícones amarelos com logo Cimed
 
-Remover todos os filtros CSS e overlay que alteram a aparência do mapa, deixando-o com visual padrão do CartoDB Positron (branco limpo, ruas cinzas).
+Na referência, os marcadores de farmácia são círculos amarelos/dourados com o símbolo da Cimed dentro, em vez de fundo branco.
 
 ### Mudança em `src/index.css`
 
-- `.leaflet-tile-pane`: remover a regra `filter` completamente (ou setar `filter: none`)
-- `.leaflet-container::after`: remover o overlay branco semi-transparente (setar `display: none` ou remover o bloco)
+**`.marker-pharmacy`** (linha 138-148):
+- Trocar `background: white` para `background: linear-gradient(135deg, #FFD400, #FFC000)` (amarelo dourado)
+- Trocar `border: 2px solid hsl(var(--accent))` para `border: 2px solid rgba(255, 212, 0, 0.6)` (borda amarela sutil)
+- Adicionar `box-shadow` com glow amarelo para combinar com o estilo dos outros markers
 
 | Arquivo | Ação |
 |---|---|
-| `src/index.css` | Remover filtros e overlay do mapa |
+| `src/index.css` | Alterar estilo `.marker-pharmacy` para fundo amarelo |
 
