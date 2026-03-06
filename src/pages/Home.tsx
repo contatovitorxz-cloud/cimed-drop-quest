@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mockPharmacies, mockDrops, mockMissions, mockRareProducts } from '@/data/mockData';
@@ -68,11 +68,17 @@ function calcBearing(from: [number, number], to: [number, number]): number {
 const MapFollower = ({
   position,
   shouldFollow,
+  onDrag,
 }: {
   position: [number, number];
   shouldFollow: boolean;
+  onDrag: () => void;
 }) => {
   const map = useMap();
+
+  useMapEvents({
+    dragstart: () => onDrag(),
+  });
 
   useEffect(() => {
     if (shouldFollow) {
@@ -203,11 +209,11 @@ const Home = () => {
           attributionControl={false}
         >
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             attribution=""
           />
 
-          <MapFollower position={displayPosition} shouldFollow={followPlayer} />
+          <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
           <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
           {/* Pharmacy markers */}
