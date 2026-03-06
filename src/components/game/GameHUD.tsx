@@ -5,9 +5,11 @@ interface GameHUDProps {
   xp?: number;
   maxXp?: number;
   username?: string;
+  onRecenter?: () => void;
+  gpsActive?: boolean;
 }
 
-const GameHUD = ({ level = 7, xp = 680, maxXp = 1000, username = 'Jogador' }: GameHUDProps) => {
+const GameHUD = ({ level = 7, xp = 680, maxXp = 1000, username = 'Jogador', onRecenter, gpsActive = false }: GameHUDProps) => {
   const xpPct = Math.min((xp / maxXp) * 100, 100);
 
   return (
@@ -38,7 +40,7 @@ const GameHUD = ({ level = 7, xp = 680, maxXp = 1000, username = 'Jogador' }: Ga
           <span className="text-[10px] text-white/70">28°C</span>
         </div>
         <div className="bg-black/60 backdrop-blur-xl rounded-xl p-2.5 border border-white/10 flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-green-400 animate-[glow-pulse_2s_infinite]" />
+          <div className={`w-2 h-2 rounded-full ${gpsActive ? 'bg-green-400' : 'bg-yellow-400'} animate-[glow-pulse_2s_infinite]`} />
           <span className="text-[10px] text-white/70">GPS</span>
         </div>
       </div>
@@ -72,9 +74,12 @@ const GameHUD = ({ level = 7, xp = 680, maxXp = 1000, username = 'Jogador' }: Ga
         ))}
       </div>
 
-      {/* Bottom Left - Navigation */}
+      {/* Bottom Left - Navigation / Recenter */}
       <div className="absolute bottom-24 left-4 pointer-events-auto">
-        <button className="w-11 h-11 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:border-[#0066FF]/40 transition-colors">
+        <button
+          onClick={onRecenter}
+          className="w-11 h-11 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 flex items-center justify-center hover:border-[#0066FF]/40 transition-colors active:scale-95"
+        >
           <Navigation className="w-5 h-5 text-[#0066FF]" />
         </button>
       </div>
