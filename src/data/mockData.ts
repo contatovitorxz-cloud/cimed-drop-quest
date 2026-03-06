@@ -138,6 +138,39 @@ export const mockBadges: UserBadge[] = [
   { id: '6', name: 'Maratonista', icon: '🏃', description: 'Completou 5 desafios' },
 ];
 
+export interface Mission {
+  id: string;
+  title: string;
+  description: string;
+  lat: number;
+  lng: number;
+  type: 'collect' | 'visit' | 'route' | 'share';
+  reward: number;
+  icon: string;
+}
+
+export interface RareProduct {
+  id: string;
+  product: Product;
+  lat: number;
+  lng: number;
+}
+
+export const mockMissions: Mission[] = [
+  { id: 'm1', title: 'Rota da Saúde', description: 'Visite 3 farmácias na Paulista', lat: -23.5610, lng: -46.6580, type: 'route', reward: 500, icon: '🏃' },
+  { id: 'm2', title: 'Caçador de Vitaminas', description: 'Colete 2 Lavitan diferentes', lat: -23.5550, lng: -46.6500, type: 'collect', reward: 300, icon: '💊' },
+  { id: 'm3', title: 'Compartilhador', description: 'Compartilhe um produto com amigos', lat: -23.5700, lng: -46.6650, type: 'share', reward: 150, icon: '📣' },
+  { id: 'm4', title: 'Explorador Vila Mariana', description: 'Visite 2 farmácias na Vila Mariana', lat: -23.5850, lng: -46.6400, type: 'visit', reward: 250, icon: '🗺️' },
+  { id: 'm5', title: 'Colecionador Carmed', description: 'Encontre 3 Carmeds raros', lat: -23.5480, lng: -46.6700, type: 'collect', reward: 600, icon: '🏆' },
+];
+
+export const mockRareProducts: RareProduct[] = [
+  { id: 'rp1', product: mockProducts[4], lat: -23.5590, lng: -46.6510 },
+  { id: 'rp2', product: mockProducts[1], lat: -23.5650, lng: -46.6700 },
+  { id: 'rp3', product: mockProducts[0], lat: -23.5750, lng: -46.6350 },
+  { id: 'rp4', product: mockProducts[6], lat: -23.5500, lng: -46.6430 },
+];
+
 export const rarityColors: Record<string, string> = {
   common: 'bg-muted text-muted-foreground',
   rare: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
