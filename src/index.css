@@ -205,9 +205,47 @@
   background: linear-gradient(180deg, #87CEEB 0%, #B8E0F0 30%, #d4eef8 50%, #e8f4ec 70%, #c8e6c0 100%);
 }
 
-/* Player avatar float animation */
+/* Player avatar */
 .player-character-icon {
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+/* Walking animation */
+@keyframes walk-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes walk-leg-left {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-8deg); }
+  75% { transform: translateY(3px) rotate(8deg); }
+}
+
+@keyframes walk-leg-right {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(3px) rotate(8deg); }
+  75% { transform: translateY(-3px) rotate(-8deg); }
+}
+
+@keyframes walk-arm-left {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+@keyframes walk-arm-right {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+.player-character-icon.walking {
+  animation: walk-bounce 0.4s ease-in-out infinite;
+}
+
+.player-character-icon.walking svg {
+  animation: walk-bounce 0.4s ease-in-out infinite;
 }
 
 .pokemon-go-map .leaflet-container {

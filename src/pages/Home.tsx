@@ -105,6 +105,8 @@ const Home = () => {
   const [displayHeading, setDisplayHeading] = useState(0);
   const [followPlayer, setFollowPlayer] = useState(true);
   const [gpsActive, setGpsActive] = useState(false);
+  const [isMoving, setIsMoving] = useState(false);
+  const movingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
   const animFrameRef = useRef<number>(0);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -125,6 +127,9 @@ const Home = () => {
         if (dist > 0.00002) {
           const bearing = calcBearing(prev, newPos);
           setHeading(bearing);
+          setIsMoving(true);
+          if (movingTimeoutRef.current) clearTimeout(movingTimeoutRef.current);
+          movingTimeoutRef.current = setTimeout(() => setIsMoving(false), 2000);
         }
 
         prevPositionRef.current = newPos;
@@ -223,7 +228,7 @@ const Home = () => {
           />
 
           <MapFollower position={displayPosition} heading={displayHeading} shouldFollow={followPlayer} />
-          <PlayerAvatar position={displayPosition} heading={displayHeading} />
+          <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
           {/* Pharmacy markers */}
           {mockPharmacies.map((p) => (
