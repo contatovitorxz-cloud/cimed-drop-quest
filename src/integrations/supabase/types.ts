@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_feed: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       challenges: {
         Row: {
           active: boolean
@@ -49,6 +79,41 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      drop_claims: {
+        Row: {
+          claimed_at: string
+          drop_id: string
+          id: string
+          redeemed: boolean
+          redeemed_at: string | null
+          user_id: string
+        }
+        Insert: {
+          claimed_at?: string
+          drop_id: string
+          id?: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+          user_id: string
+        }
+        Update: {
+          claimed_at?: string
+          drop_id?: string
+          id?: string
+          redeemed?: boolean
+          redeemed_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "drop_claims_drop_id_fkey"
+            columns: ["drop_id"]
+            isOneToOne: false
+            referencedRelation: "influencer_drops"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       drops: {
         Row: {
@@ -103,6 +168,154 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      influencer_drops: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          discount_percent: number | null
+          expires_at: string
+          id: string
+          influencer_id: string
+          lat: number
+          lng: number
+          product_id: string | null
+          radius_meters: number
+          remaining_quantity: number
+          teaser_message: string | null
+          title: string
+          total_quantity: number
+          type: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          expires_at?: string
+          id?: string
+          influencer_id: string
+          lat: number
+          lng: number
+          product_id?: string | null
+          radius_meters?: number
+          remaining_quantity?: number
+          teaser_message?: string | null
+          title: string
+          total_quantity?: number
+          type?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          discount_percent?: number | null
+          expires_at?: string
+          id?: string
+          influencer_id?: string
+          lat?: number
+          lng?: number
+          product_id?: string | null
+          radius_meters?: number
+          remaining_quantity?: number
+          teaser_message?: string | null
+          title?: string
+          total_quantity?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "influencer_drops_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mission_steps: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          metadata: Json | null
+          mission_id: string
+          step_order: number
+          target_count: number
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          metadata?: Json | null
+          mission_id: string
+          step_order?: number
+          target_count?: number
+          type?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          mission_id?: string
+          step_order?: number
+          target_count?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mission_steps_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      missions: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          ends_at: string
+          icon: string
+          id: string
+          mission_type: string
+          reward_type: string
+          reward_value: number
+          starts_at: string
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          ends_at?: string
+          icon?: string
+          id?: string
+          mission_type?: string
+          reward_type?: string
+          reward_value?: number
+          starts_at?: string
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          ends_at?: string
+          icon?: string
+          id?: string
+          mission_type?: string
+          reward_type?: string
+          reward_value?: number
+          starts_at?: string
+          title?: string
+        }
+        Relationships: []
       }
       pharmacies: {
         Row: {
@@ -203,6 +416,148 @@ export type Database = {
         }
         Relationships: []
       }
+      qr_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          pharmacy_id: string | null
+          points_value: number
+          product_id: string | null
+          type: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pharmacy_id?: string | null
+          points_value?: number
+          product_id?: string | null
+          type?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pharmacy_id?: string | null
+          points_value?: number
+          product_id?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_codes_pharmacy_id_fkey"
+            columns: ["pharmacy_id"]
+            isOneToOne: false
+            referencedRelation: "pharmacies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qr_codes_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qr_scans: {
+        Row: {
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          pharmacy_id: string | null
+          points_earned: number
+          product_id: string | null
+          qr_code_id: string | null
+          scanned_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          pharmacy_id?: string | null
+          points_earned?: number
+          product_id?: string | null
+          qr_code_id?: string | null
+          scanned_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          pharmacy_id?: string | null
+          points_earned?: number
+          product_id?: string | null
+          qr_code_id?: string | null
+          scanned_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_scans_pharmacy_id_fkey"
+            columns: ["pharmacy_id"]
+            isOneToOne: false
+            referencedRelation: "pharmacies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qr_scans_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qr_scans_qr_code_id_fkey"
+            columns: ["qr_code_id"]
+            isOneToOne: false
+            referencedRelation: "qr_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_achievements: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_public: boolean
+          metadata: Json | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          metadata?: Json | null
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_public?: boolean
+          metadata?: Json | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_badges: {
         Row: {
           badge_icon: string
@@ -226,6 +581,65 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      user_missions: {
+        Row: {
+          completed_at: string | null
+          id: string
+          mission_id: string
+          progress: Json | null
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          mission_id: string
+          progress?: Json | null
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          mission_id?: string
+          progress?: Json | null
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_missions_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "missions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_points: {
         Row: {

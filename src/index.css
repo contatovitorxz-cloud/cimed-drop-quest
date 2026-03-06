@@ -185,6 +185,22 @@
   font-size: 18px;
 }
 
+.marker-influencer {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #FFD400, #FF8C00);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 212, 0, 0.6);
+  box-shadow: 0 0 20px rgba(255, 212, 0, 0.6), 0 0 40px rgba(255, 140, 0, 0.3);
+  animation: float 2.5s ease-in-out infinite, glow-pulse 2s ease-in-out infinite;
+}
+.marker-influencer span {
+  font-size: 22px;
+}
+
 /* Pokemon GO 3D perspective */
 .pokemon-go-map {
   overflow: hidden;
