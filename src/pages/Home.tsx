@@ -47,16 +47,6 @@ const missionIcon = new L.DivIcon({
   iconAnchor: [18, 18],
 });
 
-// Offset the map center so avatar appears in the lower third
-const OFFSET_FACTOR = 0.0012; // ~120m north offset at zoom 17
-
-function getOffsetCenter(pos: [number, number], heading: number): [number, number] {
-  const rad = (heading * Math.PI) / 180;
-  return [
-    pos[0] + OFFSET_FACTOR * Math.cos(rad),
-    pos[1] + OFFSET_FACTOR * Math.sin(rad),
-  ];
-}
 
 // Interpolate angle (shortest path)
 function lerpAngle(a: number, b: number, t: number): number {
@@ -74,24 +64,21 @@ function calcBearing(from: [number, number], to: [number, number]): number {
   return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
 }
 
-// Component that follows the player with offset
+// Component that follows the player
 const MapFollower = ({
   position,
-  heading,
   shouldFollow,
 }: {
   position: [number, number];
-  heading: number;
   shouldFollow: boolean;
 }) => {
   const map = useMap();
 
   useEffect(() => {
     if (shouldFollow) {
-      const center = getOffsetCenter(position, heading);
-      map.setView(center, map.getZoom(), { animate: true });
+      map.setView(position, map.getZoom(), { animate: true });
     }
-  }, [position, heading, shouldFollow, map]);
+  }, [position, shouldFollow, map]);
 
   return null;
 };
@@ -109,7 +96,6 @@ const Home = () => {
   const movingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
   const animFrameRef = useRef<number>(0);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   // GPS tracking
   useEffect(() => {
@@ -198,12 +184,6 @@ const Home = () => {
     };
   }, [playerPosition, heading]);
 
-  // Apply CSS rotation to map container
-  useEffect(() => {
-    if (mapContainerRef.current) {
-      mapContainerRef.current.style.setProperty('--map-heading', `${-displayHeading}deg`);
-    }
-  }, [displayHeading]);
 
   const handleRecenter = useCallback(() => {
     setFollowPlayer(true);
@@ -212,11 +192,11 @@ const Home = () => {
   return (
     <div className="fixed inset-0">
       {/* Map with 3D perspective + compass rotation + sky background */}
-      <div ref={mapContainerRef} className="absolute inset-0 pb-16 pokemon-go-map">
+      <div className="absolute inset-0 pb-16 pokemon-go-map">
         <MapContainer
-          center={getOffsetCenter(playerPosition, heading)}
-          zoom={17}
-          minZoom={15}
+          center={playerPosition}
+          zoom={16}
+          minZoom={13}
           maxZoom={19}
           className="h-full w-full"
           zoomControl={false}
@@ -227,7 +207,7 @@ const Home = () => {
             attribution=""
           />
 
-          <MapFollower position={displayPosition} heading={displayHeading} shouldFollow={followPlayer} />
+          <MapFollower position={displayPosition} shouldFollow={followPlayer} />
           <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
           {/* Pharmacy markers */}
