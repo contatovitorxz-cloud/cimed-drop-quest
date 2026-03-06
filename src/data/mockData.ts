@@ -260,21 +260,23 @@ export interface AdminMetric {
 }
 
 export const mockAdminMetrics: AdminMetric[] = [
-  { label: 'Usuários Ativos', value: 72540, change: 12 },
+  { label: 'Usuários Ativos', value: 72500, change: 12 },
   { label: 'Missões Completas', value: 185200, change: 8 },
-  { label: 'Scans QR Code', value: 342100, change: 15 },
-  { label: 'Drops Resgatados', value: 28750, change: 22 },
+  { label: 'Escaneamentos QR', value: 75900, change: 32 },
+  { label: 'Drops Resgatados', value: 39100, change: 25 },
 ];
 
-export const mockAdminGrowth: { month: string; usuarios: number; scans: number; drops: number; missoes: number }[] = [
-  { month: 'Jan', usuarios: 12000, scans: 45000, drops: 3200, missoes: 18000 },
-  { month: 'Fev', usuarios: 18500, scans: 62000, drops: 5100, missoes: 28000 },
-  { month: 'Mar', usuarios: 25000, scans: 89000, drops: 7800, missoes: 42000 },
-  { month: 'Abr', usuarios: 32000, scans: 120000, drops: 11200, missoes: 65000 },
-  { month: 'Mai', usuarios: 41000, scans: 168000, drops: 15600, missoes: 89000 },
-  { month: 'Jun', usuarios: 52000, scans: 215000, drops: 19800, missoes: 120000 },
-  { month: 'Jul', usuarios: 60000, scans: 268000, drops: 23400, missoes: 148000 },
-  { month: 'Ago', usuarios: 72540, scans: 342100, drops: 28750, missoes: 185200 },
+export const mockAdminGrowth: { date: string; usuarios: number; missoes: number; scans: number; drops: number }[] = [
+  { date: '1 abr', usuarios: 18000, missoes: 42000, scans: 15000, drops: 8000 },
+  { date: '4 abr', usuarios: 22000, missoes: 55000, scans: 20000, drops: 11000 },
+  { date: '7 abr', usuarios: 28000, missoes: 68000, scans: 28000, drops: 14000 },
+  { date: '10 abr', usuarios: 35000, missoes: 82000, scans: 35000, drops: 18000 },
+  { date: '13 abr', usuarios: 42000, missoes: 98000, scans: 42000, drops: 22000 },
+  { date: '16 abr', usuarios: 50000, missoes: 115000, scans: 50000, drops: 26000 },
+  { date: '19 abr', usuarios: 58000, missoes: 135000, scans: 58000, drops: 30000 },
+  { date: '22 abr', usuarios: 65000, missoes: 155000, scans: 65000, drops: 34000 },
+  { date: '25 abr', usuarios: 70000, missoes: 170000, scans: 70000, drops: 37000 },
+  { date: '28 abr', usuarios: 72500, missoes: 185200, scans: 75900, drops: 39100 },
 ];
 
 export interface AdminCampaign {
@@ -283,16 +285,14 @@ export interface AdminCampaign {
   pharmacy: string;
   claimed: number;
   total: number;
-  status: 'active' | 'paused' | 'ended';
-  expiresLabel?: string;
+  status: 'active' | 'paused' | 'ended' | 'expired';
+  statusLabel: string;
 }
 
 export const mockAdminCampaigns: AdminCampaign[] = [
-  { id: '1', name: 'Carmed Fini Drop', pharmacy: 'Drogasil Paulista', claimed: 450, total: 500, status: 'ended', expiresLabel: 'Encerrado' },
-  { id: '2', name: 'Lavitan Energia', pharmacy: 'Droga Raia Consolação', claimed: 120, total: 300, status: 'active', expiresLabel: 'Encerra hoje' },
-  { id: '3', name: 'Carmed BT21 Exclusive', pharmacy: 'Pague Menos Liberdade', claimed: 200, total: 200, status: 'ended', expiresLabel: 'Expirada' },
-  { id: '4', name: 'Benegrip Multi Pack', pharmacy: 'Drogaria São Paulo', claimed: 80, total: 250, status: 'active', expiresLabel: 'Ativo' },
-  { id: '5', name: 'Carmed Bubble Launch', pharmacy: 'Farmácia Venâncio', claimed: 340, total: 400, status: 'paused', expiresLabel: 'Encerrado' },
+  { id: '1', name: 'Carmed Grátis', pharmacy: 'Drogasil Paulista · 200m', claimed: 2000, total: 2000, status: 'ended', statusLabel: 'Encerrado' },
+  { id: '2', name: 'Produtos Cimed Grátis', pharmacy: 'Droga Raia Consolação · 450m', claimed: 417, total: 500, status: 'expired', statusLabel: 'Expirada' },
+  { id: '3', name: 'Cupom 20% OFF', pharmacy: 'Pague Menos Liberdade · 800m', claimed: 361, total: 500, status: 'active', statusLabel: 'Encerra hoje' },
 ];
 
 export interface AdminInfluencer {
@@ -301,14 +301,14 @@ export interface AdminInfluencer {
   handle: string;
   initials: string;
   followers: number;
+  avatar: string;
   status: 'approved' | 'pending' | 'suspended';
 }
 
 export const mockAdminInfluencers: AdminInfluencer[] = [
-  { id: '1', name: 'Ana Clara', handle: '@anaclara', initials: 'AC', followers: 245000, status: 'pending' },
-  { id: '2', name: 'Lucas Silva', handle: '@lucassilva', initials: 'LS', followers: 180000, status: 'pending' },
-  { id: '3', name: 'Marina Costa', handle: '@marinacosta', initials: 'MC', followers: 320000, status: 'pending' },
-  { id: '4', name: 'Pedro Henrique', handle: '@pedroh', initials: 'PH', followers: 95000, status: 'approved' },
+  { id: '1', name: 'Amanda Costa', handle: '@acosta', initials: 'AC', followers: 515000, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', status: 'pending' },
+  { id: '2', name: 'Rafael Silva', handle: '@rafaelsilva', initials: 'RS', followers: 382000, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face', status: 'pending' },
+  { id: '3', name: 'Carla Menezes', handle: '@carlamenezes', initials: 'CM', followers: 275000, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', status: 'pending' },
 ];
 
 export interface AdminDropRanking {
@@ -317,11 +317,12 @@ export interface AdminDropRanking {
   city: string;
   claimed: number;
   total: number;
-  status: 'esgotado' | 'encerra_hoje' | 'ativo';
+  status: 'esgotado' | 'encerra_hoje' | 'ativo' | 'expirada';
+  statusLabel: string;
 }
 
 export const mockAdminDropRanking: AdminDropRanking[] = [
-  { id: '1', name: 'Carmed Fini', city: 'São Paulo', claimed: 500, total: 500, status: 'esgotado' },
-  { id: '2', name: 'Carmed BT21', city: 'Rio de Janeiro', claimed: 180, total: 200, status: 'encerra_hoje' },
-  { id: '3', name: 'Lavitan Hair', city: 'Belo Horizonte', claimed: 290, total: 350, status: 'ativo' },
+  { id: '1', name: 'Carmed Grátis', city: 'São Paulo', claimed: 4835, total: 5000, status: 'esgotado', statusLabel: 'Esgotado' },
+  { id: '2', name: 'Lipogel', city: 'Rio de Janeiro', claimed: 3991, total: 5000, status: 'expirada', statusLabel: 'Expirada' },
+  { id: '3', name: 'Cupom de 30% OFF', city: 'Belo Horizonte', claimed: 3645, total: 5000, status: 'encerra_hoje', statusLabel: 'Encerra hoje' },
 ];
