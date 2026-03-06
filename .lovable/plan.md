@@ -1,25 +1,22 @@
 
 
-## Plano: Ajustar dados e detalhes visuais para ficar idêntico à referência
+## Plano: Ajustar cards de métricas para ficar idêntico à referência
 
-Comparando o screenshot atual com a imagem de referência, as diferenças são:
+Comparando com a imagem, as diferenças são:
+- Ícones precisam ser maiores e mais destacados (amarelo, dentro de um círculo ou mais espaçados)
+- Labels em uppercase com mais espaçamento
+- Números maiores e mais bold
+- Cards com mais padding vertical e fundo mais escuro/definido
 
-### 1. Dados mock com valores reais
-Os métricas mostram "0" porque `mockInfluencerMetrics` tem `value: 0` e o operador `??` não trata zero como fallback. A referência mostra 12.500, 620 e 218.
+### Mudanças em `src/pages/InfluencerDashboard.tsx` (linhas 73-83)
 
-O gráfico mostra "Dados disponíveis após primeiras atividades" porque `mockInfluencerPerformance` está vazio. A referência mostra linhas de Cliques e Conversões com dados.
-
-### 2. Mudanças
-
-#### `src/data/mockData.ts`
-- Atualizar `mockInfluencerMetrics` com valores: 12500, 620, 218
-- Preencher `mockInfluencerPerformance` com 7 dias de dados para cliques e conversões
-
-#### `src/pages/InfluencerDashboard.tsx`
-- Trocar `??` por `||` nos valores das métricas (para fallback funcionar com zero também, caso necessário no futuro)
+- Aumentar padding dos cards (`p-4` em vez de `p-3`)
+- Aumentar tamanho dos ícones (`w-7 h-7`)
+- Aumentar espaçamento vertical (`space-y-2`)
+- Números maiores (`text-xl font-extrabold`)
+- Labels com `text-[9px]` uppercase tracking wider
 
 | Arquivo | Ação |
 |---|---|
-| `src/data/mockData.ts` | Preencher métricas e performance com dados reais |
-| `src/pages/InfluencerDashboard.tsx` | Ajuste menor no fallback de valores |
+| `src/pages/InfluencerDashboard.tsx` | Ajustar styling dos cards de métricas |
 
