@@ -1,29 +1,29 @@
 
 
-# Animação de caminhada do bonequinho ao se mover
+# Simplificar mapa — remover perspectiva 3D e corrigir zoom
 
-## Objetivo
-Quando o GPS detectar movimento real, o bonequinho deve ter uma animação de caminhada (pernas alternando). Quando parado, fica estático.
+## Problema
+O mapa tem perspectiva 3D estilo Pokémon GO (`rotateX(25deg) scale(1.4)`) que causa bugs visuais no zoom e interação. O usuário quer um mapa plano e funcional onde veja sua rua e possa dar zoom out para ver farmácias próximas.
 
 ## Mudanças
 
-### 1. `src/components/game/PlayerAvatar.tsx`
-- Adicionar prop `isMoving` ao componente
-- Quando `isMoving=true`, aplicar classe CSS `player-walking` ao ícone
-- Recriar o `DivIcon` quando `isMoving` muda (adicionar ao `useMemo` deps)
+### 1. `src/index.css` — Remover perspectiva 3D
+- Remover `perspective`, `perspective-origin` e o background de "céu" da classe `.pokemon-go-map`
+- Remover `transform: rotateX(25deg) scale(1.4)` do `.pokemon-go-map .leaflet-container`
+- Manter o filtro de saturação nos tiles para o mapa ficar bonito
+- Manter o `.pokemon-go-map` apenas como container simples com overflow hidden
 
-### 2. `src/index.css`
-- Adicionar animação `@keyframes walk` que alterna as pernas (translate Y alternado nas pernas esquerda/direita) e faz um leve balanço no corpo
-- Aplicar via `.player-character-icon.walking` 
+### 2. `src/pages/Home.tsx` — Ajustar zoom e remover offset
+- Mudar zoom inicial de `17` para `16` (nível de rua, mostra ~500m ao redor)
+- Mudar `minZoom` de `15` para `13` (permite ver bairro/região com farmácias)
+- Manter `maxZoom: 19`
+- Remover a função `getOffsetCenter` e o `OFFSET_FACTOR` — centrar o mapa direto na posição do jogador
+- Remover o `mapContainerRef` e o efeito de CSS rotation (heading) já que não há mais perspectiva 3D
+- Simplificar o `MapFollower` para usar posição direta sem offset
 
-### 3. `src/pages/Home.tsx`
-- Criar estado `isMoving` baseado na distância entre posições GPS consecutivas
-- Se `dist > 0.00002` (threshold já existente no código), setar `isMoving = true`
-- Usar um timeout de ~2s para voltar a `false` quando parar
-- Passar `isMoving` como prop para `PlayerAvatar`
+### 3. `src/index.css` — Remover rotação do mapa
+- Remover referências a `--map-heading` que já não será usado
 
-## Detalhes da animação
-- Pernas: balanço alternado via CSS transform nos elementos SVG das pernas (usando classes nos `rect` das pernas)
-- Corpo: leve bounce vertical de 1-2px
-- Ciclo de ~0.5s para parecer caminhada natural
+## Resultado
+Mapa plano, limpo, zoom funcional. Usuário vê sua rua no zoom padrão e pode dar zoom out para localizar farmácias próximas. Sem bugs de perspectiva 3D.
 
