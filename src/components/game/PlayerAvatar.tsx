@@ -1,4 +1,3 @@
-import { Circle } from 'react-leaflet';
 import L from 'leaflet';
 import { Marker } from 'react-leaflet';
 import { useMemo } from 'react';
@@ -129,23 +128,7 @@ const PlayerAvatar = ({ position, heading = 0, isMoving = false }: PlayerAvatarP
   }, [isMoving]);
 
   return (
-    <>
-      {/* Pulse ring */}
-      <Circle
-        center={position}
-        radius={25}
-        pathOptions={{
-          color: '#FFD400',
-          fillColor: '#FFD400',
-          fillOpacity: 0.06,
-          weight: 1,
-          opacity: 0.2,
-        }}
-      />
-
-      {/* Character marker */}
-      <Marker position={position} icon={characterIcon} zIndexOffset={1000} />
-    </>
+    <Marker position={position} icon={characterIcon} zIndexOffset={1000} />
   );
 };
 
