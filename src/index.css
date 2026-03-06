@@ -250,7 +250,7 @@
 }
 
 .leaflet-tile-pane {
-  filter: saturate(1.4) brightness(1.08) contrast(1.05);
+  /* dark tiles, no filter needed */
 }
 
 /* Player direction arrow */
@@ -264,7 +264,7 @@
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #f0f0f0 !important;
+  background: #0a0a0a !important;
   height: 100%;
   width: 100%;
 }
