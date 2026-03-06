@@ -14,6 +14,9 @@ const PlayerAvatar = ({ position, heading = 0, isMoving = false }: PlayerAvatarP
     return new L.DivIcon({
       html: `
         <div class="player-character-icon${walkingClass}" style="width:64px;height:82px;position:relative;">
+          <!-- Radar pulse ring -->
+          <div class="player-radar-ring" style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:70px;height:24px;border-radius:50%;border:2px solid rgba(255,212,0,0.5);animation:radar-pulse 2s ease-out infinite;"></div>
+          <div class="player-radar-ring" style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:70px;height:24px;border-radius:50%;border:2px solid rgba(255,212,0,0.3);animation:radar-pulse 2s ease-out 1s infinite;"></div>
           <!-- Golden glowing disc on ground -->
           <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:54px;height:18px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,212,0,0.7) 0%,rgba(255,212,0,0.35) 40%,rgba(255,212,0,0.1) 65%,transparent 100%);filter:blur(1.5px);"></div>
           <div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:40px;height:12px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,230,100,0.6) 0%,transparent 70%);"></div>

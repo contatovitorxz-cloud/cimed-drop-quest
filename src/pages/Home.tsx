@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 're
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mockPharmacies, mockDrops, mockMissions, mockRareProducts, mockInfluencerDrops } from '@/data/mockData';
-import { Navigation, Gift, Target, Trophy, ChevronRight, Sparkles } from 'lucide-react';
+import { Navigation, Gift, Target, Trophy, ChevronRight, Sparkles, MapPin } from 'lucide-react';
 import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
@@ -137,29 +137,38 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', distance: '130m' },
+    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', distance: undefined },
+    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', distance: undefined },
   ];
 
   return (
     <div className="min-h-screen bg-background pb-20">
       <AppHeader />
 
-      <div className="px-4 pt-[72px] space-y-4">
+      <div className="px-4 pt-[72px] space-y-3">
         {/* Level Card */}
-        <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border">
-          <div className="w-11 h-11 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
+        <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border shadow-lg shadow-black/20">
+          <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
             <Gift className="w-6 h-6 text-accent" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-foreground font-bold text-sm">Nível 4 · Caçador de Carmed</p>
-            <p className="text-accent text-xs font-semibold">1.250 pontos</p>
+            <p className="text-accent text-xs font-semibold mb-1.5">1.250 pontos</p>
+            <div className="w-full h-1.5 rounded-full bg-secondary overflow-hidden">
+              <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: '62%' }} />
+            </div>
+            <p className="text-muted-foreground text-[9px] mt-0.5">750 XP para o nível 5</p>
           </div>
         </div>
 
-        {/* Map Card */}
-        <div className="relative rounded-2xl overflow-hidden border border-border" style={{ height: 280 }}>
+        {/* Map Section */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-2 px-1">
+            <MapPin className="w-3.5 h-3.5 text-accent" />
+            <span className="text-xs font-semibold text-muted-foreground">Explorar mapa</span>
+          </div>
+          <div className="relative rounded-2xl overflow-hidden border border-border shadow-lg shadow-black/20" style={{ height: 300 }}>
           <MapContainer
             center={playerPosition}
             zoom={15}
@@ -222,19 +231,20 @@ const Home = () => {
           {/* Recenter button */}
           <button
             onClick={handleRecenter}
-            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg shadow-black/30 active:scale-95 transition-transform"
           >
             <Navigation className="w-5 h-5 text-accent" />
           </button>
         </div>
+        </div>
 
         {/* Action Cards */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {actionCards.map((card) => (
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="w-full bg-card rounded-2xl p-4 flex items-center gap-3 border border-border active:scale-[0.98] transition-transform text-left"
+              className="w-full bg-card rounded-2xl p-4 flex items-center gap-3 border border-border active:scale-[0.98] transition-all duration-200 text-left shadow-lg shadow-black/15 hover:border-accent/30"
             >
               <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
                 <card.icon className="w-5 h-5 text-accent" />
@@ -244,8 +254,11 @@ const Home = () => {
                 <p className="text-muted-foreground text-xs">{card.subtitle}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
+                {card.distance && (
+                  <span className="text-[10px] text-muted-foreground font-medium">{card.distance}</span>
+                )}
                 {card.badge && (
-                  <span className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-xs font-bold">
+                  <span className="w-6 h-6 rounded-full bg-accent flex items-center justify-center text-accent-foreground text-[10px] font-bold animate-pulse">
                     {card.badge}
                   </span>
                 )}
