@@ -1,23 +1,13 @@
 
 
-# Limpar HUD e remover partículas
+# Adicionar cabeçalho (AppHeader) na página Home
 
-## Mudanças
+## Mudança
 
-### 1. `src/pages/Home.tsx` — Remover FloatingParticles
-- Remover import e uso do `<FloatingParticles />`
-- Remover prop `gpsActive` do `<GameHUD />`
+### `src/pages/Home.tsx`
+- Importar o componente `AppHeader` de `@/components/layout/AppHeader`
+- Adicionar `<AppHeader />` no topo do JSX, antes do mapa
+- Ajustar o container do mapa para começar abaixo do header (adicionar `pt-14` ou `top-14` no container do mapa para não ficar escondido atrás do header fixo)
 
-### 2. `src/components/game/GameHUD.tsx` — Remover barra de perfil, temperatura e GPS
-- Remover todo o bloco "Top Left - Profile" (nível, username, XP bar)
-- Remover todo o bloco "Top Right - GPS + Weather" (28°C e GPS)
-- Remover props `level`, `xp`, `maxXp`, `username`, `gpsActive` da interface
-- Manter apenas: botão QR Code (centro inferior), botões de ação (direita inferior), botão de recentralizar (esquerda inferior)
-- Remover imports não usados (`Sun`)
-
-### 3. `src/index.css` — Remover CSS de partículas
-- Remover `@keyframes particle-float` e estilos relacionados (se existirem)
-
-## Resultado
-Interface limpa: apenas o mapa, os marcadores, o botão de escanear QR, os botões de ação lateral e o botão de recentralizar. Sem partículas flutuantes, sem barra de jogador, sem temperatura, sem indicador GPS.
+Apenas uma mudança simples — o componente `AppHeader` já existe com o logo Cimed, título "CIMED GO" e ícone de notificação no estilo amarelo.
 
