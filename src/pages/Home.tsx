@@ -206,21 +206,6 @@ const Home = () => {
               </Marker>
             ))}
 
-            {/* Drop markers with badge count */}
-            {mockMapDrops.map((d) => (
-              <Marker key={d.id} position={[d.lat, d.lng]} icon={createDropIcon(d.count)} />
-            ))}
-
-            {/* Rare drop markers with tooltip */}
-            {mockMapRareDrops.map((r) => (
-              <Marker key={r.id} position={[r.lat, r.lng]} icon={rareDropIcon} />
-            ))}
-
-            {/* Mission markers */}
-            {mockMapMissions.map((m) => (
-              <Marker key={m.id} position={[m.lat, m.lng]} icon={missionIcon} />
-            ))}
-
           </MapContainer>
 
           {/* Recenter button */}
