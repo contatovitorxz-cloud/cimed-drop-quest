@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { mockPharmacies, mockMapDrops, mockMapRareDrops, mockMapMissions } from '@/data/mockData';
 import { Navigation, Gift, Target, Trophy, ChevronRight, Camera } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
@@ -85,10 +85,18 @@ const Home = () => {
   const [displayHeading, setDisplayHeading] = useState(0);
   const [followPlayer, setFollowPlayer] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
+  const [pharmacies, setPharmacies] = useState<{ id: string; name: string; address: string; lat: number; lng: number }[]>([]);
   const movingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
   const animFrameRef = useRef<number>(0);
   const isAnimatingRef = useRef(false);
+
+  // Fetch pharmacies from Supabase
+  useEffect(() => {
+    supabase.from('pharmacies').select('id, name, address, lat, lng').eq('active', true).then(({ data }) => {
+      if (data) setPharmacies(data);
+    });
+  }, []);
 
   // GPS tracking
   useEffect(() => {
@@ -195,7 +203,7 @@ const Home = () => {
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
             {/* Pharmacy markers */}
-            {mockPharmacies.map((p) => (
+            {pharmacies.map((p) => (
               <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
                 <Popup>
                   <div className="p-2 min-w-[200px]">
