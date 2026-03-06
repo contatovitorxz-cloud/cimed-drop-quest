@@ -57,10 +57,10 @@ const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
                 <stop offset="0%" stop-color="#FFD400"/>
                 <stop offset="100%" stop-color="#C89E00"/>
               </linearGradient>
-              <!-- Jeans gradient -->
+              <!-- Pants gradient (black) -->
               <linearGradient id="jeansGrad" x1="20" y1="50" x2="44" y2="64" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#5A9FE0"/>
-                <stop offset="100%" stop-color="#3A78C0"/>
+                <stop offset="0%" stop-color="#333"/>
+                <stop offset="100%" stop-color="#111"/>
               </linearGradient>
               <!-- Shoe gradient -->
               <linearGradient id="shoeGrad" x1="0" y1="0" x2="0" y2="1">
@@ -70,8 +70,8 @@ const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
             </defs>
 
             <!-- === LEGS === -->
-            <rect x="21" y="50" width="8" height="14" rx="4" fill="url(#jeansGrad)" stroke="#3570A8" stroke-width="0.4"/>
-            <rect x="35" y="50" width="8" height="14" rx="4" fill="url(#jeansGrad)" stroke="#3570A8" stroke-width="0.4"/>
+            <rect x="21" y="50" width="8" height="14" rx="4" fill="url(#jeansGrad)" stroke="#222" stroke-width="0.4"/>
+            <rect x="35" y="50" width="8" height="14" rx="4" fill="url(#jeansGrad)" stroke="#222" stroke-width="0.4"/>
 
             <!-- === SHOES === -->
             <ellipse cx="25" cy="64.5" rx="6" ry="3.5" fill="url(#shoeGrad)"/>
