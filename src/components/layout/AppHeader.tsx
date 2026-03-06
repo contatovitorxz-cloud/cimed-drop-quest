@@ -1,9 +1,8 @@
-import cimedSymbol from '@/assets/cimed-symbol.png';
 import { Bell } from 'lucide-react';
 
 const AppHeader = () => (
   <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-3 gradient-yellow backdrop-blur-xl border-b border-yellow-600/30">
-    <img src={cimedSymbol} alt="Cimed" className="h-8 w-8 object-contain" />
+    <div className="w-8" />
     <h1 className="text-lg font-black text-black">
       CIMED <span>GO</span>
     </h1>
