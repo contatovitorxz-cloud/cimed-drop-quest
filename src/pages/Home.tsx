@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { mockPharmacies } from '@/data/mockData';
-import { Navigation, Gift, Target, Trophy, ChevronRight, MapPin } from 'lucide-react';
+import { mockPharmacies, mockMapDrops, mockMapRareDrops, mockMapMissions } from '@/data/mockData';
+import { Navigation, Gift, Target, Trophy, ChevronRight, Camera } from 'lucide-react';
 import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
@@ -18,8 +18,29 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-const cimedImg = `<img src="/images/cimed-symbol.png" style="width:26px;height:26px;object-fit:contain;" />`;
+const cimedImg = `<img src="/images/cimed-symbol.png" style="width:22px;height:22px;object-fit:contain;" />`;
 const pharmacyIcon = new L.DivIcon({ html: `<div class="marker-pharmacy">${cimedImg}</div>`, className: '', iconSize: [40, 40], iconAnchor: [20, 20] });
+
+const createDropIcon = (count: number) => new L.DivIcon({
+  html: `<div class="marker-drop-badge"><span>🎁</span><div class="marker-badge-count">${count}</div></div>`,
+  className: '',
+  iconSize: [44, 44],
+  iconAnchor: [22, 22],
+});
+
+const rareDropIcon = new L.DivIcon({
+  html: `<div class="marker-rare-drop"><span>🔥</span><div class="marker-rare-tooltip">Drop Raro · 130m</div></div>`,
+  className: '',
+  iconSize: [48, 48],
+  iconAnchor: [24, 24],
+});
+
+const missionIcon = new L.DivIcon({
+  html: `<div class="marker-mission-target"><span>🎯</span></div>`,
+  className: '',
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
+});
 
 function lerpAngle(a: number, b: number, t: number): number {
   let diff = ((b - a + 540) % 360) - 180;
@@ -136,7 +157,7 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops' },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2' },
     { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
     { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
   ];
@@ -146,60 +167,76 @@ const Home = () => {
       <AppHeader />
 
       <div className="px-4 pt-[72px] space-y-3">
-        {/* Level Card */}
-        <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border shadow-lg shadow-black/20">
-          <div className="w-12 h-12 rounded-xl gradient-orange flex items-center justify-center flex-shrink-0 text-primary-foreground font-black text-sm">
-            1
+        {/* Level Card — reference style */}
+        <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border">
+          <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
+            <Gift className="w-6 h-6 text-accent" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-foreground font-bold text-sm">Olá, {username}</p>
-            <p className="text-muted-foreground text-xs mb-1.5">Nível 1 · 0 pontos</p>
-            <div className="w-full h-1.5 rounded-full bg-secondary overflow-hidden">
-              <div className="h-full rounded-full bg-accent transition-all duration-500" style={{ width: '0%' }} />
-            </div>
-            <p className="text-muted-foreground text-[9px] mt-0.5">1.000 XP para o nível 2</p>
+            <p className="text-foreground font-bold text-sm">Nível 1 · {username}</p>
+            <p className="text-muted-foreground text-xs">0 pontos</p>
+            <div className="w-full h-0.5 rounded-full bg-accent/40 mt-2" />
           </div>
         </div>
 
-        {/* Map Section */}
-        <div>
-          <div className="flex items-center gap-1.5 mb-2 px-1">
-            <MapPin className="w-3.5 h-3.5 text-accent" />
-            <span className="text-xs font-semibold text-muted-foreground">Explorar mapa</span>
-          </div>
-          <div className="relative rounded-2xl overflow-hidden border border-border shadow-lg shadow-black/20" style={{ height: 300 }}>
-            <MapContainer
-              center={playerPosition}
-              zoom={15}
-              minZoom={13}
-              maxZoom={19}
-              className="h-full w-full"
-              zoomControl={false}
-              attributionControl={false}
-            >
-              <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" attribution="" />
-              <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
-              <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
+        {/* Map Section — no label above */}
+        <div className="relative rounded-2xl overflow-hidden border border-border" style={{ height: 300 }}>
+          <MapContainer
+            center={playerPosition}
+            zoom={15}
+            minZoom={13}
+            maxZoom={19}
+            className="h-full w-full"
+            zoomControl={false}
+            attributionControl={false}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="" />
+            <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
+            <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
-              {mockPharmacies.map((p) => (
-                <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
-                  <Popup className="game-popup">
-                    <div className="p-2 min-w-[200px]">
-                      <h3 className="font-bold text-sm">{p.name}</h3>
-                      <p className="text-[10px] text-gray-500">{p.address}</p>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
+            {/* Pharmacy markers */}
+            {mockPharmacies.map((p) => (
+              <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
+                <Popup>
+                  <div className="p-2 min-w-[200px]">
+                    <h3 className="font-bold text-sm">{p.name}</h3>
+                    <p className="text-[10px] text-gray-500">{p.address}</p>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
 
-            <button
-              onClick={handleRecenter}
-              className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg shadow-black/30 active:scale-95 transition-transform"
-            >
-              <Navigation className="w-5 h-5 text-accent" />
-            </button>
-          </div>
+            {/* Drop markers with badge count */}
+            {mockMapDrops.map((d) => (
+              <Marker key={d.id} position={[d.lat, d.lng]} icon={createDropIcon(d.count)} />
+            ))}
+
+            {/* Rare drop markers with tooltip */}
+            {mockMapRareDrops.map((r) => (
+              <Marker key={r.id} position={[r.lat, r.lng]} icon={rareDropIcon} />
+            ))}
+
+            {/* Mission markers */}
+            {mockMapMissions.map((m) => (
+              <Marker key={m.id} position={[m.lat, m.lng]} icon={missionIcon} />
+            ))}
+          </MapContainer>
+
+          {/* Recenter button */}
+          <button
+            onClick={handleRecenter}
+            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+          >
+            <Navigation className="w-5 h-5 text-accent" />
+          </button>
+
+          {/* QR/Camera button */}
+          <button
+            onClick={() => navigate('/scan-history')}
+            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 active:scale-95 transition-transform"
+          >
+            <Camera className="w-5 h-5 text-accent-foreground" />
+          </button>
         </div>
 
         {/* Action Cards */}
@@ -208,16 +245,23 @@ const Home = () => {
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="w-full bg-card rounded-2xl p-4 flex items-center gap-3 border border-border active:scale-[0.98] transition-all duration-200 text-left shadow-lg shadow-black/15 hover:border-accent/30"
+              className="w-full bg-card rounded-2xl p-4 flex items-center gap-3 border border-border active:scale-[0.98] transition-all duration-200 text-left"
             >
-              <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
-                <card.icon className="w-5 h-5 text-accent" />
+              <div className="w-11 h-11 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+                <card.icon className="w-6 h-6 text-accent" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-foreground font-bold text-sm">{card.title}</p>
                 <p className="text-muted-foreground text-xs">{card.subtitle}</p>
               </div>
-              <ChevronRight className="w-5 h-5 text-accent flex-shrink-0" />
+              {card.badge ? (
+                <div className="flex items-center gap-1 bg-accent/20 px-2.5 py-1 rounded-full">
+                  <span className="text-accent text-xs font-bold">{card.badge}</span>
+                  <ChevronRight className="w-4 h-4 text-accent" />
+                </div>
+              ) : (
+                <ChevronRight className="w-5 h-5 text-accent flex-shrink-0" />
+              )}
             </button>
           ))}
         </div>

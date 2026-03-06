@@ -163,6 +163,22 @@ export const mockBadges: UserBadge[] = [
   { id: '6', name: 'Maratonista', icon: 'footprints', description: 'Completou 5 desafios' },
 ];
 
+// Map markers near fallback position (-23.5629, -46.6544)
+export const mockMapDrops = [
+  { id: 'md1', lat: -23.5610, lng: -46.6530, count: 2, type: 'drop' as const },
+  { id: 'md2', lat: -23.5650, lng: -46.6510, count: 1, type: 'drop' as const },
+  { id: 'md3', lat: -23.5600, lng: -46.6570, count: 3, type: 'drop' as const },
+];
+
+export const mockMapRareDrops = [
+  { id: 'mr1', lat: -23.5620, lng: -46.6500, label: 'Drop Raro', distance: '130m' },
+];
+
+export const mockMapMissions = [
+  { id: 'mm1', lat: -23.5640, lng: -46.6580, type: 'mission' as const },
+  { id: 'mm2', lat: -23.5590, lng: -46.6490, type: 'mission' as const },
+];
+
 export const mockMissions: Mission[] = [];
 export const mockRareProducts: RareProduct[] = [];
 export const mockMissionCards: MissionMock[] = [];
