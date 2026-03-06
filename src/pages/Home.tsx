@@ -7,7 +7,6 @@ import { Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GameHUD from '@/components/game/GameHUD';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
-import FloatingParticles from '@/components/game/FloatingParticles';
 import BottomNav from '@/components/layout/BottomNav';
 
 // Fix default marker icons
@@ -293,8 +292,7 @@ const Home = () => {
       </div>
 
       {/* Game overlays */}
-      <FloatingParticles />
-      <GameHUD onRecenter={handleRecenter} gpsActive={gpsActive} />
+      <GameHUD onRecenter={handleRecenter} />
       <BottomNav />
     </div>
   );
