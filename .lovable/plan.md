@@ -1,29 +1,22 @@
 
 
-# Simplificar mapa — remover perspectiva 3D e corrigir zoom
-
-## Problema
-O mapa tem perspectiva 3D estilo Pokémon GO (`rotateX(25deg) scale(1.4)`) que causa bugs visuais no zoom e interação. O usuário quer um mapa plano e funcional onde veja sua rua e possa dar zoom out para ver farmácias próximas.
+# Mapa dark mode com recentralização ao clicar no ícone
 
 ## Mudanças
 
-### 1. `src/index.css` — Remover perspectiva 3D
-- Remover `perspective`, `perspective-origin` e o background de "céu" da classe `.pokemon-go-map`
-- Remover `transform: rotateX(25deg) scale(1.4)` do `.pokemon-go-map .leaflet-container`
-- Manter o filtro de saturação nos tiles para o mapa ficar bonito
-- Manter o `.pokemon-go-map` apenas como container simples com overflow hidden
+### 1. `src/index.css` — Tema escuro no mapa
+- Trocar o TileLayer filter de `saturate(1.4) brightness(1.08)` para `brightness(0.15) invert(1) contrast(1.5) hue-rotate(200deg) saturate(0.3)` — isso transforma os tiles claros em um visual dark elegante
+- Mudar `.leaflet-container` background de `#f0f0f0` para `#0a0a0a` (preto)
 
-### 2. `src/pages/Home.tsx` — Ajustar zoom e remover offset
-- Mudar zoom inicial de `17` para `16` (nível de rua, mostra ~500m ao redor)
-- Mudar `minZoom` de `15` para `13` (permite ver bairro/região com farmácias)
-- Manter `maxZoom: 19`
-- Remover a função `getOffsetCenter` e o `OFFSET_FACTOR` — centrar o mapa direto na posição do jogador
-- Remover o `mapContainerRef` e o efeito de CSS rotation (heading) já que não há mais perspectiva 3D
-- Simplificar o `MapFollower` para usar posição direta sem offset
+### 2. `src/pages/Home.tsx` — TileLayer dark + arrastar desativa follow
+- Trocar o TileLayer URL para `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png` (tiles nativamente escuros do CartoDB — mais bonito que filtro CSS)
+- Remover o filtro CSS dos tiles já que o tile já é dark
+- Adicionar evento `dragstart` no mapa para setar `setFollowPlayer(false)` — assim o usuário pode arrastar livremente
+- O botão de recentralizar (Navigation, já existente no GameHUD) já chama `handleRecenter` que seta `followPlayer = true`, fazendo o mapa voltar ao jogador
 
-### 3. `src/index.css` — Remover rotação do mapa
-- Remover referências a `--map-heading` que já não será usado
+### 3. `src/index.css` — Ajustar filtro dos tiles
+- Remover ou simplificar o filtro em `.leaflet-tile-pane` já que os tiles dark não precisam de saturação extra
 
 ## Resultado
-Mapa plano, limpo, zoom funcional. Usuário vê sua rua no zoom padrão e pode dar zoom out para localizar farmácias próximas. Sem bugs de perspectiva 3D.
+Mapa escuro/dark elegante. Usuário pode arrastar para explorar. Ao clicar no ícone de navegação (canto inferior esquerdo), volta a seguir o personagem.
 
