@@ -1,60 +1,49 @@
 
 
-## Plano: Criar página de Perfil do Influenciador
+## Plano: Redesign completo do Admin Dashboard
 
-### Visão Geral
-Criar uma nova página `/influencer-profile` acessível pelo avatar no header do InfluencerDashboard, com seções para foto de perfil, nome, configuração de PIX e saque de comissão.
+O dashboard atual está muito simplificado comparado à referência. Precisa de uma reestruturação significativa do layout e conteúdo.
 
-### 1. Migração de Banco de Dados
-Criar tabela `influencer_settings` para armazenar dados de pagamento:
+### Diferenças identificadas
 
-```sql
-create table public.influencer_settings (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade not null unique,
-  display_name text,
-  pix_key_type text default 'cpf', -- cpf, email, phone, random
-  pix_key text,
-  commission_balance numeric default 0,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
-);
+1. **Header**: Falta avatar do admin com nome/cargo, ícones de calendário e notificação
+2. **Layout**: Precisa de layout de 2 colunas (conteúdo principal + sidebar direita)
+3. **Cards de métricas**: Label em cima, valor embaixo, porcentagem ao lado do valor (não abaixo)
+4. **Gráfico**: Título "Visão Geral", gráfico de linhas (não área), filtro de período "Últimos 30 dias"
+5. **Sidebar direita**: "Ranking dos Drops" com cards de produtos + "Novos Influenciadores" com botão Aprovar
+6. **Tabela de drops**: "Últimos Drops Liberados" com badges de status coloridos (Encerrado, Expirada, Encerra hoje), botões Editar, coluna de resgates
+7. **Título da página**: "Dashboard" grande + botão "+ Criar Campanha" no topo
+8. **Mock data**: Popular com dados realistas (72.5k usuários, 185.2k missões, etc.)
 
--- RLS
-alter table public.influencer_settings enable row level security;
-
-create policy "Users can view own settings" on public.influencer_settings
-  for select to authenticated using (auth.uid() = user_id);
-
-create policy "Users can insert own settings" on public.influencer_settings
-  for insert to authenticated with check (auth.uid() = user_id);
-
-create policy "Users can update own settings" on public.influencer_settings
-  for update to authenticated using (auth.uid() = user_id);
-```
-
-Criar bucket de storage `avatars` para upload de fotos de perfil.
-
-### 2. Nova página `src/pages/InfluencerProfile.tsx`
-Layout dark seguindo o mesmo estilo do InfluencerDashboard:
-
-- **Header**: Logo Cimed GO + botão voltar para dashboard
-- **Seção Avatar**: Foto circular grande com botão de upload (usa storage bucket `avatars`), salva URL no `profiles.avatar_url`
-- **Seção Dados**: Campo editável para nome de exibição
-- **Seção PIX**: Select para tipo de chave (CPF, E-mail, Telefone, Aleatória) + input para a chave
-- **Seção Comissão**: Card mostrando saldo disponível (mock R$ 1.250,00) + botão "Solicitar Saque"
-- **Botão Salvar**: Gradient yellow, salva dados no Supabase
-
-### 3. Rota e navegação
-- Adicionar rota `/influencer-profile` em `App.tsx`
-- No `InfluencerDashboard.tsx`, tornar o avatar clicável para navegar para `/influencer-profile`
-
-### 4. Arquivos
+### Arquivos a alterar
 
 | Arquivo | Ação |
 |---|---|
-| Migration SQL | Criar tabela `influencer_settings` + bucket `avatars` |
-| `src/pages/InfluencerProfile.tsx` | Nova página de perfil do influenciador |
-| `src/App.tsx` | Adicionar rota `/influencer-profile` |
-| `src/pages/InfluencerDashboard.tsx` | Avatar clicável -> navegar para perfil |
+| `src/data/mockData.ts` | Popular mock data do admin com valores realistas e adicionar dados para ranking de drops e novos influenciadores |
+| `src/pages/AdminDashboard.tsx` | Redesign completo: header com perfil, layout 2 colunas, sidebar direita com ranking e influenciadores, tabela de drops reformulada |
+| `src/components/admin/AdminSidebar.tsx` | Pequenos ajustes de estilo para match visual |
+
+### Estrutura do novo layout
+
+```text
+┌─────────┬──────────────────────────────────────────────┐
+│         │  Header: Logo | Dashboard | 📅 🔔 👤 João   │
+│ Sidebar ├────────────────────────┬───────────────────── │
+│         │  Dashboard  [+ Criar]  │                     │
+│ Dashboard│ [Métricas x4]        │                     │
+│ Drops   ├────────────────────────┤ Ranking dos Drops   │
+│ QR Codes│ Visão Geral           │ [3 items]           │
+│ Missões │ [Gráfico de linhas]   │                     │
+│ Influen.├────────────────────────┤ Novos Influenciad.  │
+│ Analyt. │ Últimos Drops Liber.  │ [lista com Aprovar] │
+│ Config. │ [Tabela com badges]   │                     │
+└─────────┴────────────────────────┴─────────────────────┘
+```
+
+### Detalhes visuais importantes
+- Cards de métricas: ícone circular amarelo à esquerda, label em texto pequeno acima, valor grande, e badge verde de % à direita
+- Gráfico: linhas (não áreas preenchidas), legenda embaixo, filtro dropdown no canto superior direito
+- Ranking dos Drops: cada item com imagem/ícone, nome com badge de status, cidade, contagem, e badge "Esgotado"/"Encerra hoje"
+- Novos Influenciadores: foto circular, nome, @handle, contagem de seguidores, botão "Aprovar" amarelo outline
+- Tabela de drops: ícone + nome + farmácia/distância, resgates, badge de status colorido, botão Editar, menu de 3 pontos
 
