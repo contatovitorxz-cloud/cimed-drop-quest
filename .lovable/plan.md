@@ -1,13 +1,11 @@
 
 
-# Adicionar cabeçalho (AppHeader) na página Home
+# Remover logo do AppHeader
 
 ## Mudança
 
-### `src/pages/Home.tsx`
-- Importar o componente `AppHeader` de `@/components/layout/AppHeader`
-- Adicionar `<AppHeader />` no topo do JSX, antes do mapa
-- Ajustar o container do mapa para começar abaixo do header (adicionar `pt-14` ou `top-14` no container do mapa para não ficar escondido atrás do header fixo)
-
-Apenas uma mudança simples — o componente `AppHeader` já existe com o logo Cimed, título "CIMED GO" e ícone de notificação no estilo amarelo.
+### `src/components/layout/AppHeader.tsx`
+- Remover o import do `cimedSymbol`
+- Remover o `<img>` da logo
+- Substituir por um espaçador invisível (`<div className="w-8" />`) para manter o "CIMED GO" centralizado entre o espaçador e o sino
 
