@@ -122,22 +122,20 @@
 
 /* Marker styles */
 .marker-pharmacy {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #E30613, #FF4444);
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #FFD400, #FFC200);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
-  box-shadow: 0 0 16px rgba(227, 6, 19, 0.5), 0 2px 8px rgba(0,0,0,0.3);
+  border: 3px solid rgba(255, 212, 0, 0.6);
+  box-shadow: 0 0 16px rgba(255, 212, 0, 0.5), 0 0 32px rgba(255, 212, 0, 0.15);
   animation: bounce-idle 3s ease-in-out infinite;
 }
 .marker-pharmacy span {
-  color: white;
   font-size: 20px;
-  font-weight: 900;
-  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 .marker-drop {
@@ -148,46 +146,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
+  border: 3px solid rgba(255, 212, 0, 0.6);
   box-shadow: 0 0 20px rgba(255, 212, 0, 0.6), 0 0 40px rgba(255, 212, 0, 0.2);
   animation: glow-pulse 2s ease-in-out infinite, float 3s ease-in-out infinite;
 }
 .marker-drop span {
   font-size: 20px;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 .marker-rare {
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, #0066FF, #4DA6FF);
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #4DA6FF, #0066FF);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
+  border: 3px solid rgba(77, 166, 255, 0.6);
   box-shadow: 0 0 16px rgba(0, 102, 255, 0.5), 0 0 32px rgba(0, 102, 255, 0.2);
-  animation: float 4s ease-in-out infinite, rotate-slow 12s linear infinite;
+  animation: float 4s ease-in-out infinite;
 }
 .marker-rare span {
   font-size: 18px;
-  animation: rotate-slow 12s linear infinite reverse;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 .marker-mission {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   background: linear-gradient(135deg, #FFD400, #FF8C00);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid white;
-  box-shadow: 0 0 12px rgba(255, 212, 0, 0.4);
+  border: 3px solid rgba(255, 212, 0, 0.6);
+  box-shadow: 0 0 16px rgba(255, 212, 0, 0.5), 0 0 32px rgba(255, 212, 0, 0.15);
   animation: bounce-idle 2.5s ease-in-out infinite;
 }
 .marker-mission span {
-  font-size: 16px;
+  font-size: 18px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
 }
 
 /* Pokemon GO 3D perspective */
