@@ -6,6 +6,7 @@ import { mockPharmacies, mockDrops, mockMissions, mockRareProducts } from '@/dat
 import { Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GameHUD from '@/components/game/GameHUD';
+import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
 
@@ -196,8 +197,9 @@ const Home = () => {
 
   return (
     <div className="fixed inset-0">
+      <AppHeader />
       {/* Map with 3D perspective + compass rotation + sky background */}
-      <div className="absolute inset-0 pb-16 pokemon-go-map">
+      <div className="absolute inset-0 top-14 pb-16 pokemon-go-map">
         <MapContainer
           center={playerPosition}
           zoom={16}
