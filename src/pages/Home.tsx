@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 });
 
 // Marker icons
-const cimedImg = `<img src="/images/cimed-symbol.png" style="width:20px;height:20px;object-fit:contain;" />`;
+const cimedImg = `<img src="/images/cimed-symbol.png" style="width:26px;height:26px;object-fit:contain;" />`;
 
 const pharmacyIcon = new L.DivIcon({
   html: `<div class="marker-pharmacy">${cimedImg}</div>`,
