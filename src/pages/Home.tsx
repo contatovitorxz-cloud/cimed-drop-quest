@@ -190,7 +190,7 @@ const Home = () => {
             zoomControl={false}
             attributionControl={false}
           >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="" />
+            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" attribution="" />
             <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
 
