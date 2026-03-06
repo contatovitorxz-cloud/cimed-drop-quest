@@ -4,10 +4,9 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell, ChevronDown, MoreVertical, ArrowRight, Maximize2 } from 'lucide-react';
+import { Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell, ChevronDown, MoreVertical, ArrowRight, Maximize2, Pencil } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
-import cimedLogo from '@/assets/cimed-logo.svg';
 import {
   mockAdminMetrics,
   mockAdminGrowth,
@@ -24,14 +23,6 @@ function formatValue(val: number) {
   return val.toLocaleString('pt-BR');
 }
 
-function formatResgates(val: number) {
-  if (val >= 1000) {
-    const formatted = new Intl.NumberFormat('pt-BR').format(val);
-    return formatted;
-  }
-  return val.toString();
-}
-
 const AdminDashboard = () => {
   const [section, setSection] = useState('dashboard');
 
@@ -45,8 +36,9 @@ const AdminDashboard = () => {
           <header className="h-14 flex items-center justify-between border-b border-border px-6 bg-card sticky top-0 z-30">
             <div className="flex items-center gap-3">
               <SidebarTrigger />
-              <img src={cimedLogo} alt="Cimed GO" className="h-5" />
-              <span className="text-sm font-semibold text-muted-foreground ml-2">Dashboard</span>
+              <span className="font-['Nunito'] font-black text-lg text-accent" style={{ fontWeight: 900 }}>CIMED</span>
+              <span className="font-['Nunito'] font-black text-lg text-foreground" style={{ fontWeight: 900 }}>GO</span>
+              <span className="text-sm text-muted-foreground ml-2 font-medium">Dashboard</span>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="text-muted-foreground h-9 w-9">
@@ -57,11 +49,9 @@ const AdminDashboard = () => {
                 <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-[9px] text-destructive-foreground flex items-center justify-center font-bold">3</span>
               </Button>
               <div className="flex items-center gap-2.5 ml-2 cursor-pointer">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face"
-                  alt="Admin"
-                  className="w-8 h-8 rounded-full object-cover"
-                />
+                <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
+                  <span className="text-xs font-bold text-accent-foreground">JP</span>
+                </div>
                 <div className="hidden sm:block">
                   <p className="text-xs font-semibold leading-tight">João Pedro</p>
                   <p className="text-[10px] text-muted-foreground leading-tight">Administrador</p>
@@ -110,7 +100,7 @@ function DashboardSection() {
                       <Icon className="w-5 h-5 text-accent-foreground" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider leading-tight">{m.label}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider leading-tight font-medium">{m.label}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <p className="text-xl font-bold leading-tight">{formatValue(m.value)}</p>
                         {m.change > 0 && (
@@ -140,36 +130,45 @@ function DashboardSection() {
               </div>
             </CardHeader>
             <CardContent>
-              {/* Legend on top */}
-              <div className="flex items-center gap-4 mb-4">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(48,100%,50%)' }} />
-                  <span className="text-[10px] text-muted-foreground">Usuários Ativos</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(217,91%,60%)' }} />
-                  <span className="text-[10px] text-muted-foreground">Missões Completas</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(25,100%,50%)' }} />
-                  <span className="text-[10px] text-muted-foreground">Escaneamentos QR</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(142,76%,46%)' }} />
-                  <span className="text-[10px] text-muted-foreground">Drops Resgatados</span>
-                </div>
-              </div>
-              <div className="h-64">
+              <div className="h-72">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={mockAdminGrowth}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(0,0%,20%)" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'hsl(0,0%,50%)' }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 10, fill: 'hsl(0,0%,50%)' }} axisLine={false} tickLine={false} tickFormatter={(v) => v >= 1000 ? `${v/1000}k` : v} />
-                    <Tooltip contentStyle={{ background: 'hsl(0,0%,10%)', border: '1px solid hsl(0,0%,20%)', borderRadius: 8, fontSize: 11 }} />
-                    <Line type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" strokeWidth={2.5} dot={false} name="Usuários" />
-                    <Line type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" strokeWidth={1.5} dot={false} name="Missões" />
-                    <Line type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" strokeWidth={1.5} dot={false} name="Scans" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                      axisLine={false}
+                      tickLine={false}
+                      tickFormatter={(v) => v >= 1000 ? `${(v/1000).toFixed(0)}k` : v}
+                      domain={[0, 360000]}
+                      ticks={[0, 90000, 180000, 270000, 360000]}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: 8,
+                        fontSize: 11,
+                        color: 'hsl(var(--foreground))',
+                      }}
+                      formatter={(value: number) => [formatValue(value)]}
+                    />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={36}
+                      iconType="circle"
+                      iconSize={8}
+                      wrapperStyle={{ fontSize: 11, color: 'hsl(var(--muted-foreground))' }}
+                    />
+                    <Line type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" strokeWidth={3} dot={false} name="Usuários" />
+                    <Line type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" strokeWidth={2} dot={false} name="Scans" />
                     <Line type="monotone" dataKey="drops" stroke="hsl(142,76%,46%)" strokeWidth={1.5} dot={false} name="Drops" />
+                    <Line type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" strokeWidth={1.5} dot={false} name="Missões" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -290,36 +289,47 @@ function DropsTable() {
     return <EmptyState icon={Gift} title="Nenhum drop" description="Crie sua primeira campanha para começar." />;
   }
   return (
-    <div className="divide-y divide-border">
-      {mockAdminCampaigns.map((c) => (
-        <div key={c.id} className="flex items-center gap-3 px-6 py-3">
-          <div className="w-10 h-10 rounded-full gradient-yellow flex items-center justify-center shrink-0">
-            <Gift className="w-5 h-5 text-accent-foreground" />
+    <div>
+      {/* Table header */}
+      <div className="flex items-center gap-3 px-6 py-2.5 border-b border-border text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+        <div className="w-10 shrink-0" />
+        <div className="flex-1">Drop</div>
+        <div className="min-w-[80px] text-center">Resgates</div>
+        <div className="min-w-[80px] text-center">Status</div>
+        <div className="min-w-[80px] text-center">Ações</div>
+      </div>
+      <div className="divide-y divide-border">
+        {mockAdminCampaigns.map((c) => (
+          <div key={c.id} className="flex items-center gap-3 px-6 py-3">
+            <div className="w-10 h-10 rounded-full gradient-yellow flex items-center justify-center shrink-0">
+              <Gift className="w-5 h-5 text-accent-foreground" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold">{c.name}</p>
+              <p className="text-[11px] text-muted-foreground">{c.pharmacy}</p>
+            </div>
+            <div className="text-center shrink-0 min-w-[80px]">
+              <p className="text-sm font-bold">{c.claimed}/{c.total}</p>
+            </div>
+            <div className="shrink-0 min-w-[80px] flex justify-center">
+              <DropStatusBadge status={c.status} label={c.statusLabel} />
+            </div>
+            <div className="shrink-0 min-w-[80px] flex items-center justify-center gap-1">
+              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground">
+                <Pencil className="w-3.5 h-3.5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground">
+                <MoreVertical className="w-3.5 h-3.5" />
+              </Button>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold">{c.name}</p>
-            <p className="text-[11px] text-muted-foreground">{c.pharmacy}</p>
-          </div>
-          <div className="text-center shrink-0 min-w-[80px]">
-            <p className="text-sm font-bold">{formatResgates(c.claimed)}</p>
-            <p className="text-[9px] text-muted-foreground">Resgates</p>
-          </div>
-          <div className="shrink-0">
-            <DropStatusBadge status={c.status} label={c.statusLabel} />
-          </div>
-          <Button variant="outline" size="sm" className="text-[11px] h-7 px-3 border-border text-muted-foreground hover:text-foreground">
-            Editar
-          </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground shrink-0">
-            <MoreVertical className="w-3.5 h-3.5" />
+        ))}
+        {/* Ver todos button */}
+        <div className="flex items-center justify-center py-3">
+          <Button variant="ghost" className="text-xs text-accent font-semibold gap-1 hover:bg-accent/10">
+            Ver Todos <ArrowRight className="w-3.5 h-3.5" />
           </Button>
         </div>
-      ))}
-      {/* Ver todos button */}
-      <div className="flex items-center justify-center py-3">
-        <Button variant="ghost" className="text-xs text-accent font-semibold gap-1 hover:bg-accent/10">
-          Ver Todos <ArrowRight className="w-3.5 h-3.5" />
-        </Button>
       </div>
     </div>
   );

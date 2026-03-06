@@ -260,23 +260,21 @@ export interface AdminMetric {
 }
 
 export const mockAdminMetrics: AdminMetric[] = [
-  { label: 'Usuários Ativos', value: 72500, change: 12 },
-  { label: 'Missões Completas', value: 185200, change: 8 },
-  { label: 'Escaneamentos QR', value: 75900, change: 32 },
-  { label: 'Drops Resgatados', value: 39100, change: 25 },
+  { label: 'USUÁRIOS ATIVOS', value: 72500, change: 0 },
+  { label: 'MISSÕES COMPLETAS', value: 185200, change: 0 },
+  { label: 'SCANS QR CODE', value: 342100, change: 15 },
+  { label: 'DROPS RESGATADOS', value: 28800, change: 22 },
 ];
 
 export const mockAdminGrowth: { date: string; usuarios: number; missoes: number; scans: number; drops: number }[] = [
-  { date: '1 abr', usuarios: 18000, missoes: 42000, scans: 15000, drops: 8000 },
-  { date: '4 abr', usuarios: 22000, missoes: 55000, scans: 20000, drops: 11000 },
-  { date: '7 abr', usuarios: 28000, missoes: 68000, scans: 28000, drops: 14000 },
-  { date: '10 abr', usuarios: 35000, missoes: 82000, scans: 35000, drops: 18000 },
-  { date: '13 abr', usuarios: 42000, missoes: 98000, scans: 42000, drops: 22000 },
-  { date: '16 abr', usuarios: 50000, missoes: 115000, scans: 50000, drops: 26000 },
-  { date: '19 abr', usuarios: 58000, missoes: 135000, scans: 58000, drops: 30000 },
-  { date: '22 abr', usuarios: 65000, missoes: 155000, scans: 65000, drops: 34000 },
-  { date: '25 abr', usuarios: 70000, missoes: 170000, scans: 70000, drops: 37000 },
-  { date: '28 abr', usuarios: 72500, missoes: 185200, scans: 75900, drops: 39100 },
+  { date: 'Jan', usuarios: 20000, missoes: 15000, scans: 30000, drops: 10000 },
+  { date: 'Fev', usuarios: 45000, missoes: 30000, scans: 65000, drops: 25000 },
+  { date: 'Mar', usuarios: 80000, missoes: 55000, scans: 110000, drops: 50000 },
+  { date: 'Abr', usuarios: 130000, missoes: 85000, scans: 160000, drops: 80000 },
+  { date: 'Mai', usuarios: 180000, missoes: 120000, scans: 220000, drops: 120000 },
+  { date: 'Jun', usuarios: 240000, missoes: 160000, scans: 270000, drops: 160000 },
+  { date: 'Jul', usuarios: 300000, missoes: 200000, scans: 320000, drops: 200000 },
+  { date: 'Ago', usuarios: 350000, missoes: 240000, scans: 360000, drops: 230000 },
 ];
 
 export interface AdminCampaign {
@@ -290,9 +288,10 @@ export interface AdminCampaign {
 }
 
 export const mockAdminCampaigns: AdminCampaign[] = [
-  { id: '1', name: 'Carmed Grátis', pharmacy: 'Drogasil Paulista · 200m', claimed: 2000, total: 2000, status: 'ended', statusLabel: 'Encerrado' },
-  { id: '2', name: 'Produtos Cimed Grátis', pharmacy: 'Droga Raia Consolação · 450m', claimed: 417, total: 500, status: 'expired', statusLabel: 'Expirada' },
-  { id: '3', name: 'Cupom 20% OFF', pharmacy: 'Pague Menos Liberdade · 800m', claimed: 361, total: 500, status: 'active', statusLabel: 'Encerra hoje' },
+  { id: '1', name: 'Carmed Fini Drop', pharmacy: 'Drogasil Paulista · 200m', claimed: 450, total: 500, status: 'ended', statusLabel: 'Encerrado' },
+  { id: '2', name: 'Lavitan Energia', pharmacy: 'Droga Raia Consolação · 450m', claimed: 320, total: 500, status: 'expired', statusLabel: 'Expirada' },
+  { id: '3', name: 'Carmed Barbie', pharmacy: 'Pague Menos Liberdade · 800m', claimed: 280, total: 300, status: 'active', statusLabel: 'Encerra hoje' },
+  { id: '4', name: 'Cupom 20% OFF', pharmacy: 'Farmácia Venâncio · 1.2km', claimed: 180, total: 200, status: 'active', statusLabel: 'Ativo' },
 ];
 
 export interface AdminInfluencer {
