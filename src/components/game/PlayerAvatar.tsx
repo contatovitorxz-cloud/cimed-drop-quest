@@ -87,7 +87,6 @@ const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
             <path d="M26 31 Q32 35 38 31" stroke="#E5BE00" stroke-width="1" fill="none"/>
 
             <!-- CIMED text in black -->
-            <rect x="20" y="39" width="24" height="9" rx="2" fill="white" opacity="0.85"/>
             <text x="32" y="46.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="900" font-size="7.5" fill="#1a1a1a" letter-spacing="0.8">CIMED</text>
 
             <!-- === ARMS === -->
