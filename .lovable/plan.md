@@ -1,18 +1,27 @@
 
 
-# Ícones brancos com profundidade no BottomNav
+# Ícones pretos e mais profissionais no BottomNav
 
-## Alterações
+Baseado na imagem de referência, os ícones devem ser **pretos** sobre o fundo amarelo, com um visual limpo e profissional. Vou também trocar alguns ícones por versões mais refinadas que combinam melhor com a referência.
 
-### `src/components/layout/BottomNav.tsx`
-- Ícones inativos: branco (`text-white/70`) em vez de `text-black/50`
-- Ícones ativos: branco com fundo branco/20 e sombra sutil para efeito de profundidade
-- Labels: branco
-- Adicionar `drop-shadow` nos ícones ativos para efeito de profundidade/glow
-- `strokeWidth`: 1.5 para inativos, 2 para ativos
-- Ícone ativo envolto em círculo/pill com `bg-white/15 shadow-inner` para criar sensação de profundidade
-- Borda superior mais sutil: `border-white/10`
+## Alterações em `src/components/layout/BottomNav.tsx`
 
-### Ícones (manter os atuais, já são profissionais)
-- `MapPin`, `ShoppingBag`, `Target`, `Gift`, `User` — sem alteração
+### Cores
+- Ícones ativos: `text-black` com `drop-shadow` sutil para profundidade
+- Ícones inativos: `text-black/50`
+- Labels: preto (ativo) / preto/50 (inativo)
+
+### Ícones mais refinados (matching referência)
+- `MapPin` → `Navigation` (mais limpo, tipo compass/location)
+- `ShoppingBag` → `Store` (mais profissional para loja)
+- `Target` → `Crosshair` (mais moderno para desafios)
+- `Gift` → `Gift` (manter, já é bom)
+- `User` → `UserRound` (mais polido)
+
+### Container ativo
+- Fundo `bg-black/10 rounded-xl` no ícone ativo para destacar a seleção
+- Remover `shadow-inner` e `bg-white/15`
+
+### Stroke
+- Ativo: `strokeWidth={2}`, inativo: `strokeWidth={1.5}`
 
