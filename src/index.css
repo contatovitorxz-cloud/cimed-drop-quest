@@ -199,10 +199,7 @@
 
 /* Pokemon GO 3D perspective */
 .pokemon-go-map {
-  perspective: 1000px;
-  perspective-origin: 50% 85%;
   overflow: hidden;
-  background: linear-gradient(180deg, #87CEEB 0%, #B8E0F0 30%, #d4eef8 50%, #e8f4ec 70%, #c8e6c0 100%);
 }
 
 /* Player avatar */
@@ -249,9 +246,7 @@
 }
 
 .pokemon-go-map .leaflet-container {
-  transform: rotateX(25deg) scale(1.4);
-  transform-origin: 50% 70%;
-  transition: transform 0.3s ease-out;
+  /* flat map, no 3D */
 }
 
 .leaflet-tile-pane {
