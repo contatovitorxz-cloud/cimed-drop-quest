@@ -48,6 +48,61 @@ export interface UserBadge {
   earnedAt?: Date;
 }
 
+export interface MissionMock {
+  id: string;
+  title: string;
+  description: string;
+  missionType: 'weekly' | 'daily' | 'special';
+  rewardType: string;
+  rewardValue: number;
+  icon: string;
+  startsAt: Date;
+  endsAt: Date;
+  steps: MissionStepMock[];
+}
+
+export interface MissionStepMock {
+  id: string;
+  description: string;
+  type: string;
+  targetCount: number;
+  completed: number;
+}
+
+export interface InfluencerDropMock {
+  id: string;
+  influencerName: string;
+  influencerAvatar: string;
+  title: string;
+  description: string;
+  product: Product;
+  lat: number;
+  lng: number;
+  totalQuantity: number;
+  remainingQuantity: number;
+  type: 'free' | 'discount' | 'exclusive';
+  discountPercent: number;
+  expiresAt: Date;
+  teaserMessage: string;
+}
+
+export interface SocialActivity {
+  id: string;
+  userName: string;
+  userAvatar: string;
+  type: 'drop_claimed' | 'mission_completed' | 'badge_earned' | 'level_up';
+  title: string;
+  description: string;
+  createdAt: Date;
+}
+
+export interface AnalyticsMetric {
+  label: string;
+  value: number;
+  change: number;
+  icon: string;
+}
+
 // São Paulo area pharmacies
 export const mockPharmacies: Pharmacy[] = [
   { id: '1', name: 'Drogasil Paulista', address: 'Av. Paulista, 1000', lat: -23.5645, lng: -46.6520, distance: '350m' },
@@ -79,46 +134,10 @@ export const mockProducts: Product[] = [
 ];
 
 export const mockDrops: Drop[] = [
-  {
-    id: '1',
-    product: mockProducts[0],
-    pharmacy: mockPharmacies[0],
-    type: 'rare',
-    title: '🔥 Carmed Fini Edição Limitada',
-    description: 'Apenas 5 unidades disponíveis! Corra!',
-    quantity: 5,
-    expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
-  },
-  {
-    id: '2',
-    product: mockProducts[4],
-    pharmacy: mockPharmacies[2],
-    type: 'free',
-    title: '🎁 Carmed BT21 Grátis',
-    description: 'Os 10 primeiros ganham grátis!',
-    quantity: 10,
-    expiresAt: new Date(Date.now() + 5 * 60 * 60 * 1000),
-  },
-  {
-    id: '3',
-    product: mockProducts[1],
-    pharmacy: mockPharmacies[4],
-    type: 'coupon',
-    title: '🎟️ 50% OFF Carmed Barbie',
-    description: 'Cupom exclusivo para membros do app.',
-    quantity: 50,
-    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
-  },
-  {
-    id: '4',
-    product: mockProducts[6],
-    pharmacy: mockPharmacies[1],
-    type: 'kit',
-    title: '📦 Kit Carmed Colecionador',
-    description: 'Kit com 3 Carmeds + nécessaire exclusiva.',
-    quantity: 3,
-    expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000),
-  },
+  { id: '1', product: mockProducts[0], pharmacy: mockPharmacies[0], type: 'rare', title: '🔥 Carmed Fini Edição Limitada', description: 'Apenas 5 unidades disponíveis! Corra!', quantity: 5, expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000) },
+  { id: '2', product: mockProducts[4], pharmacy: mockPharmacies[2], type: 'free', title: '🎁 Carmed BT21 Grátis', description: 'Os 10 primeiros ganham grátis!', quantity: 10, expiresAt: new Date(Date.now() + 5 * 60 * 60 * 1000) },
+  { id: '3', product: mockProducts[1], pharmacy: mockPharmacies[4], type: 'coupon', title: '🎟️ 50% OFF Carmed Barbie', description: 'Cupom exclusivo para membros do app.', quantity: 50, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) },
+  { id: '4', product: mockProducts[6], pharmacy: mockPharmacies[1], type: 'kit', title: '📦 Kit Carmed Colecionador', description: 'Kit com 3 Carmeds + nécessaire exclusiva.', quantity: 3, expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000) },
 ];
 
 export const mockChallenges: Challenge[] = [
@@ -169,6 +188,182 @@ export const mockRareProducts: RareProduct[] = [
   { id: 'rp2', product: mockProducts[1], lat: -23.5650, lng: -46.6700 },
   { id: 'rp3', product: mockProducts[0], lat: -23.5750, lng: -46.6350 },
   { id: 'rp4', product: mockProducts[6], lat: -23.5500, lng: -46.6430 },
+];
+
+// ===== MODULE 1: Missions Mock Data =====
+export const mockMissionCards: MissionMock[] = [
+  {
+    id: 'ms1',
+    title: 'Circuito Cimed SP',
+    description: 'Visite 3 farmácias parceiras Cimed na região da Paulista',
+    missionType: 'weekly',
+    rewardType: 'points',
+    rewardValue: 500,
+    icon: '🏃',
+    startsAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    endsAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    steps: [
+      { id: 's1', description: 'Visite Drogasil Paulista', type: 'visit_pharmacy', targetCount: 1, completed: 1 },
+      { id: 's2', description: 'Visite Droga Raia Consolação', type: 'visit_pharmacy', targetCount: 1, completed: 0 },
+      { id: 's3', description: 'Visite Farmácia Venâncio', type: 'visit_pharmacy', targetCount: 1, completed: 0 },
+    ],
+  },
+  {
+    id: 'ms2',
+    title: 'Caçador de Carmed',
+    description: 'Encontre e escaneie 3 tipos diferentes de Carmed',
+    missionType: 'weekly',
+    rewardType: 'badge',
+    rewardValue: 1,
+    icon: '🏆',
+    startsAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    endsAt: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000),
+    steps: [
+      { id: 's4', description: 'Escaneie Carmed Fini', type: 'scan_qr', targetCount: 1, completed: 1 },
+      { id: 's5', description: 'Escaneie Carmed Barbie', type: 'scan_qr', targetCount: 1, completed: 1 },
+      { id: 's6', description: 'Escaneie qualquer outro Carmed', type: 'scan_qr', targetCount: 1, completed: 0 },
+    ],
+  },
+  {
+    id: 'ms3',
+    title: 'Check-in Diário',
+    description: 'Escaneie o QR code em qualquer farmácia parceira',
+    missionType: 'daily',
+    rewardType: 'points',
+    rewardValue: 50,
+    icon: '📍',
+    startsAt: new Date(Date.now()),
+    endsAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    steps: [
+      { id: 's7', description: 'Escaneie QR em uma farmácia', type: 'scan_qr', targetCount: 1, completed: 0 },
+    ],
+  },
+  {
+    id: 'ms4',
+    title: 'Compartilhador',
+    description: 'Compartilhe 2 conquistas com seus amigos',
+    missionType: 'daily',
+    rewardType: 'points',
+    rewardValue: 100,
+    icon: '📣',
+    startsAt: new Date(Date.now()),
+    endsAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    steps: [
+      { id: 's8', description: 'Compartilhe uma conquista', type: 'share', targetCount: 1, completed: 1 },
+      { id: 's9', description: 'Compartilhe outra conquista', type: 'share', targetCount: 1, completed: 0 },
+    ],
+  },
+  {
+    id: 'ms5',
+    title: 'Mega Drop Carnaval',
+    description: 'Evento especial! Resgate 2 drops e ganhe um kit exclusivo',
+    missionType: 'special',
+    rewardType: 'product',
+    rewardValue: 1,
+    icon: '🎭',
+    startsAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    endsAt: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+    steps: [
+      { id: 's10', description: 'Resgate um drop de influenciador', type: 'collect_product', targetCount: 1, completed: 0 },
+      { id: 's11', description: 'Resgate um drop de farmácia', type: 'collect_product', targetCount: 1, completed: 0 },
+    ],
+  },
+];
+
+// ===== MODULE 3: Influencer Drops Mock Data =====
+export const mockInfluencerDrops: InfluencerDropMock[] = [
+  {
+    id: 'id1',
+    influencerName: 'Virginia Fonseca',
+    influencerAvatar: '👸',
+    title: '200 Carmeds Grátis!',
+    description: 'Virginia escondeu 200 Carmeds Fini no mapa!',
+    product: mockProducts[0],
+    lat: -23.5620,
+    lng: -46.6550,
+    totalQuantity: 200,
+    remainingQuantity: 47,
+    type: 'free',
+    discountPercent: 0,
+    expiresAt: new Date(Date.now() + 3 * 60 * 60 * 1000),
+    teaserMessage: 'Corram! Escondi Carmeds pela Paulista 💋',
+  },
+  {
+    id: 'id2',
+    influencerName: 'Lucas Neto',
+    influencerAvatar: '🎮',
+    title: '50% OFF Carmed BT21',
+    description: 'Lucas liberou cupons exclusivos de 50% OFF!',
+    product: mockProducts[4],
+    lat: -23.5570,
+    lng: -46.6480,
+    totalQuantity: 100,
+    remainingQuantity: 82,
+    type: 'discount',
+    discountPercent: 50,
+    expiresAt: new Date(Date.now() + 6 * 60 * 60 * 1000),
+    teaserMessage: 'Quem pegar primeiro leva! 🔥',
+  },
+  {
+    id: 'id3',
+    influencerName: 'Bianca Andrade',
+    influencerAvatar: '💄',
+    title: 'Kit Carmed Exclusivo',
+    description: 'Boca Rosa liberou kits exclusivos para os primeiros!',
+    product: mockProducts[1],
+    lat: -23.5690,
+    lng: -46.6610,
+    totalQuantity: 30,
+    remainingQuantity: 8,
+    type: 'exclusive',
+    discountPercent: 0,
+    expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000),
+    teaserMessage: 'Apenas 30 kits! Quem chegar primeiro leva 🎁',
+  },
+];
+
+// ===== MODULE 4: Social Mock Data =====
+export const mockSocialFeed: SocialActivity[] = [
+  { id: 'a1', userName: 'MariaCarmed', userAvatar: '👸', type: 'drop_claimed', title: 'Resgatou Carmed Fini', description: 'Na Drogasil Paulista', createdAt: new Date(Date.now() - 15 * 60 * 1000) },
+  { id: 'a2', userName: 'LucasExplorer', userAvatar: '🧑‍🚀', type: 'mission_completed', title: 'Completou Circuito Cimed SP', description: 'Ganhou 500 pontos!', createdAt: new Date(Date.now() - 45 * 60 * 1000) },
+  { id: 'a3', userName: 'AnaFini', userAvatar: '💃', type: 'badge_earned', title: 'Conquistou badge Caçador', description: 'Encontrou 3 tipos de Carmed', createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000) },
+  { id: 'a4', userName: 'PedroGO', userAvatar: '🏄', type: 'level_up', title: 'Subiu para Nível 18!', description: 'Continue assim!', createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+  { id: 'a5', userName: 'JuliaTop', userAvatar: '🎯', type: 'drop_claimed', title: 'Resgatou Kit Carmed', description: 'Drop da Bianca Andrade', createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000) },
+  { id: 'a6', userName: 'GabeHunter', userAvatar: '🎮', type: 'mission_completed', title: 'Completou Check-in Diário', description: 'Streak de 7 dias!', createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000) },
+];
+
+// ===== MODULE 5: Analytics Mock Data =====
+export const mockAnalyticsMetrics: AnalyticsMetric[] = [
+  { label: 'Usuários Ativos', value: 12847, change: 23.5, icon: '👥' },
+  { label: 'Scans Hoje', value: 3421, change: 15.2, icon: '📱' },
+  { label: 'Drops Resgatados', value: 8923, change: 42.1, icon: '⚡' },
+  { label: 'Missões Completas', value: 5612, change: 18.7, icon: '🏆' },
+];
+
+export const mockScanTrend = [
+  { day: 'Seg', scans: 2400 },
+  { day: 'Ter', scans: 3100 },
+  { day: 'Qua', scans: 2800 },
+  { day: 'Qui', scans: 3500 },
+  { day: 'Sex', scans: 4200 },
+  { day: 'Sáb', scans: 5100 },
+  { day: 'Dom', scans: 3800 },
+];
+
+export const mockTopProducts = [
+  { name: 'Carmed Fini', scans: 4521 },
+  { name: 'Carmed BT21', scans: 3890 },
+  { name: 'Carmed Barbie', scans: 3245 },
+  { name: 'Lavitan Energia', scans: 2180 },
+  { name: 'Carmed Bubble', scans: 1950 },
+];
+
+export const mockPharmacyRanking = [
+  { name: 'Drogasil Paulista', scans: 1823, city: 'São Paulo' },
+  { name: 'Droga Raia Consolação', scans: 1456, city: 'São Paulo' },
+  { name: 'Pague Menos Liberdade', scans: 1290, city: 'São Paulo' },
+  { name: 'Drogaria São Paulo', scans: 1105, city: 'São Paulo' },
+  { name: 'Farmácia Venâncio', scans: 982, city: 'São Paulo' },
 ];
 
 export const rarityColors: Record<string, string> = {

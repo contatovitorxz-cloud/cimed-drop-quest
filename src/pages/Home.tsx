@@ -2,13 +2,14 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { mockPharmacies, mockDrops, mockMissions, mockRareProducts } from '@/data/mockData';
-import { Navigation } from 'lucide-react';
+import { mockPharmacies, mockDrops, mockMissions, mockRareProducts, mockInfluencerDrops } from '@/data/mockData';
+import { Navigation, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import GameHUD from '@/components/game/GameHUD';
 import AppHeader from '@/components/layout/AppHeader';
 import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
+import QRScanner from '@/components/qr/QRScanner';
 
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -47,6 +48,13 @@ const missionIcon = new L.DivIcon({
   className: '',
   iconSize: [36, 36],
   iconAnchor: [18, 18],
+});
+
+const influencerIcon = new L.DivIcon({
+  html: `<div class="marker-influencer">${cimedImg}</div>`,
+  className: '',
+  iconSize: [48, 48],
+  iconAnchor: [24, 24],
 });
 
 
@@ -104,6 +112,7 @@ const Home = () => {
   const [followPlayer, setFollowPlayer] = useState(true);
   const [gpsActive, setGpsActive] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const movingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
   const animFrameRef = useRef<number>(0);
@@ -320,12 +329,39 @@ const Home = () => {
               </Popup>
             </Marker>
           ))}
+
+          {/* Influencer drop markers */}
+          {mockInfluencerDrops.map((id) => (
+            <Marker key={`inf-${id.id}`} position={[id.lat, id.lng]} icon={influencerIcon}>
+              <Popup className="game-popup">
+                <div className="p-2 min-w-[200px]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">{id.influencerAvatar}</span>
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-amber-500" />
+                        <span className="text-[10px] font-bold text-amber-500">INFLUENCIADOR</span>
+                      </div>
+                      <h3 className="font-bold text-sm">{id.influencerName}</h3>
+                    </div>
+                  </div>
+                  <h4 className="font-bold text-xs">{id.title}</h4>
+                  <p className="text-[10px] text-gray-500 italic mt-1">"{id.teaserMessage}"</p>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-[10px] text-amber-500 font-bold">{id.remainingQuantity}/{id.totalQuantity} restantes</span>
+                    <span className="text-xl">{id.product.image_url}</span>
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
 
       {/* Game overlays */}
-      <GameHUD onRecenter={handleRecenter} />
+      <GameHUD onRecenter={handleRecenter} onScan={() => setScannerOpen(true)} />
       <BottomNav />
+      <QRScanner open={scannerOpen} onClose={() => setScannerOpen(false)} />
     </div>
   );
 };

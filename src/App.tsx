@@ -11,9 +11,13 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Challenges from "./pages/Challenges";
+import Missions from "./pages/Missions";
 import Drops from "./pages/Drops";
 import Profile from "./pages/Profile";
 import Leaderboard from "./pages/Leaderboard";
+import Social from "./pages/Social";
+import ScanHistory from "./pages/ScanHistory";
+import Analytics from "./pages/Analytics";
 import InfluencerRegister from "./pages/InfluencerRegister";
 import TermsOfUse from "./pages/TermsOfUse";
 import NotFound from "./pages/NotFound";
@@ -35,9 +39,13 @@ const App = () => (
             <Route path="/products" element={<Products />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/challenges" element={<Challenges />} />
+            <Route path="/missions" element={<Missions />} />
             <Route path="/drops" element={<Drops />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/social" element={<Social />} />
+            <Route path="/scan-history" element={<ScanHistory />} />
+            <Route path="/analytics" element={<Analytics />} />
             <Route path="/influencer" element={<InfluencerRegister />} />
             <Route path="/termos-de-uso" element={<TermsOfUse />} />
             <Route path="*" element={<NotFound />} />
