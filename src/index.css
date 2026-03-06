@@ -207,7 +207,6 @@
 
 /* Player avatar float animation */
 .player-character-icon {
-  animation: float 3s ease-in-out infinite;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
 }
 
