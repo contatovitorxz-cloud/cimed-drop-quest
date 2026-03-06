@@ -27,7 +27,7 @@ const DropCard = ({ drop }: { drop: Drop }) => {
     <div className="rounded-2xl border border-border overflow-hidden bg-card">
       <div className={`bg-gradient-to-r ${gradientClass} p-4`}>
         <div className="flex items-center justify-between">
-          <span className="text-2xl">{drop.product.image_url}</span>
+          <img src={drop.product.image_url} alt={drop.product.name} className="w-8 h-8 object-contain" />
           <div className="flex items-center gap-1 bg-background/20 backdrop-blur-sm px-2 py-1 rounded-full">
             <Clock className="w-3 h-3" />
             <span className="text-xs font-bold">{timeLeft}</span>
@@ -39,7 +39,7 @@ const DropCard = ({ drop }: { drop: Drop }) => {
         <p className="text-xs text-muted-foreground">{drop.description}</p>
         <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
           <MapPin className="w-3 h-3" />
-          <span>{drop.pharmacy.name} • {drop.pharmacy.distance}</span>
+          <span>{drop.pharmacy.name}</span>
         </div>
         <div className="flex items-center justify-between mt-3">
           <span className="text-xs text-muted-foreground">{drop.quantity} restantes</span>

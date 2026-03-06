@@ -5,7 +5,7 @@ import BadgeCard from '@/components/game/BadgeCard';
 import { mockBadges } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { LogOut, Crown, TrendingUp, Users, Share2, BarChart3, History } from 'lucide-react';
+import { LogOut, Crown, TrendingUp, Users, Share2, BarChart3, History, Star, Trophy, UserCheck, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -21,7 +21,7 @@ const Profile = () => {
     if (navigator.share) {
       await navigator.share({
         title: 'Cimed GO - Meu Perfil',
-        text: 'Confira meu perfil no Cimed GO! 🏆',
+        text: 'Confira meu perfil no Cimed GO!',
         url: window.location.href,
       });
     }
@@ -45,19 +45,19 @@ const Profile = () => {
               <Share2 className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
-          <XPBar level={7} xp={680} maxXp={1000} />
+          <XPBar level={1} xp={0} maxXp={1000} />
         </div>
 
         {/* Social stats */}
         <div className="grid grid-cols-4 gap-2 mb-4">
           {[
-            { label: 'Pontos', value: '2.450', icon: '⭐' },
-            { label: 'Ranking', value: '#142', icon: '🏆' },
-            { label: 'Seguidores', value: '89', icon: '👥' },
-            { label: 'Drops', value: '8', icon: '⚡' },
+            { label: 'Pontos', value: '0', icon: Star },
+            { label: 'Ranking', value: '—', icon: Trophy },
+            { label: 'Seguidores', value: '0', icon: UserCheck },
+            { label: 'Drops', value: '0', icon: Zap },
           ].map((stat) => (
             <div key={stat.label} className="rounded-2xl bg-card border border-border p-2.5 text-center">
-              <span className="text-lg">{stat.icon}</span>
+              <stat.icon className="w-4 h-4 mx-auto text-accent mb-1" />
               <p className="text-sm font-black mt-0.5">{stat.value}</p>
               <p className="text-[9px] text-muted-foreground">{stat.label}</p>
             </div>
@@ -87,7 +87,10 @@ const Profile = () => {
         </div>
 
         {/* Badges */}
-        <h3 className="font-bold text-sm mb-3">🏅 Badges</h3>
+        <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
+          <Trophy className="w-4 h-4 text-accent" />
+          Badges
+        </h3>
         <div className="grid grid-cols-3 gap-2 mb-6">
           {mockBadges.map((badge) => (
             <BadgeCard key={badge.id} badge={badge} />

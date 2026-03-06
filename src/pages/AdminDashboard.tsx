@@ -3,10 +3,10 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Users, Target, QrCode, Gift, Plus, Eye, Pause, CheckCircle, UserX, TrendingUp } from 'lucide-react';
+import { Users, Target, QrCode, Gift, Plus, TrendingUp } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import EmptyState from '@/components/ui/empty-state';
 import {
   mockAdminMetrics,
   mockAdminGrowth,
@@ -35,9 +35,7 @@ const AdminDashboard = () => {
             {section === 'drops' && <DropsSection />}
             {section === 'influencers' && <InfluencersSection />}
             {!['dashboard', 'drops', 'influencers'].includes(section) && (
-              <div className="flex items-center justify-center h-64 text-muted-foreground">
-                <p>Seção "{section}" em desenvolvimento</p>
-              </div>
+              <EmptyState icon={Target} title="Em desenvolvimento" description="Esta seção estará disponível em breve." />
             )}
           </main>
         </div>
@@ -62,9 +60,11 @@ function DashboardSection() {
                 <div>
                   <p className="text-2xl font-bold">{m.value.toLocaleString('pt-BR')}</p>
                   <p className="text-xs text-muted-foreground">{m.label}</p>
-                  <span className="text-xs text-green-400 flex items-center gap-0.5">
-                    <TrendingUp className="w-3 h-3" /> +{m.change}%
-                  </span>
+                  {m.change > 0 && (
+                    <span className="text-xs text-green-400 flex items-center gap-0.5">
+                      <TrendingUp className="w-3 h-3" /> +{m.change}%
+                    </span>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -78,35 +78,41 @@ function DashboardSection() {
           <CardTitle className="text-sm font-bold">Crescimento da Plataforma</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={mockAdminGrowth}>
-                <defs>
-                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(48,100%,50%)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(48,100%,50%)" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorScans" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(25,100%,50%)" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="hsl(25,100%,50%)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(0,0%,20%)" />
-                <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'hsl(0,0%,60%)' }} />
-                <YAxis tick={{ fontSize: 11, fill: 'hsl(0,0%,60%)' }} />
-                <Tooltip contentStyle={{ background: 'hsl(0,0%,10%)', border: '1px solid hsl(0,0%,20%)', borderRadius: 8, fontSize: 12 }} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Area type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" fill="url(#colorUsers)" strokeWidth={2} />
-                <Area type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" fill="url(#colorScans)" strokeWidth={2} />
-                <Area type="monotone" dataKey="drops" stroke="hsl(142,76%,46%)" fill="transparent" strokeWidth={2} />
-                <Area type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" fill="transparent" strokeWidth={2} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          {mockAdminGrowth.length === 0 ? (
+            <div className="flex items-center justify-center h-48 text-sm text-muted-foreground">
+              Dados de crescimento disponíveis após primeiras atividades
+            </div>
+          ) : (
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={mockAdminGrowth}>
+                  <defs>
+                    <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(48,100%,50%)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="hsl(48,100%,50%)" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorScans" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(25,100%,50%)" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="hsl(25,100%,50%)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(0,0%,20%)" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'hsl(0,0%,60%)' }} />
+                  <YAxis tick={{ fontSize: 11, fill: 'hsl(0,0%,60%)' }} />
+                  <Tooltip contentStyle={{ background: 'hsl(0,0%,10%)', border: '1px solid hsl(0,0%,20%)', borderRadius: 8, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Area type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" fill="url(#colorUsers)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" fill="url(#colorScans)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="drops" stroke="hsl(142,76%,46%)" fill="transparent" strokeWidth={2} />
+                  <Area type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" fill="transparent" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Recent Campaigns Table */}
+      {/* Recent Campaigns */}
       <Card className="border-border bg-card">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-sm font-bold">Campanhas Recentes</CardTitle>
@@ -141,6 +147,12 @@ function DropsSection() {
 }
 
 function CampaignTable() {
+  if (mockAdminCampaigns.length === 0) {
+    return (
+      <EmptyState icon={Gift} title="Nenhuma campanha" description="Crie sua primeira campanha para começar a distribuir drops." />
+    );
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -149,7 +161,6 @@ function CampaignTable() {
           <TableHead className="text-xs text-muted-foreground">Farmácia</TableHead>
           <TableHead className="text-xs text-muted-foreground">Resgatados</TableHead>
           <TableHead className="text-xs text-muted-foreground">Status</TableHead>
-          <TableHead className="text-xs text-muted-foreground text-right">Ações</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -158,15 +169,7 @@ function CampaignTable() {
             <TableCell className="font-medium text-sm">{c.name}</TableCell>
             <TableCell className="text-sm text-muted-foreground">{c.pharmacy}</TableCell>
             <TableCell className="text-sm">{c.claimed}/{c.total}</TableCell>
-            <TableCell>
-              <Badge variant="outline" className={`text-[10px] ${c.status === 'active' ? 'text-green-400 border-green-500/30' : c.status === 'paused' ? 'text-yellow-400 border-yellow-500/30' : 'text-muted-foreground'}`}>
-                {c.status === 'active' ? 'Ativo' : c.status === 'paused' ? 'Pausado' : 'Encerrado'}
-              </Badge>
-            </TableCell>
-            <TableCell className="text-right space-x-1">
-              <Button size="sm" variant="ghost" className="h-7 w-7 p-0"><Eye className="w-3.5 h-3.5" /></Button>
-              <Button size="sm" variant="ghost" className="h-7 w-7 p-0"><Pause className="w-3.5 h-3.5" /></Button>
-            </TableCell>
+            <TableCell className="text-sm text-muted-foreground">{c.status === 'active' ? 'Ativo' : c.status === 'paused' ? 'Pausado' : 'Encerrado'}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -180,41 +183,37 @@ function InfluencersSection() {
       <h2 className="text-lg font-bold">Gestão de Influenciadores</h2>
       <Card className="border-border bg-card">
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-xs text-muted-foreground">Influenciador</TableHead>
-                <TableHead className="text-xs text-muted-foreground">Seguidores</TableHead>
-                <TableHead className="text-xs text-muted-foreground">Status</TableHead>
-                <TableHead className="text-xs text-muted-foreground text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockAdminInfluencers.map((inf) => (
-                <TableRow key={inf.id} className="border-border">
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full gradient-yellow flex items-center justify-center text-accent-foreground font-bold text-sm">
-                        {inf.avatar}
-                      </div>
-                      <span className="font-medium text-sm">{inf.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{inf.followers.toLocaleString('pt-BR')}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className={`text-[10px] ${inf.status === 'approved' ? 'text-green-400 border-green-500/30' : inf.status === 'pending' ? 'text-yellow-400 border-yellow-500/30' : 'text-red-400 border-red-500/30'}`}>
-                      {inf.status === 'approved' ? 'Aprovado' : inf.status === 'pending' ? 'Pendente' : 'Suspenso'}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right space-x-1">
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0"><CheckCircle className="w-3.5 h-3.5 text-green-400" /></Button>
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0"><UserX className="w-3.5 h-3.5 text-red-400" /></Button>
-                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0"><Eye className="w-3.5 h-3.5" /></Button>
-                  </TableCell>
+          {mockAdminInfluencers.length === 0 ? (
+            <EmptyState icon={Users} title="Nenhum influenciador cadastrado" description="Influenciadores aparecerão aqui após se cadastrarem na plataforma." />
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableHead className="text-xs text-muted-foreground">Influenciador</TableHead>
+                  <TableHead className="text-xs text-muted-foreground">Seguidores</TableHead>
+                  <TableHead className="text-xs text-muted-foreground">Status</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {mockAdminInfluencers.map((inf) => (
+                  <TableRow key={inf.id} className="border-border">
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full gradient-yellow flex items-center justify-center text-accent-foreground font-bold text-sm">
+                          {inf.initials}
+                        </div>
+                        <span className="font-medium text-sm">{inf.name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{inf.followers.toLocaleString('pt-BR')}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {inf.status === 'approved' ? 'Aprovado' : inf.status === 'pending' ? 'Pendente' : 'Suspenso'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>
