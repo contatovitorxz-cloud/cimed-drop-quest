@@ -1,21 +1,25 @@
 
-
-# Adicionar login com Google na tela de Login
+# Atualizar cores do Header e BottomNav para amarelo com ícones profissionais
 
 ## Alterações
 
-### `src/pages/Login.tsx`
-- Adicionar botão "Continuar com Google" após o botão principal de submit
-- Incluir ícone SVG do Google inline no botão
-- Adicionar função `handleGoogleLogin` que chama `supabase.auth.signInWithOAuth({ provider: 'google' })`
-- Importar `supabase` client
-- Separador visual "ou" entre o botão principal e o botão do Google
-- Estilo: botão branco com borda, ícone colorido do Google, texto preto
+### `src/components/layout/AppHeader.tsx`
+- Fundo do header: gradiente amarelo/dourado (`gradient-yellow`) com backdrop-blur
+- Texto "CIMED GO": preto em vez de gradiente laranja (contraste no fundo amarelo)
+- Ícone do sino: preto, com `strokeWidth={2}` para mais profissionalismo
+- Badge de notificação: laranja (`bg-orange-500`)
+- Borda inferior: `border-yellow-600/30`
 
-### `src/contexts/AuthContext.tsx`
-- Adicionar método `signInWithGoogle` ao contexto de auth (opcional, pode chamar direto do supabase client)
-
-### Configuração necessária (manual pelo usuário)
-- O usuário precisará configurar o provider Google no dashboard do Supabase em Authentication > Providers
-- Criar OAuth credentials no Google Cloud Console com redirect URL do Supabase
-
+### `src/components/layout/BottomNav.tsx`
+- Fundo da nav: gradiente amarelo/dourado
+- Ícones ativos: preto com fundo preto/10 (em vez de laranja)
+- Ícones inativos: preto/50
+- Texto dos labels: preto
+- Trocar ícones por versões mais profissionais/modernas:
+  - `Map` → `MapPin` (mais reconhecível)
+  - `Package` → `ShoppingBag` (mais elegante para produtos)
+  - `Swords` → `Target` (mais profissional para desafios)
+  - `Zap` → `Gift` (melhor para drops)
+  - `UserCircle` → `User` (mais limpo)
+- Borda superior: `border-yellow-600/30`
+- `strokeWidth` consistente: 2 para ativos, 1.5 para inativos
