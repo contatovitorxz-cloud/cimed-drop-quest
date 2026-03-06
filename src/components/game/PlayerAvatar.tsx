@@ -116,34 +116,8 @@ const PlayerAvatar = ({ position, heading = 0 }: PlayerAvatarProps) => {
             <ellipse cx="18" cy="19" rx="2.5" ry="3" fill="url(#skinGrad)" stroke="#E0A060" stroke-width="0.3"/>
             <ellipse cx="46" cy="19" rx="2.5" ry="3" fill="url(#skinGrad)" stroke="#E0A060" stroke-width="0.3"/>
 
-            <!-- === EYES === -->
-            <!-- Left eye -->
-            <ellipse cx="26" cy="18" rx="3" ry="3.5" fill="white" stroke="#ddd" stroke-width="0.3"/>
-            <circle cx="26.5" cy="18.5" r="2" fill="#2C1810"/>
-            <circle cx="27.2" cy="17.5" r="0.8" fill="white"/>
-            <circle cx="25.8" cy="19" r="0.4" fill="white" opacity="0.5"/>
-
-            <!-- Right eye -->
-            <ellipse cx="38" cy="18" rx="3" ry="3.5" fill="white" stroke="#ddd" stroke-width="0.3"/>
-            <circle cx="38.5" cy="18.5" r="2" fill="#2C1810"/>
-            <circle cx="39.2" cy="17.5" r="0.8" fill="white"/>
-            <circle cx="37.8" cy="19" r="0.4" fill="white" opacity="0.5"/>
-
-            <!-- Eyebrows -->
-            <path d="M23 14.5 Q26 13 29 14" stroke="#4A2710" stroke-width="1" fill="none" stroke-linecap="round"/>
-            <path d="M35 14 Q38 13 41 14.5" stroke="#4A2710" stroke-width="1" fill="none" stroke-linecap="round"/>
-
             <!-- === NOSE === -->
             <ellipse cx="32" cy="21" rx="1.2" ry="0.8" fill="#E8B080" opacity="0.6"/>
-
-            <!-- === MOUTH / SMILE === -->
-            <path d="M27 24 Q32 28 37 24" stroke="#C0705A" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-            <!-- Inner mouth -->
-            <path d="M28.5 24.5 Q32 27 35.5 24.5" fill="#E88080" opacity="0.4"/>
-
-            <!-- === BLUSH === -->
-            <ellipse cx="21.5" cy="22" rx="3" ry="1.5" fill="#FFB3B3" opacity="0.35"/>
-            <ellipse cx="42.5" cy="22" rx="3" ry="1.5" fill="#FFB3B3" opacity="0.35"/>
           </svg>
         </div>`,
       className: '',
