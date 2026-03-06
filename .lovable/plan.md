@@ -1,39 +1,26 @@
 
 
-# Camera Pokemon GO — Offset + Rotação por Bússola + Interpolação Suave
+# Fix: Mapa bugado — Adicionar céu e corrigir perspectiva 3D
 
-## Situação Atual
-O mapa já tem GPS real, perspectiva CSS 3D e `flyTo` para seguir o jogador. Porém o avatar fica no centro da tela e não há rotação por bússola — não parece Pokemon GO onde o avatar fica na parte inferior e o mapa gira com a direção do jogador.
-
-## Limitação Técnica
-Leaflet não suporta rotação nativa do mapa. Para girar o mapa conforme a bússola, aplicaremos `CSS transform rotate()` no container do Leaflet, combinado com o `perspective/rotateX` existente. Isso simula perfeitamente a câmera Pokemon GO.
-
----
+## Problema
+A perspectiva CSS 3D do mapa cria uma grande área preta no topo da tela. No Pokemon GO (foto 2), essa área é preenchida com um **gradiente de céu azul** que dá a ilusão de horizonte. Além disso, os valores de transform precisam de ajuste para o mapa ocupar melhor a tela.
 
 ## Mudanças
 
-### 1. `src/pages/Home.tsx` — Sistema de câmera completo
-- **Offset do avatar**: Usar `map.panBy()` ou ajustar o centro do mapa para ~30% acima da posição real, fazendo o avatar aparecer no terço inferior da tela
-- **Bússola (heading)**: Capturar `DeviceOrientationEvent` (mobile) para obter a direção que o dispositivo aponta. Em desktop, calcular heading pela diferença entre posições GPS consecutivas
-- **Estado `heading`**: Ângulo em graus que será aplicado como `rotate()` CSS no container do mapa
-- **Interpolação suave**: Ao receber nova posição GPS, interpolar entre posição atual e nova com `requestAnimationFrame` para evitar saltos
-- **MapFollower atualizado**: Além de `flyTo`, aplicar o offset vertical para manter avatar na parte inferior
-- **Zoom limits**: `minZoom={15}` e `maxZoom={19}`, padrão 17
+### 1. `src/pages/Home.tsx`
+- Adicionar um **div de céu** como fundo atrás do mapa — gradiente de azul claro para branco, ocupando a metade superior da tela
+- O mapa fica por cima com a perspectiva 3D, e o céu aparece onde o mapa não cobre
 
-### 2. `src/index.css` — Rotação dinâmica do mapa
-- Atualizar `.pokemon-go-map .leaflet-container` para aceitar uma CSS variable `--map-heading` que controla o `rotateZ`
-- Transform completo: `rotateX(35deg) rotateZ(var(--map-heading, 0deg)) scale(1.35)`
-- Transição suave na rotação: `transition: transform 0.3s ease-out`
-- Ajustar `perspective-origin` para 50% 85% (avatar mais baixo na tela)
+### 2. `src/index.css` — Ajustar perspectiva e adicionar céu
+- Ajustar `.pokemon-go-map` para ter background com gradiente de céu (azul claro → branco → verde claro na base)
+- Refinar os valores de `rotateX`, `scale` e `transform-origin` para que o mapa cubra melhor a tela sem deixar gaps pretos
+- Reduzir `rotateX` de 40deg para ~30deg e aumentar scale para ~1.6 para cobrir mais área
+- Ajustar `perspective-origin` para melhor enquadramento
+- Adicionar classe `.sky-background` com gradiente estilo Pokemon GO: `#87CEEB` (céu) → `#B8E0F0` → branco
 
-### 3. `src/components/game/PlayerAvatar.tsx` — Indicador de direção
-- Adicionar um DivIcon com seta direcional que aponta para onde o jogador está olhando
-- Receber prop `heading` para rotacionar a seta
-- Manter os circles de raio de interação
-
-### 4. `src/components/game/GameHUD.tsx` — Sem mudanças estruturais
-- O botão de recentrar já existe e funciona
+### 3. `src/components/game/FloatingParticles.tsx`
+- Sem mudanças estruturais, apenas garantir que as partículas ficam sobre o céu também
 
 ## Resultado
-Avatar fixo na parte inferior da tela, mapa gira suavemente conforme o jogador vira o celular, movimento interpolado sem saltos, zoom por pinça mantido.
+O topo da tela mostra um céu azul gradiente como no Pokemon GO. O mapa inclinado preenche da metade da tela pra baixo sem gaps pretos. A sensação visual é idêntica à referência.
 
