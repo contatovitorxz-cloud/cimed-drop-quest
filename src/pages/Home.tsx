@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { useState, useEffect, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { mockPharmacies, mockDrops, mockMissions, mockRareProducts } from '@/data/mockData';
@@ -18,7 +18,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// Pharmacy marker - red cross
+// Marker icons
 const pharmacyIcon = new L.DivIcon({
   html: `<div class="marker-pharmacy"><span>+</span></div>`,
   className: '',
@@ -26,7 +26,6 @@ const pharmacyIcon = new L.DivIcon({
   iconAnchor: [20, 20],
 });
 
-// Drop marker - golden gift
 const dropIcon = new L.DivIcon({
   html: `<div class="marker-drop"><span>🎁</span></div>`,
   className: '',
@@ -34,7 +33,6 @@ const dropIcon = new L.DivIcon({
   iconAnchor: [22, 22],
 });
 
-// Rare product marker - floating capsule
 const rareIcon = new L.DivIcon({
   html: `<div class="marker-rare"><span>💊</span></div>`,
   className: '',
@@ -42,7 +40,6 @@ const rareIcon = new L.DivIcon({
   iconAnchor: [19, 19],
 });
 
-// Mission marker - star
 const missionIcon = new L.DivIcon({
   html: `<div class="marker-mission"><span>⭐</span></div>`,
   className: '',
@@ -50,21 +47,71 @@ const missionIcon = new L.DivIcon({
   iconAnchor: [18, 18],
 });
 
+// Component that follows the player position
+const MapFollower = ({ position, shouldFollow }: { position: [number, number]; shouldFollow: boolean }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (shouldFollow) {
+      map.flyTo(position, map.getZoom(), { animate: true, duration: 1 });
+    }
+  }, [position, shouldFollow, map]);
+
+  return null;
+};
+
+const FALLBACK_POSITION: [number, number] = [-23.5629, -46.6544];
+
 const Home = () => {
-  const center: [number, number] = [-23.5629, -46.6544];
+  const [playerPosition, setPlayerPosition] = useState<[number, number]>(FALLBACK_POSITION);
+  const [followPlayer, setFollowPlayer] = useState(true);
+  const [gpsActive, setGpsActive] = useState(false);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const newPos: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+        setPlayerPosition(newPos);
+        setGpsActive(true);
+      },
+      (err) => {
+        console.warn('GPS error:', err.message);
+        setGpsActive(false);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 3000,
+        timeout: 10000,
+      }
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
+
+  const handleRecenter = useCallback(() => {
+    setFollowPlayer(true);
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-background">
-      {/* Map */}
-      <div className="absolute inset-0 pb-16">
-        <MapContainer center={center} zoom={15} className="h-full w-full" zoomControl={false}>
+      {/* Map with 3D perspective */}
+      <div className="absolute inset-0 pb-16 pokemon-go-map">
+        <MapContainer
+          center={playerPosition}
+          zoom={17}
+          className="h-full w-full"
+          zoomControl={false}
+          attributionControl={false}
+        >
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
             attribution=""
           />
 
-          {/* Player avatar */}
-          <PlayerAvatar position={center} />
+          <MapFollower position={playerPosition} shouldFollow={followPlayer} />
+          <PlayerAvatar position={playerPosition} />
 
           {/* Pharmacy markers */}
           {mockPharmacies.map((p) => (
@@ -144,7 +191,7 @@ const Home = () => {
 
       {/* Game overlays */}
       <FloatingParticles />
-      <GameHUD />
+      <GameHUD onRecenter={handleRecenter} gpsActive={gpsActive} />
       <BottomNav />
     </div>
   );
