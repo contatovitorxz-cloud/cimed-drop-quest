@@ -37,13 +37,10 @@ const InfluencerDashboard = () => {
       {/* Header */}
       <div className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border px-4 py-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
-            <div>
+            <div className="flex items-center gap-2">
+              <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
               <span className="text-sm font-bold">Cimed GO</span>
-              <span className="text-[10px] text-muted-foreground ml-1.5">Creator Hub</span>
             </div>
-          </div>
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-full gradient-yellow flex items-center justify-center text-sm font-bold text-accent-foreground">
               {initials}
