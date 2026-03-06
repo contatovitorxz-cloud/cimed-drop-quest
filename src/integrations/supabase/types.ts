@@ -234,6 +234,39 @@ export type Database = {
           },
         ]
       }
+      influencer_settings: {
+        Row: {
+          commission_balance: number | null
+          created_at: string | null
+          display_name: string | null
+          id: string
+          pix_key: string | null
+          pix_key_type: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          commission_balance?: number | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          pix_key?: string | null
+          pix_key_type?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          commission_balance?: number | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          pix_key?: string | null
+          pix_key_type?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       mission_steps: {
         Row: {
           created_at: string
