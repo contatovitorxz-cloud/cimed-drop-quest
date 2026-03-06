@@ -77,13 +77,16 @@ const MapFollower = ({
   onDrag: () => void;
 }) => {
   const map = useMap();
+  const isZoomingRef = useRef(false);
 
   useMapEvents({
     dragstart: () => onDrag(),
+    zoomstart: () => { isZoomingRef.current = true; },
+    zoomend: () => { isZoomingRef.current = false; },
   });
 
   useEffect(() => {
-    if (shouldFollow) {
+    if (shouldFollow && !isZoomingRef.current) {
       map.setView(position, map.getZoom(), { animate: true });
     }
   }, [position, shouldFollow, map]);
@@ -175,12 +178,18 @@ const Home = () => {
     const animate = () => {
       if (!active) return;
 
-      setDisplayPosition((prev) => [
-        prev[0] + (playerPosition[0] - prev[0]) * 0.1,
-        prev[1] + (playerPosition[1] - prev[1]) * 0.1,
-      ]);
+      setDisplayPosition((prev) => {
+        const dLat = playerPosition[0] - prev[0];
+        const dLng = playerPosition[1] - prev[1];
+        if (Math.abs(dLat) < 0.000001 && Math.abs(dLng) < 0.000001) return prev;
+        return [prev[0] + dLat * 0.1, prev[1] + dLng * 0.1];
+      });
 
-      setDisplayHeading((prev) => lerpAngle(prev, heading, 0.08));
+      setDisplayHeading((prev) => {
+        const next = lerpAngle(prev, heading, 0.08);
+        if (Math.abs(next - prev) < 0.01) return prev;
+        return next;
+      });
 
       animFrameRef.current = requestAnimationFrame(animate);
     };
