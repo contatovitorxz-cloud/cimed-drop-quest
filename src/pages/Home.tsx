@@ -19,29 +19,31 @@ L.Icon.Default.mergeOptions({
 });
 
 // Marker icons
+const cimedImg = `<img src="/images/cimed-symbol.png" style="width:20px;height:20px;object-fit:contain;" />`;
+
 const pharmacyIcon = new L.DivIcon({
-  html: `<div class="marker-pharmacy"><span>+</span></div>`,
+  html: `<div class="marker-pharmacy">${cimedImg}</div>`,
   className: '',
   iconSize: [40, 40],
   iconAnchor: [20, 20],
 });
 
 const dropIcon = new L.DivIcon({
-  html: `<div class="marker-drop"><span>🎁</span></div>`,
+  html: `<div class="marker-drop">${cimedImg}</div>`,
   className: '',
   iconSize: [44, 44],
   iconAnchor: [22, 22],
 });
 
 const rareIcon = new L.DivIcon({
-  html: `<div class="marker-rare"><span>💊</span></div>`,
+  html: `<div class="marker-rare">${cimedImg}</div>`,
   className: '',
   iconSize: [38, 38],
   iconAnchor: [19, 19],
 });
 
 const missionIcon = new L.DivIcon({
-  html: `<div class="marker-mission"><span>⭐</span></div>`,
+  html: `<div class="marker-mission">${cimedImg}</div>`,
   className: '',
   iconSize: [36, 36],
   iconAnchor: [18, 18],
