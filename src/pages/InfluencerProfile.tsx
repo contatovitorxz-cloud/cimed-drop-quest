@@ -63,27 +63,47 @@ const InfluencerProfile = () => {
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !user) return;
-
-    setUploading(true);
-    const filePath = `${user.id}/avatar.${file.name.split('.').pop()}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('avatars')
-      .upload(filePath, file, { upsert: true });
-
-    if (uploadError) {
-      toast({ title: 'Erro ao enviar foto', description: uploadError.message, variant: 'destructive' });
-      setUploading(false);
+    if (!file) return;
+    if (!user) {
+      toast({ title: 'Você precisa estar logado para enviar uma foto', variant: 'destructive' });
       return;
     }
 
-    const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
+    setUploading(true);
+    try {
+      const ext = file.name.split('.').pop() || 'jpg';
+      const filePath = `${user.id}/avatar-${Date.now()}.${ext}`;
 
-    await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', user.id);
-    setAvatarUrl(publicUrl);
-    setUploading(false);
-    toast({ title: 'Foto atualizada!' });
+      console.log('Uploading avatar to:', filePath);
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        toast({ title: 'Erro ao enviar foto', description: uploadError.message, variant: 'destructive' });
+        return;
+      }
+
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
+      console.log('Public URL:', publicUrl);
+
+      const { error: updateError } = await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', user.id);
+      if (updateError) {
+        console.error('Profile update error:', updateError);
+        toast({ title: 'Erro ao salvar URL', description: updateError.message, variant: 'destructive' });
+        return;
+      }
+
+      setAvatarUrl(publicUrl + '?t=' + Date.now());
+      toast({ title: 'Foto atualizada!' });
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast({ title: 'Erro inesperado ao enviar foto', variant: 'destructive' });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSave = async () => {
