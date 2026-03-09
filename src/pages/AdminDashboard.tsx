@@ -87,8 +87,8 @@ function DashboardSection() {
       {/* Title row */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Button className="gradient-yellow text-accent-foreground gap-1.5 text-xs font-semibold rounded-lg h-9 shadow-lg shadow-accent/20 shimmer-btn">
-          < hover:opacity hover:opacity-90 transition-all duration-300-90 transition-all duration-300Plus className="w-4 h-4" /> Criar Campanha
+        <Button className="gradient-yellow text-accent-foreground gap-1.5 text-xs font-semibold rounded-lg h-9 shadow-lg shadow-accent/20 shimmer-btn hover:opacity-90 transition-all duration-300">
+          <Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>
 
