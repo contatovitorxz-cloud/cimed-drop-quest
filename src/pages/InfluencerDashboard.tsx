@@ -22,9 +22,9 @@ const InfluencerDashboard = () => {
   const initials = username.slice(0, 1).toUpperCase();
 
   const metrics = [
-    { icon: Eye, label: 'Visualizações', value: mockInfluencerMetrics[0]?.value ?? 12500, change: mockInfluencerMetrics[0]?.change ?? 8.2, gradient: 'from-yellow-500/20 to-orange-500/20' },
-    { icon: MousePointerClick, label: 'Cliques', value: mockInfluencerMetrics[1]?.value ?? 620, change: mockInfluencerMetrics[1]?.change ?? 5.1, gradient: 'from-blue-500/20 to-cyan-500/20' },
-    { icon: ShoppingBag, label: 'Conversões', value: mockInfluencerMetrics[2]?.value ?? 218, change: mockInfluencerMetrics[2]?.change ?? 12.3, gradient: 'from-green-500/20 to-emerald-500/20' },
+    { icon: Eye, label: 'Visualizações', value: mockInfluencerMetrics[0]?.value ?? 12500, change: mockInfluencerMetrics[0]?.change ?? 8.2, gradient: 'from-accent/15 to-accent/5' },
+    { icon: MousePointerClick, label: 'Cliques', value: mockInfluencerMetrics[1]?.value ?? 620, change: mockInfluencerMetrics[1]?.change ?? 5.1, gradient: 'from-accent/12 to-accent/5' },
+    { icon: ShoppingBag, label: 'Conversões', value: mockInfluencerMetrics[2]?.value ?? 218, change: mockInfluencerMetrics[2]?.change ?? 12.3, gradient: 'from-accent/10 to-accent/5' },
   ];
 
   return (
@@ -33,10 +33,7 @@ const InfluencerDashboard = () => {
       <div className="sticky top-0 z-30 glass-header px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md" />
-              <img src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
-            </div>
+            <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
             <span className="text-sm font-bold">Cimed GO</span>
           </div>
           <div className="flex items-center gap-3">
@@ -60,7 +57,7 @@ const InfluencerDashboard = () => {
         </div>
 
         {/* CTA */}
-        <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300 gap-2 shimmer-btn hover:shadow-xl">
+        <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-depth hover:opacity-90 transition-all duration-300 gap-2">
           <Plus className="w-5 h-5" />
           Criar Drop
         </Button>
@@ -76,7 +73,7 @@ const InfluencerDashboard = () => {
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-medium">{m.label}</p>
                 <p className="text-xl font-extrabold">{m.value.toLocaleString('pt-BR')}</p>
                 {m.change > 0 && (
-                  <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[9px] px-1.5 py-0">
+                  <Badge className="bg-accent/15 text-accent border-accent/30 text-[9px] px-1.5 py-0">
                     <TrendingUp className="w-2.5 h-2.5 mr-0.5" />+{m.change}%
                   </Badge>
                 )}
@@ -89,7 +86,7 @@ const InfluencerDashboard = () => {
         <div className="grid grid-cols-2 gap-3">
           <Card className="glass-card glow-border-hover shadow-depth border-0 cursor-pointer transition-all duration-300">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent/15 to-accent/5 flex items-center justify-center">
                 <Megaphone className="w-5 h-5 text-accent" />
               </div>
               <h3 className="font-semibold text-sm">Campanhas</h3>
@@ -98,7 +95,7 @@ const InfluencerDashboard = () => {
           </Card>
           <Card className="glass-card glow-border-hover shadow-depth border-0 cursor-pointer transition-all duration-300">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent/10 to-accent/5 flex items-center justify-center">
                 <QrCode className="w-5 h-5 text-accent" />
               </div>
               <h3 className="font-semibold text-sm">Meus QR Codes</h3>

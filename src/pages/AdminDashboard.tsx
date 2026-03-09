@@ -17,10 +17,10 @@ import {
 
 const metricIcons = [Users, Target, QrCode, Gift];
 const metricGradients = [
-  'from-yellow-500/20 to-orange-500/20',
-  'from-blue-500/20 to-cyan-500/20',
-  'from-purple-500/20 to-pink-500/20',
-  'from-green-500/20 to-emerald-500/20',
+  'from-accent/15 to-accent/5',
+  'from-accent/12 to-accent/5',
+  'from-accent/10 to-accent/5',
+  'from-accent/10 to-accent/5',
 ];
 
 function formatValue(val: number) {
@@ -87,7 +87,7 @@ function DashboardSection() {
       {/* Title row */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Button className="gradient-yellow text-accent-foreground gap-1.5 text-xs font-semibold rounded-lg h-9 shadow-lg shadow-accent/20 shimmer-btn hover:opacity-90 transition-all duration-300">
+        <Button className="gradient-yellow text-accent-foreground gap-1.5 text-xs font-semibold rounded-lg h-9 shadow-depth hover:opacity-90 transition-all duration-300">
           <Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>
@@ -110,7 +110,7 @@ function DashboardSection() {
                       <div className="flex items-center gap-2 mt-0.5">
                         <p className="text-xl font-bold leading-tight">{formatValue(m.value)}</p>
                         {m.change > 0 && (
-                          <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 py-0 font-medium">
+                          <Badge className="bg-accent/15 text-accent border-accent/30 text-[10px] px-1.5 py-0 font-medium">
                             <TrendingUp className="w-2.5 h-2.5 mr-0.5" />+{m.change}%
                           </Badge>
                         )}
@@ -152,8 +152,8 @@ function DashboardSection() {
                     <Legend verticalAlign="bottom" height={36} iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, color: 'hsl(var(--muted-foreground))' }} />
                     <Line type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" strokeWidth={3} dot={false} name="Usuários" />
                     <Line type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" strokeWidth={2} dot={false} name="Scans" />
-                    <Line type="monotone" dataKey="drops" stroke="hsl(142,76%,46%)" strokeWidth={1.5} dot={false} name="Drops" />
-                    <Line type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" strokeWidth={1.5} dot={false} name="Missões" />
+                    <Line type="monotone" dataKey="drops" stroke="hsl(0,0%,60%)" strokeWidth={1.5} dot={false} name="Drops" />
+                    <Line type="monotone" dataKey="missoes" stroke="hsl(0,0%,40%)" strokeWidth={1.5} dot={false} name="Missões" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -240,13 +240,13 @@ function DashboardSection() {
 function DropStatusBadge({ status, label }: { status: string; label?: string }) {
   const styles: Record<string, string> = {
     esgotado: 'bg-muted text-muted-foreground border-border',
-    encerra_hoje: 'bg-green-500/15 text-green-400 border-green-500/30',
-    ativo: 'bg-green-500/15 text-green-400 border-green-500/30',
+    encerra_hoje: 'bg-accent/15 text-accent border-accent/30',
+    ativo: 'bg-accent/15 text-accent border-accent/30',
     ended: 'bg-muted text-muted-foreground border-border',
     expired: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     expirada: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     paused: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    active: 'bg-green-500/15 text-green-400 border-green-500/30',
+    active: 'bg-accent/15 text-accent border-accent/30',
   };
   const labels: Record<string, string> = {
     esgotado: 'Esgotado', encerra_hoje: 'Encerra hoje', ativo: 'Ativo', ended: 'Encerrado',
@@ -313,7 +313,7 @@ function DropsSection() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">Gestão de Campanhas & Drops</h2>
-        <Button className="gradient-yellow text-accent-foreground gap-1.5 shimmer-btn shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300">
+        <Button className="gradient-yellow text-accent-foreground gap-1.5 shadow-depth hover:opacity-90 transition-all duration-300">
           <Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>

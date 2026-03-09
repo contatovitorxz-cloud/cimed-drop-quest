@@ -155,9 +155,9 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-yellow-500/20 to-orange-500/20' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-blue-500/20 to-cyan-500/20' },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-purple-500/20 to-pink-500/20' },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-accent/15 to-accent/5' },
+    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-accent/10 to-accent/5' },
+    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-accent/10 to-accent/5' },
   ];
 
   return (
@@ -167,7 +167,7 @@ const Home = () => {
       <div className="px-4 pt-[72px] space-y-3 stagger-children">
         {/* Level Card */}
         <div className="glass-card glow-border rounded-2xl p-4 flex items-center gap-3 shadow-depth">
-          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-depth">
             <Gift className="w-6 h-6 text-accent-foreground" />
           </div>
           <div className="flex-1 min-w-0">
@@ -214,7 +214,7 @@ const Home = () => {
 
           <button
             onClick={() => navigate('/scan-history')}
-            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 active:scale-95 transition-transform shimmer-btn"
+            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-depth active:scale-95 transition-transform"
           >
             <Camera className="w-5 h-5 text-accent-foreground" />
           </button>

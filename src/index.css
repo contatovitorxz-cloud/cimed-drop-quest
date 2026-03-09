@@ -128,13 +128,6 @@
     background-clip: text;
   }
 
-  .glow-orange {
-    box-shadow: 0 0 20px hsl(25, 100%, 50%, 0.4), 0 0 60px hsl(25, 100%, 50%, 0.1);
-  }
-
-  .glow-yellow {
-    box-shadow: 0 0 20px hsl(48, 100%, 50%, 0.4), 0 0 60px hsl(48, 100%, 50%, 0.1);
-  }
 
   /* === Cinematic Glassmorphism === */
   .glass-card {
@@ -155,9 +148,12 @@
     background: linear-gradient(180deg, hsl(0, 0%, 7%) 0%, hsl(0, 0%, 5%) 100%);
   }
 
-  /* === Glow Effects === */
+  /* === Depth Effects === */
   .glow-border {
-    box-shadow: 0 0 15px hsl(var(--accent) / 0.12), 0 0 30px hsl(var(--accent) / 0.06);
+    box-shadow:
+      0 1px 2px hsl(0, 0%, 0%, 0.08),
+      0 4px 12px hsl(0, 0%, 0%, 0.12),
+      inset 0 1px 0 hsl(var(--border) / 0.3);
   }
 
   .glow-border-hover {
@@ -165,9 +161,10 @@
   }
 
   .glow-border-hover:hover {
-    box-shadow: 0 0 20px hsl(var(--accent) / 0.2), 0 0 40px hsl(var(--accent) / 0.08);
-    border-color: hsl(var(--accent) / 0.3);
-    transform: translateY(-1px);
+    box-shadow:
+      0 2px 4px hsl(0, 0%, 0%, 0.1),
+      0 8px 24px hsl(0, 0%, 0%, 0.18);
+    transform: translateY(-2px);
   }
 
   /* === Depth Shadows === */
@@ -210,21 +207,6 @@
     z-index: -1;
   }
 
-  /* === Shimmer Button === */
-  .shimmer-btn {
-    position: relative;
-    overflow: hidden;
-  }
-  .shimmer-btn:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(0, 0%, 100%, 0.15), transparent);
-    animation: shimmer 0.8s ease-in-out forwards;
-  }
 
   /* === Active Glow Bar (sidebar) === */
   .active-glow-bar {
@@ -239,7 +221,6 @@
     width: 3px;
     border-radius: 0 3px 3px 0;
     background: hsl(var(--accent));
-    box-shadow: 0 0 10px hsl(var(--accent) / 0.6);
   }
 }
 
@@ -284,10 +265,6 @@
   to { transform: rotate(360deg); }
 }
 
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 8px currentColor, 0 0 20px currentColor; opacity: 1; }
-  50% { box-shadow: 0 0 16px currentColor, 0 0 40px currentColor; opacity: 0.8; }
-}
 
 @keyframes bounce-idle {
   0%, 100% { transform: translateY(0); }
@@ -320,18 +297,17 @@
 }
 
 /* Drop marker with badge count */
-.marker-drop-badge {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, hsl(var(--accent)), hsl(40, 100%, 45%));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 2px 10px rgba(255, 212, 0, 0.3);
-  animation: bounce-idle 3s ease-in-out infinite;
-}
+  .marker-drop-badge {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(40, 100%, 45%));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
 .marker-drop-badge span { font-size: 18px; }
 .marker-badge-count {
   position: absolute;
@@ -352,19 +328,18 @@
 }
 
 /* Rare drop marker */
-.marker-rare-drop {
-  width: 46px;
-  height: 46px;
-  background: linear-gradient(135deg, hsl(var(--accent)), hsl(25, 100%, 50%));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 16px rgba(255, 140, 0, 0.4);
-  animation: float 2.5s ease-in-out infinite;
-}
+  .marker-rare-drop {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(25, 100%, 50%));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
 .marker-rare-drop span { font-size: 20px; }
 .marker-rare-tooltip {
   position: absolute;
@@ -383,32 +358,30 @@
 }
 
 /* Mission marker */
-.marker-mission-target {
-  width: 38px;
-  height: 38px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid hsl(var(--primary));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  animation: bounce-idle 2.5s ease-in-out infinite;
-}
+  .marker-mission-target {
+    width: 38px;
+    height: 38px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid hsl(var(--primary));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
 .marker-mission-target span { font-size: 16px; }
 
-.marker-influencer {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #FFD400, #FF8C00);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid rgba(255, 212, 0, 0.6);
-  box-shadow: 0 0 20px rgba(255, 212, 0, 0.6), 0 0 40px rgba(255, 140, 0, 0.3);
-  animation: float 2.5s ease-in-out infinite, glow-pulse 2s ease-in-out infinite;
-}
+  .marker-influencer {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #FFD400, #FF8C00);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid rgba(255, 212, 0, 0.6);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
 .marker-influencer span {
   font-size: 22px;
 }
