@@ -44,7 +44,8 @@ const AppHeader = () => {
           </button>
           <button className="relative p-2 rounded-full hover:bg-secondary/80 transition-all duration-300">
             <Bell className="w-5 h-5 text-foreground" strokeWidth={2} />
-            <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center border-2 border-background animate-pulse">3</sp</button>
+            <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center border-2 border-background">3</span>
+          </button>
           <div className="avatar-ring w-9 h-9 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-bold text-xs shadow-lg shadow-accent/30">
             {initials}
           </div>
