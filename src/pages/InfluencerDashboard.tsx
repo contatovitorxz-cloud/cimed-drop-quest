@@ -57,7 +57,7 @@ const InfluencerDashboard = () => {
         </div>
 
         {/* CTA */}
-        <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300 gap-2 shimmer-btn hover:shadow-xl">
+        <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-depth hover:opacity-90 transition-all duration-300 gap-2">
           <Plus className="w-5 h-5" />
           Criar Drop
         </Button>
