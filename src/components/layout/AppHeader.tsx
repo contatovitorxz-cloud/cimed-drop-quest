@@ -23,7 +23,7 @@ const AppHeader = () => {
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="absolute inset-0 bg-accent/20 rounded-full blur-lg animate-glow-breathe" />
+            <div className="absolute inset-0 bg-accent/20 rounded-full blur-lg" />
             <img src={cimedSymbol} alt="Cimed" className="relative h-9 w-9 object-contain drop-shadow-lg" />
           </div>
           <div>
