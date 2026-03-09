@@ -1,60 +1,53 @@
 
 
-## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
+## Plano: Paleta Preta/Amarela/Branca + Profundidade sem Brilho
 
-### Análise das diferenças (comparando imagens com código atual)
+### Problema
 
-**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
-- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
-- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
-- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
-- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
-- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
+Cores fora da paleta (azul, ciano, verde, roxo, rosa) nos gradientes de ícones e badges. Efeitos de glow (`glow-border`, `glow-border-hover`, `glow-orange`, `glow-yellow`) criam brilho em vez de profundidade. `shimmer-btn` ainda presente em alguns botões.
 
-**Imagem 2 (image-5)** - Layout com sidebar direita:
-- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
-- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
-- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
-- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
-- Sidebar direita: Ranking dos Drops + Novos Influenciadores
+### Solução
 
-**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
+Substituir todos os gradientes coloridos por variações de amarelo/laranja escuro. Trocar glow por sombras pretas profundas (depth). Remover shimmer restante.
 
-### Mudanças necessárias
+### Mudanças
 
-**1. `src/data/mockData.ts`**
-- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
-- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
-- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
-- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
+**`src/index.css`**
+- `.glow-border`: trocar box-shadow de cor accent para sombra preta profunda (inset border sutil + shadow preto)
+- `.glow-border-hover:hover`: remover glow colorido, usar apenas `translateY(-2px)` + sombra preta mais forte
+- Remover `.glow-orange` e `.glow-yellow`
+- `.shimmer-btn`: remover completamente (hover já funciona com opacity)
 
-**2. `src/pages/AdminDashboard.tsx`**
-- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
-- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
-- **Gráfico**:
-  - Eixo X: Meses (Jan, Fev, Mar... Ago)
-  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
-  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
-  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
-  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
-- **Tabela "Últimos Drops Liberados"**:
-  - Header de coluna: "Drop | Resgates | Status | Ações"
-  - Formato resgates: "450/500" (não "2,00 m")
-  - Badge "Encerrado" cinza escuro
-  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
-- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
+**`src/pages/Home.tsx`**
+- Action cards: trocar gradientes `from-blue-500/20`, `from-purple-500/20` por variações de amarelo escuro (`from-accent/15 to-accent/5`)
+- Remover `shimmer-btn` do botão de câmera
+- Remover `glow-border` do level card, usar apenas `shadow-depth`
 
-**3. `src/components/admin/AdminSidebar.tsx`**
-- Adicionar label "Menu" acima dos itens do menu
-- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
-- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
-- Ícones brancos para itens inativos
+**`src/pages/Profile.tsx`**
+- Quick links: todos os gradientes coloridos → `from-accent/15 to-accent/5` (amarelo escuro uniforme)
+- Stats: manter `gradient-yellow` nos ícones (já está na paleta)
 
-### Arquivos
+**`src/pages/AdminDashboard.tsx`**
+- `metricGradients`: todos → variações de amarelo/laranja escuro em vez de azul/verde/roxo
+- Badges de change: trocar `bg-green-500/15 text-green-400` por `bg-accent/15 text-accent`
 
-| Arquivo | Ação |
-|---|---|
-| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
-| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
-| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
+**`src/pages/InfluencerDashboard.tsx`**
+- Metric gradientes: todos → amarelo escuro
+- Badge de change: `bg-accent/15 text-accent` em vez de green
+- Remover `shimmer-btn` do botão CTA
+- Remover blur glow do logo (`bg-accent/20 blur-md`)
+
+**`src/components/layout/AppHeader.tsx`**
+- Remover `blur-lg` glow atrás do logo (div com `bg-accent/20 rounded-full blur-lg`)
+- Avatar: remover `shadow-lg shadow-accent/30`, usar `shadow-depth`
+
+**`src/components/layout/BottomNav.tsx`**
+- Botão central: remover `blur-xl opacity-20` glow div, manter apenas sombra preta profunda
+- Indicador ativo: remover `shadow-[0_0_8px_hsl(var(--accent)/0.6)]` (glow), usar barra sólida sem glow
+
+### Resultado
+- Zero brilhos/glows coloridos
+- Profundidade via sombras pretas em camadas
+- Paleta restrita: preto, amarelo (#FFD400), laranja (#FF6A00), branco
+- Cards destacam pela elevação (shadow), não pelo brilho
 
