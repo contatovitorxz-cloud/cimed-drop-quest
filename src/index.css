@@ -251,10 +251,6 @@
   100% { left: 100%; }
 }
 
-@keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 15px hsl(var(--accent) / 0.15); }
-  50% { box-shadow: 0 0 25px hsl(var(--accent) / 0.3); }
-}
 
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(12px); }
