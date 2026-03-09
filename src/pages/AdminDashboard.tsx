@@ -17,10 +17,10 @@ import {
 
 const metricIcons = [Users, Target, QrCode, Gift];
 const metricGradients = [
-  'from-yellow-500/20 to-orange-500/20',
-  'from-blue-500/20 to-cyan-500/20',
-  'from-purple-500/20 to-pink-500/20',
-  'from-green-500/20 to-emerald-500/20',
+  'from-accent/15 to-accent/5',
+  'from-accent/12 to-accent/5',
+  'from-accent/10 to-accent/5',
+  'from-accent/10 to-accent/5',
 ];
 
 function formatValue(val: number) {
