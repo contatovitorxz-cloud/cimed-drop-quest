@@ -34,8 +34,7 @@ const InfluencerDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md" />
-              <img src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
+              <div className="absolute inset-0 bg-accent/20 rounded-full blur-mdmg src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
             </div>
             <span className="text-sm font-bold">Cimed GO</span>
           </div>
@@ -61,7 +60,7 @@ const InfluencerDashboard = () => {
 
         {/* CTA */}
         <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300 gap-2 shimmer-btn">
-          <Plus className="w-5 h-5" />
+          <Plus cl hover:shadow-xlassName="w-5 h-5" />
           Criar Drop
         </Button>
 

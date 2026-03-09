@@ -52,7 +52,7 @@ const AdminDashboard = () => {
               </Button>
               <Button variant="ghost" size="icon" className="text-muted-foreground relative h-9 w-9 hover:bg-accent/10 transition-all duration-300">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-[9px] text-destructive-foreground flex items-center justify-center font-bold           </Button>
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-[9px] text-destructive-foreground flex items-center justify-center font-boldutton>
               <div className="flex items-center gap-2.5 ml-2 cursor-pointer">
                 <div className="avatar-ring w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
                   <span className="text-xs font-bold text-accent-foreground">JP</span>
@@ -87,7 +87,7 @@ function DashboardSection() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <Button className="gradient-yellow text-accent-foreground gap-1.5 text-xs font-semibold rounded-lg h-9 shadow-lg shadow-accent/20 shimmer-btn">
-          < hover:opacity-90 transition-all duration-300Plus className="w-4 h-4" /> Criar Campanha
+          < hover:opacity hover:opacity-90 transition-all duration-300-90 transition-all duration-300Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>
 
@@ -312,7 +312,7 @@ function DropsSection() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">Gestão de Campanhas & Drops</h2>
-        <Button className="gradient-yellow text-accent-foreground gap-1.5 shimmer-btn shadow-lg shadow-accent/20">
+        <Button className="gradient-yellow text-accent-foreground gap-1.5 shimmer hover:opacity-90 transition-all duration-300-btn shadow-lg shadow-accent/20">
           <Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>

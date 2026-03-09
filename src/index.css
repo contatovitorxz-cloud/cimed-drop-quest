@@ -305,14 +305,6 @@
   100% { transform: translateX(-50%) scale(1.8); opacity: 0; }
 }
 
-@keyframes center-tab-glow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.1); }
-}
-
-.center-tab-pulse {
-  animation: center-tab-glow 3s ease-in-out infinite;
-}
 
 /* Marker styles */
 .marker-pharmacy {
