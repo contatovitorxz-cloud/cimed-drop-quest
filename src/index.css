@@ -244,10 +244,6 @@
 }
 
 /* === Cinematic Keyframes === */
-@keyframes ring-rotate {
-  from { filter: hue-rotate(0deg); }
-  to { filter: hue-rotate(360deg); }
-}
 
 @keyframes shimmer {
   0% { left: -100%; }
