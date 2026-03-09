@@ -22,10 +22,7 @@ const AppHeader = () => {
     <header className="fixed top-0 left-0 right-0 z-40 glass-header">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="relative">
-            <div className="absolute inset-0 bg-accent/20 rounded-full blur-lg" />
-            <img src={cimedSymbol} alt="Cimed" className="relative h-9 w-9 object-contain drop-shadow-lg" />
-          </div>
+          <img src={cimedSymbol} alt="Cimed" className="h-9 w-9 object-contain" />
           <div>
             <h1 className="text-foreground font-black text-base leading-tight" style={{ fontFamily: 'Nunito, sans-serif' }}>
               Cimed GO
