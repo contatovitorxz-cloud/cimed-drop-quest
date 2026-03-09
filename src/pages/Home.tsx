@@ -21,27 +21,6 @@ L.Icon.Default.mergeOptions({
 const cimedImg = `<img src="/images/cimed-symbol.png" style="width:22px;height:22px;object-fit:contain;" />`;
 const pharmacyIcon = new L.DivIcon({ html: `<div class="marker-pharmacy">${cimedImg}</div>`, className: '', iconSize: [40, 40], iconAnchor: [20, 20] });
 
-const createDropIcon = (count: number) => new L.DivIcon({
-  html: `<div class="marker-drop-badge"><span>🎁</span><div class="marker-badge-count">${count}</div></div>`,
-  className: '',
-  iconSize: [44, 44],
-  iconAnchor: [22, 22],
-});
-
-const rareDropIcon = new L.DivIcon({
-  html: `<div class="marker-rare-drop"><span>🔥</span><div class="marker-rare-tooltip">Drop Raro · 130m</div></div>`,
-  className: '',
-  iconSize: [48, 48],
-  iconAnchor: [24, 24],
-});
-
-const missionIcon = new L.DivIcon({
-  html: `<div class="marker-mission-target"><span>🎯</span></div>`,
-  className: '',
-  iconSize: [40, 40],
-  iconAnchor: [20, 20],
-});
-
 function lerpAngle(a: number, b: number, t: number): number {
   let diff = ((b - a + 540) % 360) - 180;
   return a + diff * t;
@@ -106,14 +85,12 @@ const Home = () => {
   const animFrameRef = useRef<number>(0);
   const isAnimatingRef = useRef(false);
 
-  // Fetch pharmacies from Supabase
   useEffect(() => {
     supabase.from('pharmacies').select('id, name, address, lat, lng').eq('active', true).then(({ data }) => {
       if (data) setPharmacies(data);
     });
   }, []);
 
-  // GPS tracking
   useEffect(() => {
     if (!navigator.geolocation) return;
     const watchId = navigator.geolocation.watchPosition(
@@ -136,7 +113,6 @@ const Home = () => {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  // Device orientation
   useEffect(() => {
     const handleOrientation = (e: DeviceOrientationEvent) => {
       const compassHeading = (e as any).webkitCompassHeading ?? (e.alpha != null ? (360 - e.alpha) % 360 : null);
@@ -152,7 +128,6 @@ const Home = () => {
     return () => window.removeEventListener('deviceorientation', handleOrientation, true);
   }, []);
 
-  // Smooth interpolation
   useEffect(() => {
     if (isAnimatingRef.current) return;
     isAnimatingRef.current = true;
@@ -180,30 +155,32 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-yellow-500/20 to-orange-500/20' },
+    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-blue-500/20 to-cyan-500/20' },
+    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-purple-500/20 to-pink-500/20' },
   ];
 
   return (
     <div className="min-h-screen bg-background pb-20">
       <AppHeader />
 
-      <div className="px-4 pt-[72px] space-y-3">
-        {/* Level Card — reference style */}
-        <div className="bg-card rounded-2xl p-4 flex items-center gap-3 border border-border">
-          <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center flex-shrink-0">
-            <Gift className="w-6 h-6 text-accent" />
+      <div className="px-4 pt-[72px] space-y-3 stagger-children">
+        {/* Level Card */}
+        <div className="glass-card glow-border rounded-2xl p-4 flex items-center gap-3 shadow-depth">
+          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+            <Gift className="w-6 h-6 text-accent-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-foreground font-bold text-sm">Nível 1 · {username}</p>
             <p className="text-muted-foreground text-xs">0 pontos</p>
-            <div className="w-full h-0.5 rounded-full bg-accent/40 mt-2" />
+            <div className="w-full h-1 rounded-full bg-muted mt-2 overflow-hidden">
+              <div className="h-full w-0 rounded-full gradient-yellow" />
+            </div>
           </div>
         </div>
 
-        {/* Map Section — no label above */}
-        <div className="relative rounded-2xl overflow-hidden border border-border" style={{ height: 300 }}>
+        {/* Map Section */}
+        <div className="relative rounded-2xl overflow-hidden border border-border shadow-depth-lg" style={{ height: 300 }}>
           <MapContainer
             center={playerPosition}
             zoom={15}
@@ -216,8 +193,6 @@ const Home = () => {
             <ThemeAwareTileLayer />
             <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
-
-            {/* Pharmacy markers */}
             {pharmacies.map((p) => (
               <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
                 <Popup>
@@ -228,21 +203,18 @@ const Home = () => {
                 </Popup>
               </Marker>
             ))}
-
           </MapContainer>
 
-          {/* Recenter button */}
           <button
             onClick={handleRecenter}
-            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full bg-card/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full glass-card flex items-center justify-center shadow-depth active:scale-95 transition-transform"
           >
             <Navigation className="w-5 h-5 text-accent" />
           </button>
 
-          {/* QR/Camera button */}
           <button
             onClick={() => navigate('/scan-history')}
-            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 active:scale-95 transition-transform"
+            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 active:scale-95 transition-transform shimmer-btn"
           >
             <Camera className="w-5 h-5 text-accent-foreground" />
           </button>
@@ -254,9 +226,9 @@ const Home = () => {
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="w-full bg-card rounded-2xl p-4 flex items-center gap-3 border border-border active:scale-[0.98] transition-all duration-200 text-left"
+              className="w-full glass-card glow-border-hover rounded-2xl p-4 flex items-center gap-3 active:scale-[0.98] transition-all duration-300 text-left shadow-depth"
             >
-              <div className="w-11 h-11 rounded-xl bg-accent/15 flex items-center justify-center flex-shrink-0">
+              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center flex-shrink-0`}>
                 <card.icon className="w-6 h-6 text-accent" />
               </div>
               <div className="flex-1 min-w-0">

@@ -33,26 +33,9 @@ const InfluencerProfile = () => {
 
   const loadData = async () => {
     if (!user) return;
-
-    // Load profile
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('avatar_url, username')
-      .eq('id', user.id)
-      .single();
-
-    if (profile) {
-      setAvatarUrl(profile.avatar_url);
-      setDisplayName(profile.username || '');
-    }
-
-    // Load influencer settings
-    const { data: settings } = await supabase
-      .from('influencer_settings')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-
+    const { data: profile } = await supabase.from('profiles').select('avatar_url, username').eq('id', user.id).single();
+    if (profile) { setAvatarUrl(profile.avatar_url); setDisplayName(profile.username || ''); }
+    const { data: settings } = await supabase.from('influencer_settings').select('*').eq('user_id', user.id).single();
     if (settings) {
       setPixKeyType(settings.pix_key_type || 'cpf');
       setPixKey(settings.pix_key || '');
@@ -63,90 +46,46 @@ const InfluencerProfile = () => {
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    if (!user) {
-      toast({ title: 'Você precisa estar logado para enviar uma foto', variant: 'destructive' });
-      return;
-    }
-
+    if (!file || !user) return;
     setUploading(true);
     try {
       const ext = file.name.split('.').pop() || 'jpg';
       const filePath = `${user.id}/avatar-${Date.now()}.${ext}`;
-
-      console.log('Uploading avatar to:', filePath);
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(filePath, file, { upsert: true });
-
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        toast({ title: 'Erro ao enviar foto', description: uploadError.message, variant: 'destructive' });
-        return;
-      }
-
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, { upsert: true });
+      if (uploadError) { toast({ title: 'Erro ao enviar foto', description: uploadError.message, variant: 'destructive' }); return; }
       const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
-      console.log('Public URL:', publicUrl);
-
       const { error: updateError } = await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', user.id);
-      if (updateError) {
-        console.error('Profile update error:', updateError);
-        toast({ title: 'Erro ao salvar URL', description: updateError.message, variant: 'destructive' });
-        return;
-      }
-
+      if (updateError) { toast({ title: 'Erro ao salvar URL', description: updateError.message, variant: 'destructive' }); return; }
       setAvatarUrl(publicUrl + '?t=' + Date.now());
       toast({ title: 'Foto atualizada!' });
-    } catch (err) {
-      console.error('Unexpected error:', err);
-      toast({ title: 'Erro inesperado ao enviar foto', variant: 'destructive' });
-    } finally {
-      setUploading(false);
-    }
+    } catch { toast({ title: 'Erro inesperado ao enviar foto', variant: 'destructive' }); }
+    finally { setUploading(false); }
   };
 
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-
-    // Update profile username
     await supabase.from('profiles').update({ username: displayName }).eq('id', user.id);
-
-    // Upsert influencer settings
-    const { error } = await supabase
-      .from('influencer_settings')
-      .upsert({
-        user_id: user.id,
-        display_name: displayName,
-        pix_key_type: pixKeyType,
-        pix_key: pixKey,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'user_id' });
-
+    const { error } = await supabase.from('influencer_settings').upsert({
+      user_id: user.id, display_name: displayName, pix_key_type: pixKeyType, pix_key: pixKey, updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_id' });
     setSaving(false);
-
-    if (error) {
-      toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: 'Perfil salvo com sucesso!' });
-    }
+    if (error) { toast({ title: 'Erro ao salvar', description: error.message, variant: 'destructive' }); }
+    else { toast({ title: 'Perfil salvo com sucesso!' }); }
   };
 
-  const pixKeyTypeLabels: Record<string, string> = {
-    cpf: 'CPF',
-    email: 'E-mail',
-    phone: 'Telefone',
-    random: 'Chave Aleatória',
-  };
+  const pixKeyTypeLabels: Record<string, string> = { cpf: 'CPF', email: 'E-mail', phone: 'Telefone', random: 'Chave Aleatória' };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border px-4 py-3">
+      <div className="sticky top-0 z-30 glass-header px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
+            <div className="relative">
+              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md animate-glow-breathe" />
+              <img src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
+            </div>
             <span className="text-sm font-bold">Cimed GO</span>
           </div>
           <button onClick={() => navigate('/influencer-dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
@@ -155,11 +94,11 @@ const InfluencerProfile = () => {
         </div>
       </div>
 
-      <div className="px-4 pb-8 space-y-6 pt-6">
+      <div className="px-4 pb-8 space-y-6 pt-6 stagger-children">
         {/* Avatar Section */}
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent flex items-center justify-center bg-card">
+            <div className="avatar-ring w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-card">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
@@ -169,48 +108,36 @@ const InfluencerProfile = () => {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="absolute bottom-0 right-0 w-8 h-8 rounded-full gradient-yellow flex items-center justify-center text-accent-foreground shadow-lg"
+              className="absolute bottom-0 right-0 w-8 h-8 rounded-full gradient-yellow flex items-center justify-center text-accent-foreground shadow-lg shadow-accent/30"
             >
               <Camera className="w-4 h-4" />
             </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarUpload}
-            />
+            <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
           </div>
           <p className="text-xs text-muted-foreground">{uploading ? 'Enviando...' : 'Toque para alterar a foto'}</p>
         </div>
 
         {/* Name */}
-        <Card className="border-border bg-card">
+        <Card className="glass-card glow-border-hover shadow-depth border-0">
           <CardContent className="p-4 space-y-2">
             <Label className="text-xs text-muted-foreground uppercase tracking-widest">Nome de exibição</Label>
-            <Input
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Seu nome"
-              className="bg-background border-border"
-            />
+            <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Seu nome" className="bg-background/50 border-border/50" />
           </CardContent>
         </Card>
 
         {/* PIX Settings */}
-        <Card className="border-border bg-card">
+        <Card className="glass-card glow-border-hover shadow-depth border-0">
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center gap-2">
-              <Wallet className="w-5 h-5 text-accent" />
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
+                <Wallet className="w-4 h-4 text-accent" />
+              </div>
               <span className="text-sm font-bold">Configuração PIX</span>
             </div>
-
             <div className="space-y-2">
               <Label className="text-xs text-muted-foreground uppercase tracking-widest">Tipo de chave</Label>
               <Select value={pixKeyType} onValueChange={setPixKeyType}>
-                <SelectTrigger className="bg-background border-border">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectTrigger className="bg-background/50 border-border/50"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="cpf">CPF</SelectItem>
                   <SelectItem value="email">E-mail</SelectItem>
@@ -219,50 +146,36 @@ const InfluencerProfile = () => {
                 </SelectContent>
               </Select>
             </div>
-
             <div className="space-y-2">
               <Label className="text-xs text-muted-foreground uppercase tracking-widest">Chave PIX</Label>
-              <Input
-                value={pixKey}
-                onChange={(e) => setPixKey(e.target.value)}
-                placeholder={`Digite seu ${pixKeyTypeLabels[pixKeyType]}`}
-                className="bg-background border-border"
-              />
+              <Input value={pixKey} onChange={(e) => setPixKey(e.target.value)} placeholder={`Digite seu ${pixKeyTypeLabels[pixKeyType]}`} className="bg-background/50 border-border/50" />
             </div>
           </CardContent>
         </Card>
 
         {/* Commission Balance */}
-        <Card className="border-border bg-card">
+        <Card className="glass-card glow-border shadow-depth border-0">
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-accent" />
+              <div className="w-8 h-8 rounded-full gradient-yellow flex items-center justify-center">
+                <DollarSign className="w-4 h-4 text-accent-foreground" />
+              </div>
               <span className="text-sm font-bold">Comissão</span>
             </div>
-
             <div className="text-center py-3">
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Saldo disponível</p>
-              <p className="text-3xl font-extrabold text-accent">
+              <p className="text-3xl font-extrabold text-gradient-orange">
                 R$ {commissionBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </p>
             </div>
-
-            <Button
-              variant="outline"
-              className="w-full border-accent text-accent hover:bg-accent/10"
-              disabled={commissionBalance <= 0}
-            >
+            <Button variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10 transition-all duration-300" disabled={commissionBalance <= 0}>
               Solicitar Saque
             </Button>
           </CardContent>
         </Card>
 
         {/* Save */}
-        <Button
-          onClick={handleSave}
-          disabled={saving}
-          className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl glow-yellow hover:opacity-90 transition-opacity"
-        >
+        <Button onClick={handleSave} disabled={saving} className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300 shimmer-btn">
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </div>
