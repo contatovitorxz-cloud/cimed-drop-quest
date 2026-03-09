@@ -16,12 +16,6 @@ import {
 } from '@/data/mockData';
 
 const metricIcons = [Users, Target, QrCode, Gift];
-const metricGradients = [
-  'from-accent/15 to-accent/5',
-  'from-accent/12 to-accent/5',
-  'from-accent/10 to-accent/5',
-  'from-accent/10 to-accent/5',
-];
 
 function formatValue(val: number) {
   if (val >= 1000000) return (val / 1000000).toFixed(1).replace('.0', '') + 'M';
