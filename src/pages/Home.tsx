@@ -155,9 +155,9 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-yellow-500/20 to-orange-500/20' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-blue-500/20 to-cyan-500/20' },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-purple-500/20 to-pink-500/20' },
+    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-accent/15 to-accent/5' },
+    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-accent/10 to-accent/5' },
+    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-accent/10 to-accent/5' },
   ];
 
   return (
