@@ -214,7 +214,7 @@ const Home = () => {
 
           <button
             onClick={() => navigate('/scan-history')}
-            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/30 active:scale-95 transition-transform shimmer-btn"
+            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-depth active:scale-95 transition-transform"
           >
             <Camera className="w-5 h-5 text-accent-foreground" />
           </button>

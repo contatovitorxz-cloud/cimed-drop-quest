@@ -44,7 +44,7 @@ const BottomNav = () => {
               <Icon className={`w-6 h-6 transition-all duration-300 ${active ? 'text-accent scale-110' : 'text-muted-foreground'}`} strokeWidth={active ? 2.2 : 1.5} />
               <span className={`text-xs font-bold transition-all duration-300 ${active ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
               {active && (
-                <div className="absolute -bottom-0.5 w-5 h-0.5 rounded-full bg-accent shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
+                <div className="absolute -bottom-0.5 w-5 h-0.5 rounded-full bg-accent" />
               )}
             </button>
           );

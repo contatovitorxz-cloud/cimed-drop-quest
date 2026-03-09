@@ -152,8 +152,8 @@ function DashboardSection() {
                     <Legend verticalAlign="bottom" height={36} iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, color: 'hsl(var(--muted-foreground))' }} />
                     <Line type="monotone" dataKey="usuarios" stroke="hsl(48,100%,50%)" strokeWidth={3} dot={false} name="Usuários" />
                     <Line type="monotone" dataKey="scans" stroke="hsl(25,100%,50%)" strokeWidth={2} dot={false} name="Scans" />
-                    <Line type="monotone" dataKey="drops" stroke="hsl(142,76%,46%)" strokeWidth={1.5} dot={false} name="Drops" />
-                    <Line type="monotone" dataKey="missoes" stroke="hsl(217,91%,60%)" strokeWidth={1.5} dot={false} name="Missões" />
+                    <Line type="monotone" dataKey="drops" stroke="hsl(0,0%,60%)" strokeWidth={1.5} dot={false} name="Drops" />
+                    <Line type="monotone" dataKey="missoes" stroke="hsl(0,0%,40%)" strokeWidth={1.5} dot={false} name="Missões" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

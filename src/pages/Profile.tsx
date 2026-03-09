@@ -69,10 +69,10 @@ const Profile = () => {
         {/* Quick links */}
         <div className="space-y-2 mb-4">
           {[
-            { icon: Crown, label: 'Leaderboard Nacional', gradient: 'from-yellow-500/20 to-orange-500/20', path: '/leaderboard' },
-            { icon: Users, label: 'Comunidade', gradient: 'from-blue-500/20 to-cyan-500/20', path: '/social' },
-            { icon: History, label: 'Histórico de Scans', gradient: 'from-green-500/20 to-emerald-500/20', path: '/scan-history' },
-            { icon: BarChart3, label: 'Dados de Consumo', gradient: 'from-purple-500/20 to-pink-500/20', path: '/analytics' },
+            { icon: Crown, label: 'Leaderboard Nacional', gradient: 'from-accent/15 to-accent/5', path: '/leaderboard' },
+            { icon: Users, label: 'Comunidade', gradient: 'from-accent/10 to-accent/5', path: '/social' },
+            { icon: History, label: 'Histórico de Scans', gradient: 'from-accent/10 to-accent/5', path: '/scan-history' },
+            { icon: BarChart3, label: 'Dados de Consumo', gradient: 'from-accent/10 to-accent/5', path: '/analytics' },
           ].map(({ icon: Icon, label, gradient, path }) => (
             <button
               key={path}
