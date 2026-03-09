@@ -110,7 +110,7 @@ function DashboardSection() {
                       <div className="flex items-center gap-2 mt-0.5">
                         <p className="text-xl font-bold leading-tight">{formatValue(m.value)}</p>
                         {m.change > 0 && (
-                          <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[10px] px-1.5 py-0 font-medium">
+                          <Badge className="bg-accent/15 text-accent border-accent/30 text-[10px] px-1.5 py-0 font-medium">
                             <TrendingUp className="w-2.5 h-2.5 mr-0.5" />+{m.change}%
                           </Badge>
                         )}
