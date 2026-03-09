@@ -358,18 +358,17 @@
 }
 
 /* Mission marker */
-.marker-mission-target {
-  width: 38px;
-  height: 38px;
-  background: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid hsl(var(--primary));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  animation: bounce-idle 2.5s ease-in-out infinite;
-}
+  .marker-mission-target {
+    width: 38px;
+    height: 38px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid hsl(var(--primary));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
 .marker-mission-target span { font-size: 16px; }
 
 .marker-influencer {
