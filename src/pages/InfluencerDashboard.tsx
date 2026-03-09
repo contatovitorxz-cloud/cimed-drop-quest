@@ -34,7 +34,7 @@ const InfluencerDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md animate-glow-breathe" />
+              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md" />
               <img src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
             </div>
             <span className="text-sm font-bold">Cimed GO</span>
