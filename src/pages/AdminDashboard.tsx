@@ -246,7 +246,7 @@ function DropStatusBadge({ status, label }: { status: string; label?: string }) 
     expired: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     expirada: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     paused: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
-    active: 'bg-green-500/15 text-green-400 border-green-500/30',
+    active: 'bg-accent/15 text-accent border-accent/30',
   };
   const labels: Record<string, string> = {
     esgotado: 'Esgotado', encerra_hoje: 'Encerra hoje', ativo: 'Ativo', ended: 'Encerrado',
