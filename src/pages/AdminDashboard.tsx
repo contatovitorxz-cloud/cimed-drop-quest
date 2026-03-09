@@ -52,7 +52,7 @@ const AdminDashboard = () => {
               </Button>
               <Button variant="ghost" size="icon" className="text-muted-foreground relative h-9 w-9 hover:bg-accent/10 transition-all duration-300">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-[9px] text-destructive-foreground flex items-center justify-center font-bold animate-pulse">3</span>
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-destructive text-[9px] text-destructive-foreground flex items-center justify-center font-bold">3</span>
               </Button>
               <div className="flex items-center gap-2.5 ml-2 cursor-pointer">
                 <div className="avatar-ring w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
