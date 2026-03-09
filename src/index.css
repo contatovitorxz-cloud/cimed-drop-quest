@@ -328,19 +328,18 @@
 }
 
 /* Rare drop marker */
-.marker-rare-drop {
-  width: 46px;
-  height: 46px;
-  background: linear-gradient(135deg, hsl(var(--accent)), hsl(25, 100%, 50%));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 16px rgba(255, 140, 0, 0.4);
-  animation: float 2.5s ease-in-out infinite;
-}
+  .marker-rare-drop {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(25, 100%, 50%));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
 .marker-rare-drop span { font-size: 20px; }
 .marker-rare-tooltip {
   position: absolute;
