@@ -1,60 +1,31 @@
 
 
-## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
+## Plano: Refinar Metric Cards do Influencer Dashboard
 
-### Análise das diferenças (comparando imagens com código atual)
+### Mudanças
 
-**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
-- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
-- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
-- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
-- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
-- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
+**`src/pages/InfluencerDashboard.tsx`**
 
-**Imagem 2 (image-5)** - Layout com sidebar direita:
-- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
-- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
-- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
-- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
-- Sidebar direita: Ranking dos Drops + Novos Influenciadores
+1. **Ícones** — trocar `rounded-full` por `rounded-xl` (quadrado arredondado), com `bg-accent/10 border border-accent/20` para visual mais profissional e estruturado
 
-**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
+2. **Indicadores de %** — remover o `Badge` com caixa/fundo. Substituir por texto inline simples:
+   - Verde (`text-emerald-400`) para crescimento positivo com `TrendingUp`
+   - Vermelho (`text-red-400`) para negativo com `TrendingDown`
+   - Sem fundo, sem borda, apenas ícone + texto pequeno (`text-[10px] font-medium`)
 
-### Mudanças necessárias
+3. **Cards de métrica** — aumentar profundidade:
+   - Trocar `glass-card` por fundo sólido escuro (`bg-card/80`) com borda `border border-border/30`
+   - Shadow mais agressivo: `shadow-[0_2px_4px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.15),0_20px_40px_rgba(0,0,0,0.2)]`
+   - `rounded-2xl` para cantos mais suaves
 
-**1. `src/data/mockData.ts`**
-- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
-- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
-- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
-- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
+4. **Quick Action cards** — mesmo tratamento: ícones `rounded-xl`, sombra profunda, `rounded-2xl`
 
-**2. `src/pages/AdminDashboard.tsx`**
-- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
-- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
-- **Gráfico**:
-  - Eixo X: Meses (Jan, Fev, Mar... Ago)
-  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
-  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
-  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
-  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
-- **Tabela "Últimos Drops Liberados"**:
-  - Header de coluna: "Drop | Resgates | Status | Ações"
-  - Formato resgates: "450/500" (não "2,00 m")
-  - Badge "Encerrado" cinza escuro
-  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
-- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
-
-**3. `src/components/admin/AdminSidebar.tsx`**
-- Adicionar label "Menu" acima dos itens do menu
-- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
-- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
-- Ícones brancos para itens inativos
+5. **Chart card** — `rounded-2xl` + sombra profunda reforçada
 
 ### Arquivos
 
-| Arquivo | Ação |
+| Arquivo | Mudança |
 |---|---|
-| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
-| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
-| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
+| `src/pages/InfluencerDashboard.tsx` | Refazer metric cards (ícone quadrado, % sem caixa com cor verde/vermelho), quick actions com ícone quadrado, shadow mais profundo em todos os cards |
+| `src/index.css` | Adicionar `.shadow-depth-xl` com camadas de sombra mais profundas |
 
