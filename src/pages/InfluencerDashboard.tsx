@@ -22,9 +22,9 @@ const InfluencerDashboard = () => {
   const initials = username.slice(0, 1).toUpperCase();
 
   const metrics = [
-    { icon: Eye, label: 'Visualizações', value: mockInfluencerMetrics[0]?.value ?? 12500, change: mockInfluencerMetrics[0]?.change ?? 8.2, gradient: 'from-yellow-500/20 to-orange-500/20' },
-    { icon: MousePointerClick, label: 'Cliques', value: mockInfluencerMetrics[1]?.value ?? 620, change: mockInfluencerMetrics[1]?.change ?? 5.1, gradient: 'from-blue-500/20 to-cyan-500/20' },
-    { icon: ShoppingBag, label: 'Conversões', value: mockInfluencerMetrics[2]?.value ?? 218, change: mockInfluencerMetrics[2]?.change ?? 12.3, gradient: 'from-green-500/20 to-emerald-500/20' },
+    { icon: Eye, label: 'Visualizações', value: mockInfluencerMetrics[0]?.value ?? 12500, change: mockInfluencerMetrics[0]?.change ?? 8.2, gradient: 'from-accent/15 to-accent/5' },
+    { icon: MousePointerClick, label: 'Cliques', value: mockInfluencerMetrics[1]?.value ?? 620, change: mockInfluencerMetrics[1]?.change ?? 5.1, gradient: 'from-accent/12 to-accent/5' },
+    { icon: ShoppingBag, label: 'Conversões', value: mockInfluencerMetrics[2]?.value ?? 218, change: mockInfluencerMetrics[2]?.change ?? 12.3, gradient: 'from-accent/10 to-accent/5' },
   ];
 
   return (
