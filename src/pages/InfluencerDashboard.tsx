@@ -73,7 +73,7 @@ const InfluencerDashboard = () => {
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-medium">{m.label}</p>
                 <p className="text-xl font-extrabold">{m.value.toLocaleString('pt-BR')}</p>
                 {m.change > 0 && (
-                  <Badge className="bg-green-500/15 text-green-400 border-green-500/30 text-[9px] px-1.5 py-0">
+                  <Badge className="bg-accent/15 text-accent border-accent/30 text-[9px] px-1.5 py-0">
                     <TrendingUp className="w-2.5 h-2.5 mr-0.5" />+{m.change}%
                   </Badge>
                 )}
