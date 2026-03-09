@@ -240,8 +240,8 @@ function DashboardSection() {
 function DropStatusBadge({ status, label }: { status: string; label?: string }) {
   const styles: Record<string, string> = {
     esgotado: 'bg-muted text-muted-foreground border-border',
-    encerra_hoje: 'bg-green-500/15 text-green-400 border-green-500/30',
-    ativo: 'bg-green-500/15 text-green-400 border-green-500/30',
+    encerra_hoje: 'bg-accent/15 text-accent border-accent/30',
+    ativo: 'bg-accent/15 text-accent border-accent/30',
     ended: 'bg-muted text-muted-foreground border-border',
     expired: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
     expirada: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
