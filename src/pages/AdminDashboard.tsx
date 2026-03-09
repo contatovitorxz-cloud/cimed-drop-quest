@@ -16,12 +16,6 @@ import {
 } from '@/data/mockData';
 
 const metricIcons = [Users, Target, QrCode, Gift];
-const metricGradients = [
-  'from-accent/15 to-accent/5',
-  'from-accent/12 to-accent/5',
-  'from-accent/10 to-accent/5',
-  'from-accent/10 to-accent/5',
-];
 
 function formatValue(val: number) {
   if (val >= 1000000) return (val / 1000000).toFixed(1).replace('.0', '') + 'M';
@@ -100,21 +94,21 @@ function DashboardSection() {
             {mockAdminMetrics.map((m, i) => {
               const Icon = metricIcons[i];
               return (
-                <Card key={m.label} className="glass-card glow-border-hover shadow-depth border-0 transition-all duration-300">
-                  <CardContent className="p-4 flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${metricGradients[i]} flex items-center justify-center shrink-0`}>
+                <Card key={m.label} className="relative glass-card shadow-depth border border-border/20 rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-depth-lg overflow-hidden">
+                  {m.change > 0 && (
+                    <div className="absolute top-3 right-3">
+                      <span className="inline-flex items-center gap-0.5 bg-accent/10 text-accent text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                        <TrendingUp className="w-3 h-3" />+{m.change}%
+                      </span>
+                    </div>
+                  )}
+                  <CardContent className="p-4 flex items-start gap-3">
+                    <div className="w-11 h-11 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center shrink-0">
                       <Icon className="w-5 h-5 text-accent" />
                     </div>
-                    <div className="min-w-0 flex-1">
+                    <div className="min-w-0 flex-1 pt-0.5">
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider leading-tight font-medium">{m.label}</p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <p className="text-xl font-bold leading-tight">{formatValue(m.value)}</p>
-                        {m.change > 0 && (
-                          <Badge className="bg-accent/15 text-accent border-accent/30 text-[10px] px-1.5 py-0 font-medium">
-                            <TrendingUp className="w-2.5 h-2.5 mr-0.5" />+{m.change}%
-                          </Badge>
-                        )}
-                      </div>
+                      <p className="text-xl font-bold leading-tight mt-1">{formatValue(m.value)}</p>
                     </div>
                   </CardContent>
                 </Card>
