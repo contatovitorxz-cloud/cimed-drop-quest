@@ -27,8 +27,7 @@ const BottomNav = () => {
                 onClick={() => navigate(tab.path)}
                 className="relative -mt-6"
               >
-                <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-20" />
-                <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-accent shadow-lg shadow-accent/40 active:scale-95 transition-transform">
+                <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-accent shadow-depth-lg active:scale-95 transition-transform">
                   <Icon className="w-7 h-7 text-accent-foreground" />
                 </div>
                 <p className="text-[10px] font-bold text-center mt-1 text-accent">{tab.label}</p>
