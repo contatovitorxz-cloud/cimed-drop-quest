@@ -207,21 +207,6 @@
     z-index: -1;
   }
 
-  /* === Shimmer Button === */
-  .shimmer-btn {
-    position: relative;
-    overflow: hidden;
-  }
-  .shimmer-btn:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(0, 0%, 100%, 0.15), transparent);
-    animation: shimmer 0.8s ease-in-out forwards;
-  }
 
   /* === Active Glow Bar (sidebar) === */
   .active-glow-bar {
