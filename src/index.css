@@ -128,13 +128,6 @@
     background-clip: text;
   }
 
-  .glow-orange {
-    box-shadow: 0 0 20px hsl(25, 100%, 50%, 0.4), 0 0 60px hsl(25, 100%, 50%, 0.1);
-  }
-
-  .glow-yellow {
-    box-shadow: 0 0 20px hsl(48, 100%, 50%, 0.4), 0 0 60px hsl(48, 100%, 50%, 0.1);
-  }
 
   /* === Cinematic Glassmorphism === */
   .glass-card {
