@@ -86,7 +86,7 @@ const InfluencerDashboard = () => {
         <div className="grid grid-cols-2 gap-3">
           <Card className="glass-card glow-border-hover shadow-depth border-0 cursor-pointer transition-all duration-300">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent/15 to-accent/5 flex items-center justify-center">
                 <Megaphone className="w-5 h-5 text-accent" />
               </div>
               <h3 className="font-semibold text-sm">Campanhas</h3>
