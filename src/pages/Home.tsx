@@ -167,7 +167,7 @@ const Home = () => {
       <div className="px-4 pt-[72px] space-y-3 stagger-children">
         {/* Level Card */}
         <div className="glass-card glow-border rounded-2xl p-4 flex items-center gap-3 shadow-depth">
-          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-depth">
             <Gift className="w-6 h-6 text-accent-foreground" />
           </div>
           <div className="flex-1 min-w-0">
