@@ -196,7 +196,6 @@
     border-radius: 50%;
     background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(25, 100%, 50%), hsl(48, 100%, 50%));
     z-index: -1;
-    animation: ring-rotate 4s linear infinite;
   }
 
   .avatar-ring-square {
@@ -209,7 +208,6 @@
     border-radius: 1rem;
     background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(25, 100%, 50%), hsl(48, 100%, 50%));
     z-index: -1;
-    animation: ring-rotate 4s linear infinite;
   }
 
   /* === Shimmer Button === */
@@ -217,7 +215,7 @@
     position: relative;
     overflow: hidden;
   }
-  .shimmer-btn::after {
+  .shimmer-btn:hover::after {
     content: '';
     position: absolute;
     top: 0;
@@ -225,7 +223,7 @@
     width: 50%;
     height: 100%;
     background: linear-gradient(90deg, transparent, hsl(0, 0%, 100%, 0.15), transparent);
-    animation: shimmer 3s ease-in-out infinite;
+    animation: shimmer 0.8s ease-in-out forwards;
   }
 
   /* === Active Glow Bar (sidebar) === */
@@ -246,10 +244,6 @@
 }
 
 /* === Cinematic Keyframes === */
-@keyframes ring-rotate {
-  from { filter: hue-rotate(0deg); }
-  to { filter: hue-rotate(360deg); }
-}
 
 @keyframes shimmer {
   0% { left: -100%; }
@@ -257,10 +251,6 @@
   100% { left: 100%; }
 }
 
-@keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 15px hsl(var(--accent) / 0.15); }
-  50% { box-shadow: 0 0 25px hsl(var(--accent) / 0.3); }
-}
 
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(12px); }
@@ -271,9 +261,6 @@
   animation: slide-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.animate-glow-breathe {
-  animation: glow-breathe 3s ease-in-out infinite;
-}
 
 /* Stagger children */
 .stagger-children > * {
@@ -318,14 +305,6 @@
   100% { transform: translateX(-50%) scale(1.8); opacity: 0; }
 }
 
-@keyframes center-tab-glow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.1); }
-}
-
-.center-tab-pulse {
-  animation: center-tab-glow 3s ease-in-out infinite;
-}
 
 /* Marker styles */
 .marker-pharmacy {
