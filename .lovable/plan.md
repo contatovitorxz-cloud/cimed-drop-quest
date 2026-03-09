@@ -1,60 +1,101 @@
 
 
-## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
+## Plano: Upgrade Cinematográfico — Painéis User, Influencer e Admin
 
-### Análise das diferenças (comparando imagens com código atual)
+Vou transformar todos os três painéis em uma experiência visual surreal, profissional e cinematográfica, com glassmorphism, micro-animações, gradientes refinados, e um design system coeso.
 
-**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
-- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
-- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
-- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
-- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
-- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
+### 1. Design System Global (`src/index.css`)
+- Adicionar classes utilitárias de glassmorphism: `glass-card`, `glass-header`
+- Gradientes cinematográficos: `gradient-hero`, `gradient-card-glow`
+- Animações suaves: `animate-slide-in`, `animate-glow`, shimmer em cards premium
+- Sombras coloridas: `shadow-accent/20`, `shadow-glow`
 
-**Imagem 2 (image-5)** - Layout com sidebar direita:
-- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
-- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
-- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
-- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
-- Sidebar direita: Ranking dos Drops + Novos Influenciadores
+### 2. Painel do Usuário (Home + Profile + BottomNav + AppHeader)
 
-**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
+**`src/components/layout/AppHeader.tsx`**
+- Glassmorphism header: `bg-background/60 backdrop-blur-xl` com borda sutil
+- Ícone de notificação com animação pulse no badge
+- Avatar com borda gradiente animada (anel dourado)
+- Logo com glow sutil
 
-### Mudanças necessárias
+**`src/components/layout/BottomNav.tsx`**
+- Glassmorphism: `bg-background/70 backdrop-blur-xl`
+- Indicador ativo com dot/linha dourada animada abaixo do ícone
+- Botão central (Drops) com anel de glow pulsante mais cinematográfico
+- Transição suave nos ícones com scale e color shift
 
-**1. `src/data/mockData.ts`**
-- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
-- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
-- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
-- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
+**`src/pages/Home.tsx`**
+- Level card com gradiente sutil e borda glow
+- Mapa com bordas arredondadas e sombra profunda
+- Action cards com hover glow, ícones com fundo gradiente circular, shimmer sutil na borda
+- Efeito de profundidade nos cards (sombra layered)
 
-**2. `src/pages/AdminDashboard.tsx`**
-- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
-- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
-- **Gráfico**:
-  - Eixo X: Meses (Jan, Fev, Mar... Ago)
-  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
-  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
-  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
-  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
-- **Tabela "Últimos Drops Liberados"**:
-  - Header de coluna: "Drop | Resgates | Status | Ações"
-  - Formato resgates: "450/500" (não "2,00 m")
-  - Badge "Encerrado" cinza escuro
-  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
-- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
+**`src/pages/Profile.tsx`**
+- Avatar com anel gradiente animado (dourado → laranja)
+- Stats grid com glassmorphism e números animados
+- Cards de quick links com hover glow suave e transição cinematográfica
+- Badges com efeito de brilho/shimmer nos desbloqueados
+- Botão de sair com estilo refinado
 
-**3. `src/components/admin/AdminSidebar.tsx`**
-- Adicionar label "Menu" acima dos itens do menu
-- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
-- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
-- Ícones brancos para itens inativos
+### 3. Painel do Influencer
 
-### Arquivos
+**`src/pages/InfluencerDashboard.tsx`**
+- Header com glassmorphism e logo com glow
+- Welcome section com gradiente de texto mais forte
+- CTA "Criar Drop" com animação de shimmer no botão
+- Metric cards com glassmorphism, ícone com fundo gradiente circular, bordas com glow suave
+- Quick action cards com hover effect cinematográfico (scale + glow + borda iluminada)
+- Gráfico com fundo gradiente sutil e tooltip estilizado
+
+**`src/pages/InfluencerProfile.tsx`**
+- Avatar com anel gradiente animado
+- Cards de configuração com glassmorphism
+- Botão salvar com shimmer animado
+
+### 4. Painel Admin
+
+**`src/components/admin/AdminSidebar.tsx`**
+- Fundo com gradiente escuro sutil (não flat)
+- Item ativo com glow lateral (barra dourada à esquerda) + fundo glass
+- Hover com animação suave de highlight
+- Logo com glow pulse sutil
+- Separadores com gradiente fade
+
+**`src/pages/AdminDashboard.tsx`**
+- Header com glassmorphism premium, avatar com ring glow
+- Metric cards com glassmorphism + borda com glow sutil + ícone com gradiente + hover scale
+- Gráfico com background com gradiente sutil, grid lines mais elegantes, dots com glow
+- Tabela com rows com hover glow sutil, badges com bordas luminosas
+- Sidebar direita: cards com glassmorphism, ranking com barras de progresso gradiente, influenciadores com fotos com ring glow
+- Botão "Criar Campanha" com shimmer animado
+
+### 5. Dados Mock Melhorados (`src/data/mockData.ts`)
+- Adicionar mais campanhas ao admin (5-6 total)
+- Adicionar mais influenciadores (5 total com status variados)
+- Popular `mockMissionCards` com 3 missões para o user não ver tela vazia
+- Popular `mockDrops` com 2-3 drops para o user
+- Popular `mockInfluencerCampaigns` com 2 campanhas ativas
+
+### Arquivos a alterar
 
 | Arquivo | Ação |
 |---|---|
-| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
-| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
-| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
+| `src/index.css` | Adicionar classes glass, glow, shimmer, gradientes cinematográficos |
+| `src/components/layout/AppHeader.tsx` | Glassmorphism, avatar ring glow, logo glow |
+| `src/components/layout/BottomNav.tsx` | Glassmorphism, indicador ativo animado, center button glow |
+| `src/pages/Home.tsx` | Cards com glow, depth shadows, level card premium |
+| `src/pages/Profile.tsx` | Avatar ring, glass cards, animated stats |
+| `src/pages/InfluencerDashboard.tsx` | Glass header, shimmer CTA, glass metric cards, glow actions |
+| `src/pages/InfluencerProfile.tsx` | Avatar ring, glass cards |
+| `src/components/admin/AdminSidebar.tsx` | Gradiente bg, active glow bar, hover animations |
+| `src/pages/AdminDashboard.tsx` | Glass cards, glow borders, shimmer button, refined chart |
+| `src/data/mockData.ts` | Popular drops, missões, campanhas do influencer com dados reais |
+
+### Estilo visual alvo
+- **Glassmorphism**: `bg-white/5 backdrop-blur-xl border border-white/10`
+- **Glow borders**: `shadow-[0_0_15px_rgba(255,212,0,0.15)]`
+- **Shimmer buttons**: Background gradient animado via CSS
+- **Avatar rings**: `ring-2 ring-accent/50` com animação pulse
+- **Card hover**: `hover:shadow-[0_0_20px_rgba(255,212,0,0.1)] hover:border-accent/30 transition-all duration-300`
+- **Depth shadows**: Múltiplas camadas de box-shadow para profundidade 3D
 
