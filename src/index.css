@@ -208,7 +208,6 @@
     border-radius: 1rem;
     background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(25, 100%, 50%), hsl(48, 100%, 50%));
     z-index: -1;
-    animation: ring-rotate 4s linear infinite;
   }
 
   /* === Shimmer Button === */
