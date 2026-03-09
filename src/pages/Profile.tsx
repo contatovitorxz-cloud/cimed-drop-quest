@@ -5,7 +5,7 @@ import BadgeCard from '@/components/game/BadgeCard';
 import { mockBadges } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { LogOut, Crown, TrendingUp, Users, Share2, BarChart3, History, Star, Trophy, UserCheck, Zap } from 'lucide-react';
+import { LogOut, Crown, TrendingUp, Users, Share2, BarChart3, History, Star, Trophy, UserCheck, Zap, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -30,18 +30,18 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-background pb-20 pt-14">
       <AppHeader />
-      <div className="px-4 pt-4">
+      <div className="px-4 pt-4 stagger-children">
         {/* Profile card */}
-        <div className="rounded-2xl bg-card border border-border p-4 mb-4">
+        <div className="rounded-2xl glass-card glow-border p-4 mb-4 shadow-depth">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-2xl gradient-orange flex items-center justify-center text-3xl font-black text-primary-foreground">
+            <div className="avatar-ring-square w-16 h-16 rounded-2xl gradient-orange flex items-center justify-center text-3xl font-black text-primary-foreground">
               {user?.email?.[0]?.toUpperCase() || 'C'}
             </div>
             <div className="flex-1">
               <h2 className="font-black text-lg">{user?.user_metadata?.username || user?.email?.split('@')[0] || 'Jogador'}</h2>
               <p className="text-xs text-muted-foreground">{user?.email}</p>
             </div>
-            <button onClick={handleShare} className="p-2 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors">
+            <button onClick={handleShare} className="p-2 rounded-xl bg-secondary hover:bg-secondary/80 transition-all duration-300 hover:scale-105">
               <Share2 className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
@@ -56,8 +56,10 @@ const Profile = () => {
             { label: 'Seguidores', value: '0', icon: UserCheck },
             { label: 'Drops', value: '0', icon: Zap },
           ].map((stat) => (
-            <div key={stat.label} className="rounded-2xl bg-card border border-border p-2.5 text-center">
-              <stat.icon className="w-4 h-4 mx-auto text-accent mb-1" />
+            <div key={stat.label} className="rounded-2xl glass-card glow-border-hover p-2.5 text-center shadow-depth">
+              <div className="w-8 h-8 rounded-full gradient-yellow mx-auto mb-1.5 flex items-center justify-center">
+                <stat.icon className="w-4 h-4 text-accent-foreground" />
+              </div>
               <p className="text-sm font-black mt-0.5">{stat.value}</p>
               <p className="text-[9px] text-muted-foreground">{stat.label}</p>
             </div>
@@ -67,21 +69,23 @@ const Profile = () => {
         {/* Quick links */}
         <div className="space-y-2 mb-4">
           {[
-            { icon: Crown, label: 'Leaderboard Nacional', color: 'text-accent', path: '/leaderboard' },
-            { icon: Users, label: 'Comunidade', color: 'text-blue-400', path: '/social' },
-            { icon: History, label: 'Histórico de Scans', color: 'text-green-400', path: '/scan-history' },
-            { icon: BarChart3, label: 'Dados de Consumo', color: 'text-purple-400', path: '/analytics' },
-          ].map(({ icon: Icon, label, color, path }) => (
+            { icon: Crown, label: 'Leaderboard Nacional', gradient: 'from-yellow-500/20 to-orange-500/20', path: '/leaderboard' },
+            { icon: Users, label: 'Comunidade', gradient: 'from-blue-500/20 to-cyan-500/20', path: '/social' },
+            { icon: History, label: 'Histórico de Scans', gradient: 'from-green-500/20 to-emerald-500/20', path: '/scan-history' },
+            { icon: BarChart3, label: 'Dados de Consumo', gradient: 'from-purple-500/20 to-pink-500/20', path: '/analytics' },
+          ].map(({ icon: Icon, label, gradient, path }) => (
             <button
               key={path}
               onClick={() => navigate(path)}
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all"
+              className="w-full flex items-center justify-between p-3.5 rounded-2xl glass-card glow-border-hover transition-all duration-300 text-left"
             >
               <div className="flex items-center gap-3">
-                <Icon className={`w-5 h-5 ${color}`} />
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                  <Icon className="w-5 h-5 text-accent" />
+                </div>
                 <span className="font-bold text-sm">{label}</span>
               </div>
-              <TrendingUp className="w-4 h-4 text-muted-foreground" />
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
             </button>
           ))}
         </div>
@@ -97,7 +101,7 @@ const Profile = () => {
           ))}
         </div>
 
-        <Button onClick={handleSignOut} variant="outline" className="w-full rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10">
+        <Button onClick={handleSignOut} variant="outline" className="w-full rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 transition-all duration-300">
           <LogOut className="w-4 h-4 mr-2" />
           Sair da conta
         </Button>

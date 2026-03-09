@@ -14,7 +14,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-t border-border safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 glass-header safe-bottom">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
@@ -27,8 +27,8 @@ const BottomNav = () => {
                 onClick={() => navigate(tab.path)}
                 className="relative -mt-6"
               >
-                <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-30 center-tab-pulse" />
-                <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-accent shadow-lg shadow-accent/40 active:scale-95 transition-transform">
+                <div className="absolute inset-0 bg-accent rounded-full blur-xl opacity-30 animate-glow-breathe" />
+                <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-accent shadow-lg shadow-accent/40 active:scale-95 transition-transform shimmer-btn">
                   <Icon className="w-7 h-7 text-accent-foreground" />
                 </div>
                 <p className="text-[10px] font-bold text-center mt-1 text-accent">{tab.label}</p>
@@ -40,10 +40,13 @@ const BottomNav = () => {
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className="flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all duration-200"
+              className="flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all duration-300 relative"
             >
-              <Icon className={`w-6 h-6 ${active ? 'text-accent' : 'text-muted-foreground'}`} strokeWidth={active ? 2.2 : 1.5} />
-              <span className={`text-xs font-bold ${active ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
+              <Icon className={`w-6 h-6 transition-all duration-300 ${active ? 'text-accent scale-110' : 'text-muted-foreground'}`} strokeWidth={active ? 2.2 : 1.5} />
+              <span className={`text-xs font-bold transition-all duration-300 ${active ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
+              {active && (
+                <div className="absolute -bottom-0.5 w-5 h-0.5 rounded-full bg-accent shadow-[0_0_8px_hsl(var(--accent)/0.6)]" />
+              )}
             </button>
           );
         })}

@@ -32,20 +32,24 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="bg-sidebar">
+      <SidebarContent className="glass-sidebar border-r border-border/30">
         {/* Logo */}
-        <div className={`px-4 py-5 border-b border-sidebar-border ${collapsed ? 'px-2' : ''}`}>
+        <div className={`px-4 py-5 border-b border-border/20 ${collapsed ? 'px-2' : ''}`}>
           <div className={`${collapsed ? 'text-center' : ''}`}>
             <span className="font-['Nunito'] font-black text-xl text-accent" style={{ fontWeight: 900 }}>
               {collapsed ? 'C' : 'CIMED'}
             </span>
             {!collapsed && <span className="font-['Nunito'] font-black text-xl text-foreground" style={{ fontWeight: 900 }}>GO</span>}
           </div>
-          {!collapsed && <p className="text-[10px] text-sidebar-foreground/60 mt-0.5 tracking-widest uppercase">Admin Panel</p>}
+          {!collapsed && <p className="text-[10px] text-muted-foreground/60 mt-0.5 tracking-widest uppercase">Admin Panel</p>}
         </div>
 
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest px-4 mb-1">Menu</SidebarGroupLabel>}
+          {!collapsed && (
+            <SidebarGroupLabel className="text-[10px] text-muted-foreground/40 uppercase tracking-widest px-4 mb-1">
+              Menu
+            </SidebarGroupLabel>
+          )}
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
@@ -54,10 +58,10 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       onClick={() => onSectionChange(item.key)}
-                      className={`cursor-pointer transition-all duration-150 ${
+                      className={`cursor-pointer transition-all duration-300 ${
                         isActive
-                          ? 'bg-accent text-accent-foreground font-bold shadow-sm'
-                          : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+                          ? 'bg-accent text-accent-foreground font-bold shadow-sm active-glow-bar'
+                          : 'text-muted-foreground/70 hover:bg-accent/10 hover:text-foreground'
                       }`}
                     >
                       <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-accent-foreground' : ''}`} />
