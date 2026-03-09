@@ -313,7 +313,7 @@ function DropsSection() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">Gestão de Campanhas & Drops</h2>
-        <Button className="gradient-yellow text-accent-foreground gap-1.5 shimmer-btn shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300">
+        <Button className="gradient-yellow text-accent-foreground gap-1.5 shadow-depth hover:opacity-90 transition-all duration-300">
           <Plus className="w-4 h-4" /> Criar Campanha
         </Button>
       </div>
