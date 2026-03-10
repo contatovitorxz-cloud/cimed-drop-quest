@@ -9,7 +9,7 @@ import QRScanner from '@/components/qr/QRScanner';
 
 const Drops = () => {
   const { drops, influencerDrops, loading } = useDrops();
-  const navigate = useNavigate();
+  const [showScanner, setShowScanner] = useState(false);
   const hasDrops = drops.length > 0 || influencerDrops.length > 0;
 
   return (
