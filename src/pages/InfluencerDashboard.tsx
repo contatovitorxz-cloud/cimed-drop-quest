@@ -188,7 +188,7 @@ const InfluencerDashboard = () => {
           {metrics.map((m) => (
             <Card key={m.label}>
               <CardContent className="p-4 text-center space-y-2">
-                <div className="w-10 h-10 bg-accent/20 dark:bg-accent/15 mx-auto flex items-center justify-center border-[2px] border-border/30">
+                <div className="w-10 h-10 bg-accent/20 dark:bg-accent/10 mx-auto flex items-center justify-center">
                   <m.icon className="w-5 h-5 text-accent" />
                 </div>
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">{m.label}</p>
@@ -204,15 +204,15 @@ const InfluencerDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             {drops.slice(0, 5).map(d => (
-              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border/30">
-                <div className="w-8 h-8 bg-accent/20 dark:bg-accent/15 flex items-center justify-center border-[2px] border-border/30 shrink-0">
+              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border/30 dark:bg-muted/50 dark:border-border/10">
+                <div className="w-8 h-8 bg-accent/20 dark:bg-accent/10 flex items-center justify-center shrink-0">
                   <Megaphone className="w-4 h-4 text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-black uppercase truncate">{d.title}</p>
                   <p className="text-[10px] text-muted-foreground">{d.remaining_quantity}/{d.total_quantity} restantes</p>
                 </div>
-                <span className={`text-[9px] font-black px-2 py-0.5 border-[2px] border-border ${d.active ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
+                <span className={`text-[9px] font-black px-2 py-0.5 border-[2px] border-border dark:border-border/20 ${d.active ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
                   {d.active ? 'ATIVO' : 'ENCERRADO'}
                 </span>
               </div>

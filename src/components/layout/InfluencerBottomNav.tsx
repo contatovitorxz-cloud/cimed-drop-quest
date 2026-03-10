@@ -12,7 +12,7 @@ const InfluencerBottomNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t-[3px] border-border">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-card dark:bg-background border-t-[3px] border-border dark:border-t-accent/15">
       <div className="grid grid-cols-3 items-end py-2 max-w-md mx-auto">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
