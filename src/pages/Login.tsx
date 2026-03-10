@@ -45,9 +45,8 @@ const Login = () => {
     >
       <div className="w-full max-w-[380px] rounded-3xl p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)]" style={{ background: '#FFD500' }}>
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-1">
-          <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
-          <span className="font-anton text-6xl text-black leading-none">CIMEDGO</span>
+        <div className="flex items-center justify-center mb-1">
+          <img src={cimedLogoGo} alt="Cimed GO" className="h-16 object-contain" />
         </div>
 
         <p className="text-center text-black/50 text-xs font-bold uppercase tracking-[0.3em] mb-10">
