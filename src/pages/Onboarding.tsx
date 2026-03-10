@@ -22,7 +22,7 @@ const Onboarding = () => {
       <div className="w-full p-8 pb-12">
         <button
           onClick={handleStart}
-          className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent border-[3px] border-accent-foreground shadow-[4px_4px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2"
+          className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-primary-foreground border-[3px] border-accent-foreground shadow-[4px_4px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2"
         >
           Começar
           <ChevronRight className="w-5 h-5" />
