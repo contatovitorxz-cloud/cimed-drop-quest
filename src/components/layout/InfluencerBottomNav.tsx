@@ -13,7 +13,7 @@ const InfluencerBottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t-[3px] border-border">
-      <div className="flex items-end justify-center gap-8 px-4 py-2">
+      <div className="grid grid-cols-3 items-end py-2 max-w-md mx-auto">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           const Icon = tab.icon;
@@ -23,7 +23,7 @@ const InfluencerBottomNav = () => {
               <button
                 key={tab.path}
                 onClick={() => navigate(tab.path)}
-                className="flex flex-col items-center -mt-5"
+                className="flex flex-col items-center -mt-5 justify-self-center"
               >
                 <div className={`w-14 h-14 bg-accent border-[3px] border-border flex items-center justify-center shadow-[4px_4px_0_hsl(var(--border))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all ${isActive ? 'translate-x-[2px] translate-y-[2px] shadow-none' : ''}`}>
                   <Icon className="w-6 h-6 text-accent-foreground" strokeWidth={2.5} />
@@ -39,7 +39,7 @@ const InfluencerBottomNav = () => {
             <button
               key={tab.path}
               onClick={() => navigate(tab.path)}
-              className="flex flex-col items-center gap-1 py-1 px-3"
+              className="flex flex-col items-center gap-1 py-1 justify-self-center"
             >
               <Icon
                 className={`w-5 h-5 ${isActive ? 'text-accent' : 'text-muted-foreground'}`}
