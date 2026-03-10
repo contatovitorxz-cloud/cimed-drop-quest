@@ -43,10 +43,10 @@ export const mockMissions = [
 ];
 
 export const mockInfluencers = [
-  { id: '1', display_name: 'Marina Silva', username: 'marina.silva', commission_balance: 1250.50, drops_created: 12, claims: 340 },
-  { id: '2', display_name: 'Lucas Mendes', username: 'lucas.mendes', commission_balance: 890.00, drops_created: 8, claims: 215 },
-  { id: '3', display_name: 'Ana Costa', username: 'ana.costa', commission_balance: 2100.75, drops_created: 18, claims: 520 },
-  { id: '4', display_name: 'Pedro Oliveira', username: 'pedro.oliv', commission_balance: 450.30, drops_created: 5, claims: 128 },
+  { id: '1', display_name: 'Marina Silva', username: 'marina.silva', commission_balance: 1250.50, drops_created: 12, claims: 340, avatar_url: 'https://i.pravatar.cc/150?img=5', status: 'pending' },
+  { id: '2', display_name: 'Lucas Mendes', username: 'lucas.mendes', commission_balance: 890.00, drops_created: 8, claims: 215, avatar_url: 'https://i.pravatar.cc/150?img=12', status: 'pending' },
+  { id: '3', display_name: 'Ana Costa', username: 'ana.costa', commission_balance: 2100.75, drops_created: 18, claims: 520, avatar_url: 'https://i.pravatar.cc/150?img=9', status: 'pending' },
+  { id: '4', display_name: 'Pedro Oliveira', username: 'pedro.oliv', commission_balance: 450.30, drops_created: 5, claims: 128, avatar_url: 'https://i.pravatar.cc/150?img=15', status: 'pending' },
 ];
 
 export const mockProfiles = [
