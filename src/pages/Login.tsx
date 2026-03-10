@@ -40,10 +40,9 @@ const Login = () => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center px-5"
-      style={{ background: 'radial-gradient(ellipse at top, #1a1a1a 0%, #000 100%)' }}
+      className="fixed inset-0 flex items-center justify-center px-5 bg-accent"
     >
-      <div className="w-full max-w-[380px] rounded-3xl p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)]" style={{ background: '#FFD500' }}>
+      <div className="w-full max-w-[380px] p-10">
         {/* Logo */}
         <div className="flex items-center justify-center mb-1">
           <img src={cimedLogoGo} alt="Cimed GO" className="h-16 object-contain" />
