@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import cimedSymbol from '@/assets/cimed-symbol.png';
+import AppHeader from '@/components/layout/AppHeader';
 
 const InfluencerProfile = () => {
   const navigate = useNavigate();
@@ -78,66 +78,70 @@ const InfluencerProfile = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="sticky top-0 z-30 glass-header px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <div className="absolute inset-0 bg-accent/20 rounded-full blur-md animate-glow-breathe" />
-              <img src={cimedSymbol} alt="Cimed" className="relative w-7 h-7" />
-            </div>
-            <span className="text-sm font-bold">Cimed GO</span>
-          </div>
-          <button onClick={() => navigate('/influencer-dashboard')} className="text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
+      <AppHeader />
 
-      <div className="px-4 pb-8 space-y-6 pt-6 stagger-children">
+      <div className="px-4 pb-8 space-y-5 pt-20">
+        {/* Back button */}
+        <button
+          onClick={() => navigate('/influencer-dashboard')}
+          className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Voltar
+        </button>
+
+        <h2 className="font-nunito text-2xl font-black uppercase tracking-tight">Meu Perfil</h2>
+
         {/* Avatar Section */}
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
-            <div className="avatar-ring w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-card">
+            <div className="w-24 h-24 border-[3px] border-border bg-card overflow-hidden flex items-center justify-center shadow-[4px_4px_0_hsl(var(--border))]">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-3xl font-bold text-accent">{initials}</span>
+                <span className="text-3xl font-black text-accent">{initials}</span>
               )}
             </div>
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="absolute bottom-0 right-0 w-8 h-8 rounded-full gradient-yellow flex items-center justify-center text-accent-foreground shadow-lg shadow-accent/30"
+              className="absolute -bottom-1 -right-1 w-8 h-8 bg-accent border-[2px] border-border flex items-center justify-center shadow-[2px_2px_0_hsl(var(--border))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
             >
-              <Camera className="w-4 h-4" />
+              <Camera className="w-4 h-4 text-accent-foreground" />
             </button>
             <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
           </div>
-          <p className="text-xs text-muted-foreground">{uploading ? 'Enviando...' : 'Toque para alterar a foto'}</p>
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            {uploading ? 'Enviando...' : 'Toque para alterar'}
+          </p>
         </div>
 
         {/* Name */}
-        <Card className="glass-card glow-border-hover shadow-depth border-0">
+        <Card>
           <CardContent className="p-4 space-y-2">
-            <Label className="text-xs text-muted-foreground uppercase tracking-widest">Nome de exibição</Label>
-            <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Seu nome" className="bg-background/50 border-border/50" />
+            <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Nome de exibição</Label>
+            <Input
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Seu nome"
+              className="border-[3px] border-border bg-background"
+            />
           </CardContent>
         </Card>
 
         {/* PIX Settings */}
-        <Card className="glass-card glow-border-hover shadow-depth border-0">
+        <Card>
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
-                <Wallet className="w-4 h-4 text-accent" />
+              <div className="w-8 h-8 bg-accent border-[2px] border-border flex items-center justify-center">
+                <Wallet className="w-4 h-4 text-accent-foreground" />
               </div>
-              <span className="text-sm font-bold">Configuração PIX</span>
+              <span className="text-sm font-black uppercase tracking-wider">Configuração PIX</span>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground uppercase tracking-widest">Tipo de chave</Label>
+              <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Tipo de chave</Label>
               <Select value={pixKeyType} onValueChange={setPixKeyType}>
-                <SelectTrigger className="bg-background/50 border-border/50"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="border-[3px] border-border bg-background"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="cpf">CPF</SelectItem>
                   <SelectItem value="email">E-mail</SelectItem>
@@ -147,35 +151,40 @@ const InfluencerProfile = () => {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground uppercase tracking-widest">Chave PIX</Label>
-              <Input value={pixKey} onChange={(e) => setPixKey(e.target.value)} placeholder={`Digite seu ${pixKeyTypeLabels[pixKeyType]}`} className="bg-background/50 border-border/50" />
+              <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Chave PIX</Label>
+              <Input
+                value={pixKey}
+                onChange={(e) => setPixKey(e.target.value)}
+                placeholder={`Digite seu ${pixKeyTypeLabels[pixKeyType]}`}
+                className="border-[3px] border-border bg-background"
+              />
             </div>
           </CardContent>
         </Card>
 
         {/* Commission Balance */}
-        <Card className="glass-card glow-border shadow-depth border-0">
+        <Card>
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full gradient-yellow flex items-center justify-center">
+              <div className="w-8 h-8 bg-accent border-[2px] border-border flex items-center justify-center">
                 <DollarSign className="w-4 h-4 text-accent-foreground" />
               </div>
-              <span className="text-sm font-bold">Comissão</span>
+              <span className="text-sm font-black uppercase tracking-wider">Comissão</span>
             </div>
             <div className="text-center py-3">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Saldo disponível</p>
-              <p className="text-3xl font-extrabold text-gradient-orange">
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Saldo disponível</p>
+              <p className="text-3xl font-black text-accent">
                 R$ {commissionBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </p>
             </div>
-            <Button variant="outline" className="w-full border-accent/30 text-accent hover:bg-accent/10 transition-all duration-300" disabled={commissionBalance <= 0}>
+            <Button variant="outline" className="w-full" disabled={commissionBalance <= 0}>
               Solicitar Saque
             </Button>
           </CardContent>
         </Card>
 
         {/* Save */}
-        <Button onClick={handleSave} disabled={saving} className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-lg shadow-accent/20 hover:opacity-90 transition-all duration-300 shimmer-btn">
+        <Button onClick={handleSave} disabled={saving} className="w-full h-14 text-base">
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </div>
