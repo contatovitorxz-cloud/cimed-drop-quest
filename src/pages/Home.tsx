@@ -167,14 +167,20 @@ const Home = () => {
 
       <div className="px-4 pt-[72px] space-y-3 stagger-children">
         {/* Level Card */}
-        <div className="brutal-card p-4 flex items-center gap-3">
-          <div className="w-12 h-12 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
-            <span className="text-accent-foreground font-black text-sm">{level}</span>
+        <div className="brutal-card-dark p-4 flex items-center gap-3">
+          <div className="w-12 h-12 flex-shrink-0 border-[2px] border-accent overflow-hidden bg-muted">
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full bg-accent flex items-center justify-center">
+                <span className="text-accent-foreground font-black text-lg">{username.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-foreground font-black text-sm uppercase">{username} · Nível {level}</p>
+            <p className="font-black text-sm uppercase">{username} · Nível {level}</p>
             <p className="text-muted-foreground text-xs">{totalPoints.toLocaleString('pt-BR')} pontos</p>
-            <div className="w-full h-2 bg-muted mt-2 overflow-hidden border-[2px] border-border">
+            <div className="w-full h-2 bg-muted mt-2 overflow-hidden border-[2px] border-accent">
               <div className="h-full bg-accent transition-all duration-700" style={{ width: `${xpPct}%` }} />
             </div>
           </div>
