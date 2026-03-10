@@ -9,8 +9,9 @@ import PlayerAvatar from '@/components/game/PlayerAvatar';
 import BottomNav from '@/components/layout/BottomNav';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfile } from '@/hooks/useProfile';
 
-// Fix default marker icons
+// Fix: Marker icons missing
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -71,7 +72,13 @@ const FALLBACK_POSITION: [number, number] = [-23.5629, -46.6544];
 const Home = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const username = user?.user_metadata?.username || user?.email?.split('@')[0] || 'Jogador';
+  const { profile } = useProfile();
+  const username = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || 'Jogador';
+  const level = profile?.level || 1;
+  const xp = profile?.xp || 0;
+  const totalPoints = profile?.total_points || 0;
+  const maxXp = level * 1000;
+  const xpPct = Math.min((xp / maxXp) * 100, 100);
 
   const [playerPosition, setPlayerPosition] = useState<[number, number]>(FALLBACK_POSITION);
   const [displayPosition, setDisplayPosition] = useState<[number, number]>(FALLBACK_POSITION);
@@ -80,6 +87,7 @@ const Home = () => {
   const [followPlayer, setFollowPlayer] = useState(true);
   const [isMoving, setIsMoving] = useState(false);
   const [pharmacies, setPharmacies] = useState<{ id: string; name: string; address: string; lat: number; lng: number }[]>([]);
+  const [nearbyDropsCount, setNearbyDropsCount] = useState(0);
   const movingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevPositionRef = useRef<[number, number]>(FALLBACK_POSITION);
   const animFrameRef = useRef<number>(0);
@@ -88,6 +96,10 @@ const Home = () => {
   useEffect(() => {
     supabase.from('pharmacies').select('id, name, address, lat, lng').eq('active', true).then(({ data }) => {
       if (data) setPharmacies(data);
+    });
+    // Count active drops
+    supabase.from('drops').select('id', { count: 'exact', head: true }).eq('active', true).then(({ count }) => {
+      setNearbyDropsCount(count || 0);
     });
   }, []);
 
@@ -155,7 +167,7 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'DROPS PERTO DE VOCÊ', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2' },
+    { icon: Gift, title: 'DROPS PERTO DE VOCÊ', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: nearbyDropsCount > 0 ? String(nearbyDropsCount) : undefined },
     { icon: Target, title: 'MISSÕES DA SEMANA', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
     { icon: Trophy, title: 'RANKING DA CIDADE', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
   ];
@@ -168,28 +180,20 @@ const Home = () => {
         {/* Level Card */}
         <div className="brutal-card p-4 flex items-center gap-3">
           <div className="w-12 h-12 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
-            <Gift className="w-6 h-6 text-accent-foreground" />
+            <span className="text-accent-foreground font-black text-sm">{level}</span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-foreground font-black text-sm uppercase">{username} · Nível 1</p>
-            <p className="text-muted-foreground text-xs">0 pontos</p>
+            <p className="text-foreground font-black text-sm uppercase">{username} · Nível {level}</p>
+            <p className="text-muted-foreground text-xs">{totalPoints.toLocaleString('pt-BR')} pontos</p>
             <div className="w-full h-2 bg-muted mt-2 overflow-hidden border-[2px] border-border">
-              <div className="h-full w-0 bg-accent" />
+              <div className="h-full bg-accent transition-all duration-700" style={{ width: `${xpPct}%` }} />
             </div>
           </div>
         </div>
 
         {/* Map Section */}
         <div className="relative overflow-hidden border-[3px] border-border shadow-[4px_4px_0_hsl(var(--border))]" style={{ height: 300 }}>
-          <MapContainer
-            center={playerPosition}
-            zoom={15}
-            minZoom={13}
-            maxZoom={19}
-            className="h-full w-full"
-            zoomControl={false}
-            attributionControl={false}
-          >
+          <MapContainer center={playerPosition} zoom={15} minZoom={13} maxZoom={19} className="h-full w-full" zoomControl={false} attributionControl={false}>
             <ThemeAwareTileLayer />
             <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
@@ -205,17 +209,11 @@ const Home = () => {
             ))}
           </MapContainer>
 
-          <button
-            onClick={handleRecenter}
-            className="absolute top-3 right-3 z-[1000] w-10 h-10 bg-card flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          >
+          <button onClick={handleRecenter} className="absolute top-3 right-3 z-[1000] w-10 h-10 bg-card flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
             <Navigation className="w-5 h-5 text-accent" />
           </button>
 
-          <button
-            onClick={() => navigate('/scan-history')}
-            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
-          >
+          <button onClick={() => navigate('/scan-history')} className="absolute bottom-3 right-3 z-[1000] w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
             <Camera className="w-5 h-5 text-accent-foreground" />
           </button>
         </div>
@@ -223,11 +221,7 @@ const Home = () => {
         {/* Action Cards */}
         <div className="space-y-2.5">
           {actionCards.map((card) => (
-            <button
-              key={card.path}
-              onClick={() => navigate(card.path)}
-              className="w-full brutal-card brutal-card-hover p-4 flex items-center gap-3 text-left"
-            >
+            <button key={card.path} onClick={() => navigate(card.path)} className="w-full brutal-card brutal-card-hover p-4 flex items-center gap-3 text-left">
               <div className="w-11 h-11 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
                 <card.icon className="w-6 h-6 text-accent-foreground" />
               </div>
