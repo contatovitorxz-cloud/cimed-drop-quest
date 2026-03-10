@@ -1,10 +1,11 @@
 import AppHeader from '@/components/layout/AppHeader';
 import BottomNav from '@/components/layout/BottomNav';
 import { useDrops } from '@/hooks/useSupabaseData';
-import { Zap, Sparkles, Clock, MapPin } from 'lucide-react';
+import { Zap, Sparkles, Clock, MapPin, ScanLine } from 'lucide-react';
 import EmptyState from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Drops = () => {
   const { drops, influencerDrops, loading } = useDrops();
