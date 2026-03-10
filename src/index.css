@@ -129,8 +129,8 @@
   .brutal-card-dark {
     background: hsl(var(--brutal-black));
     color: hsl(var(--brutal-white));
-    border: 3px solid hsl(var(--accent));
-    box-shadow: 4px 4px 0 hsl(var(--accent));
+    border: 3px solid hsl(var(--brutal-black));
+    box-shadow: 4px 4px 0 hsl(var(--border));
   }
 
   .brutal-shadow {
