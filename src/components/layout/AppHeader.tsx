@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { Bell, Sun, Moon } from 'lucide-react';
 import cimedSymbol from '@/assets/cimed-symbol.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfile } from '@/hooks/useProfile';
 
 const AppHeader = () => {
   const { user } = useAuth();
-  const username = user?.user_metadata?.username || user?.email?.split('@')[0] || '';
+  const { profile } = useProfile();
+  const username = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || '';
   const initials = username.slice(0, 2).toUpperCase() || 'U';
+  const avatarUrl = profile?.avatar_url;
 
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('theme');
