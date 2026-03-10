@@ -72,8 +72,8 @@ export const mockInfluencers = [
   {
     id: '5', display_name: 'saBOR energético', username: 'sabor.energetico', commission_balance: 8750.00, drops_created: 45, claims: 2100,
     avatar_url: saborEnergeticoAvatar, status: 'pending',
-    followers_total: 15000000, instagram: '@saborenergetico', tiktok: '@saborenergetico', youtube: 'saBOR energético',
-    instagram_followers: 6200000, tiktok_followers: 5800000, youtube_followers: 3000000, niche: 'Lifestyle & Energia',
+    followers_total: 24530000, instagram: '@saborenergetico', tiktok: '@saborenergetico', youtube: 'saBOR energético',
+    instagram_followers: 10700000, tiktok_followers: 5600000, youtube_followers: 8230000, niche: 'Lifestyle & Energia',
   },
 ];
 
