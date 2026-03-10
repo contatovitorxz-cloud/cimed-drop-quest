@@ -6,6 +6,7 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import cimedSymbol from '@/assets/cimed-symbol.png';
+import CimedWordmark from '@/assets/cimed-wordmark.svg?react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile } from '@/hooks/useProfile';
 import { useUserRole } from '@/hooks/useUserRole';
