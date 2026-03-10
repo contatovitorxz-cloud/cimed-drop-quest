@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import cimedSymbol from '@/assets/cimed-symbol.png';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
@@ -39,68 +38,67 @@ const Login = () => {
     <div className="fixed inset-0 flex flex-col bg-accent">
       <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
         {/* Logo */}
-        <div className="mb-10 mt-4 animate-bounce-in flex items-center justify-center w-full -ml-8">
+        <div className="mb-10 mt-4 flex items-center justify-center w-full -ml-8">
           <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
           <span className="font-anton text-4xl text-accent-foreground leading-none">CIMEDGO</span>
         </div>
 
-        <p className="text-accent-foreground/60 text-sm mb-8 font-black uppercase tracking-wider">
+        <p className="text-accent-foreground/60 text-sm mb-8 font-bold uppercase tracking-wider">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
         <form onSubmit={handleSubmit} className="w-full space-y-4">
           {isSignUp && (
-            <div className="relative animate-fade-up">
+            <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
+              <input
                 placeholder="Nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="pl-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
+                className="w-full pl-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
               />
             </div>
           )}
 
-          <div className="relative animate-fade-up" style={{ animationDelay: '0.05s' }}>
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background/50 z-10" />
+            <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="pl-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
+              className="w-full pl-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
             />
           </div>
 
-          <div className="relative animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background/50 z-10" />
+            <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="pl-11 pr-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
+              className="w-full pl-11 pr-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-background/50 hover:text-background/80 transition-colors">
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
 
           <button type="submit" disabled={loading}
-                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent border-[3px] border-accent-foreground shadow-[4px_4px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all animate-fade-up disabled:opacity-50"
-                  style={{ animationDelay: '0.15s' }}>
+                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </button>
         </form>
 
         {/* Separator */}
-        <div className="flex items-center gap-3 w-full my-5 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-          <div className="flex-1 h-[2px] bg-accent-foreground/20" />
-          <span className="text-sm text-accent-foreground/50 font-black uppercase">ou</span>
-          <div className="flex-1 h-[2px] bg-accent-foreground/20" />
+        <div className="flex items-center gap-3 w-full my-5">
+          <div className="flex-1 h-px bg-accent-foreground/20" />
+          <span className="text-sm text-accent-foreground/50 font-bold uppercase">ou</span>
+          <div className="flex-1 h-px bg-accent-foreground/20" />
         </div>
 
         {/* Google Button */}
@@ -112,8 +110,7 @@ const Login = () => {
             });
             if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
           }}
-          className="w-full h-14 flex items-center justify-center gap-3 bg-background border-[3px] border-accent-foreground text-foreground font-black text-base uppercase shadow-[3px_3px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all animate-fade-up"
-          style={{ animationDelay: '0.25s' }}
+          className="w-full h-14 flex items-center justify-center gap-3 bg-accent-foreground text-background font-bold text-base uppercase rounded-lg hover:opacity-90 active:scale-[0.98] transition-all"
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
