@@ -5,73 +5,76 @@ import { Zap, Sparkles, Clock, MapPin, ScanLine } from 'lucide-react';
 import EmptyState from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import QRScanner from '@/components/qr/QRScanner';
 
 const Drops = () => {
   const { drops, influencerDrops, loading } = useDrops();
-  const navigate = useNavigate();
+  const [showScanner, setShowScanner] = useState(false);
   const hasDrops = drops.length > 0 || influencerDrops.length > 0;
 
   return (
-    <div className="min-h-screen bg-background pb-20 pt-14">
-      <AppHeader />
-      <div className="px-4 pt-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Zap className="w-6 h-6 text-accent" />
-            <h2 className="text-xl font-black">Drops</h2>
+    <>
+      <div className="min-h-screen bg-background pb-20 pt-14">
+        <AppHeader />
+        <div className="px-4 pt-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Zap className="w-6 h-6 text-accent" />
+              <h2 className="text-xl font-black">Drops</h2>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => setShowScanner(true)}
+              className="flex items-center gap-2 text-xs font-black h-9"
+            >
+              <ScanLine className="w-4 h-4" />
+              SCAN QR
+            </Button>
           </div>
-          <Button
-            size="sm"
-            onClick={() => navigate('/scan')}
-            className="flex items-center gap-2 text-xs font-black h-9"
-          >
-            <ScanLine className="w-4 h-4" />
-            SCAN QR
-          </Button>
+
+          {loading ? (
+            <div className="space-y-3">
+              {[1, 2].map(i => <div key={i} className="h-32 bg-muted animate-pulse border-[3px] border-border" />)}
+            </div>
+          ) : !hasDrops ? (
+            <EmptyState
+              icon={Zap}
+              title="Nenhum drop disponível"
+              description="Novos drops aparecerão aqui quando estiverem disponíveis na sua região."
+            />
+          ) : (
+            <>
+              {influencerDrops.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles className="w-4 h-4 text-accent" />
+                    <h3 className="text-sm font-black text-accent uppercase">Drops de Influenciadores</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {influencerDrops.map((drop) => (
+                      <InfluencerDropCardDB key={drop.id} drop={drop} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {drops.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-black mb-3 uppercase">Drops de Farmácias</h3>
+                  <div className="space-y-3">
+                    {drops.map((drop) => (
+                      <DropCardDB key={drop.id} drop={drop} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
-
-        {loading ? (
-          <div className="space-y-3">
-            {[1, 2].map(i => <div key={i} className="h-32 bg-muted animate-pulse border-[3px] border-border" />)}
-          </div>
-        ) : !hasDrops ? (
-          <EmptyState
-            icon={Zap}
-            title="Nenhum drop disponível"
-            description="Novos drops aparecerão aqui quando estiverem disponíveis na sua região."
-          />
-        ) : (
-          <>
-            {influencerDrops.length > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="w-4 h-4 text-accent" />
-                  <h3 className="text-sm font-black text-accent uppercase">Drops de Influenciadores</h3>
-                </div>
-                <div className="space-y-3">
-                  {influencerDrops.map((drop) => (
-                    <InfluencerDropCardDB key={drop.id} drop={drop} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {drops.length > 0 && (
-              <div>
-                <h3 className="text-sm font-black mb-3 uppercase">Drops de Farmácias</h3>
-                <div className="space-y-3">
-                  {drops.map((drop) => (
-                    <DropCardDB key={drop.id} drop={drop} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
+        <BottomNav />
       </div>
-      <BottomNav />
-    </div>
+      <QRScanner open={showScanner} onClose={() => setShowScanner(false)} />
+    </>
   );
 };
 
