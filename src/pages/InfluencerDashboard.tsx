@@ -188,7 +188,7 @@ const InfluencerDashboard = () => {
           {metrics.map((m) => (
             <Card key={m.label}>
               <CardContent className="p-4 text-center space-y-2">
-                <div className="w-10 h-10 bg-accent/20 dark:bg-accent/15 mx-auto flex items-center justify-center border-[2px] border-border/30">
+                <div className="w-10 h-10 bg-accent/20 dark:bg-accent/10 mx-auto flex items-center justify-center">
                   <m.icon className="w-5 h-5 text-accent" />
                 </div>
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">{m.label}</p>
