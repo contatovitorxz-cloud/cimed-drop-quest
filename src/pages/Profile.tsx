@@ -1,12 +1,15 @@
+import { useState, useRef } from 'react';
 import AppHeader from '@/components/layout/AppHeader';
 import BottomNav from '@/components/layout/BottomNav';
 import XPBar from '@/components/game/XPBar';
 import { useProfile } from '@/hooks/useProfile';
 import { useUserBadges, useFollowCounts, useLeaderboard } from '@/hooks/useSupabaseData';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { LogOut, Crown, Users, Share2, BarChart3, History, Star, Trophy, UserCheck, Zap, ChevronRight } from 'lucide-react';
+import { LogOut, Crown, Users, Share2, BarChart3, History, Star, Trophy, UserCheck, Zap, ChevronRight, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
 
 const badgeIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   trophy: Trophy, '🏆': Trophy, star: Star, '⭐': Star, map: Crown,
@@ -14,18 +17,63 @@ const badgeIconMap: Record<string, React.ComponentType<{ className?: string }>> 
 
 const Profile = () => {
   const { user, signOut } = useAuth();
-  const { profile } = useProfile();
+  const { profile, refetch } = useProfile();
   const { badges } = useUserBadges();
   const { following, followers } = useFollowCounts();
   const { entries } = useLeaderboard();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   const level = profile?.level || 1;
   const xp = profile?.xp || 0;
   const totalPoints = profile?.total_points || 0;
   const username = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || 'Jogador';
+  const avatarUrl = profile?.avatar_url;
 
   const myRank = user ? entries.findIndex(e => e.id === user.id) + 1 : 0;
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({ title: 'Erro', description: 'Selecione uma imagem válida.', variant: 'destructive' });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const filePath = `${user.id}/avatar.${ext}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      const urlWithCache = `${publicUrl}?t=${Date.now()}`;
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: urlWithCache })
+        .eq('id', user.id);
+
+      if (updateError) throw updateError;
+
+      refetch();
+      toast({ title: 'Foto atualizada!' });
+    } catch (err: any) {
+      toast({ title: 'Erro ao enviar foto', description: err.message, variant: 'destructive' });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -49,9 +97,32 @@ const Profile = () => {
         {/* Profile card */}
         <div className="brutal-card p-4 mb-4">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 bg-accent flex items-center justify-center text-3xl font-black text-accent-foreground border-[3px] border-border">
-              {username[0]?.toUpperCase() || 'C'}
-            </div>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="relative w-16 h-16 bg-accent flex items-center justify-center text-3xl font-black text-accent-foreground border-[3px] border-border overflow-hidden group"
+            >
+              {avatarUrl ? (
+                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                username[0]?.toUpperCase() || 'C'
+              )}
+              <div className="absolute inset-0 bg-accent-foreground/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera className="w-5 h-5 text-primary-foreground" />
+              </div>
+              {uploading && (
+                <div className="absolute inset-0 bg-accent-foreground/80 flex items-center justify-center">
+                  <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent animate-spin" />
+                </div>
+              )}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpload}
+              className="hidden"
+            />
             <div className="flex-1">
               <h2 className="font-black text-lg uppercase">{username}</h2>
               <p className="text-xs text-muted-foreground">{user?.email}</p>
