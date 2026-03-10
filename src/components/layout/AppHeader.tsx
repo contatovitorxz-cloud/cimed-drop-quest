@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { Bell, Sun, Moon } from 'lucide-react';
 import cimedSymbol from '@/assets/cimed-symbol.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfile } from '@/hooks/useProfile';
 
 const AppHeader = () => {
   const { user } = useAuth();
-  const username = user?.user_metadata?.username || user?.email?.split('@')[0] || '';
+  const { profile } = useProfile();
+  const username = profile?.username || user?.user_metadata?.username || user?.email?.split('@')[0] || '';
   const initials = username.slice(0, 2).toUpperCase() || 'U';
+  const avatarUrl = profile?.avatar_url;
 
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('theme');
@@ -43,8 +46,12 @@ const AppHeader = () => {
             <Bell className="w-5 h-5 text-foreground" strokeWidth={2} />
             <span className="absolute -top-1 -right-1 min-w-[18px] min-h-[18px] bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center border-[2px] border-border">3</span>
           </button>
-          <div className="w-9 h-9 bg-accent flex items-center justify-center text-accent-foreground font-black text-xs border-[2px] border-border">
-            {initials}
+          <div className="w-9 h-9 bg-accent flex items-center justify-center text-accent-foreground font-black text-xs border-[2px] border-border overflow-hidden">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              initials
+            )}
           </div>
         </div>
       </div>
