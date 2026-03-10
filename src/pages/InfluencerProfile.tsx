@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Camera, Wallet, DollarSign } from 'lucide-react';
+import BottomNav from '@/components/layout/BottomNav';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -80,7 +81,7 @@ const InfluencerProfile = () => {
     <div className="min-h-screen bg-background text-foreground">
       <AppHeader />
 
-      <div className="px-4 pb-8 space-y-5 pt-20">
+      <div className="px-4 pb-24 space-y-5 pt-20">
         {/* Back button */}
         <button
           onClick={() => navigate('/influencer-dashboard')}
@@ -188,6 +189,7 @@ const InfluencerProfile = () => {
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </div>
+      <BottomNav />
     </div>
   );
 };
