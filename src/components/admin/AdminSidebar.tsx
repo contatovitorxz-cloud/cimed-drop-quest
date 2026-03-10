@@ -1,4 +1,4 @@
-import { LayoutDashboard, Gift, QrCode, Target, Users, BarChart3, Settings, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Gift, QrCode, Target, Users, BarChart3, Settings, ChevronRight, Sun, Moon, UserCircle } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useEffect, useState } from 'react';
 
 const menuItems = [
   { title: 'Dashboard', key: 'dashboard', icon: LayoutDashboard },
@@ -17,6 +18,7 @@ const menuItems = [
   { title: 'QR Codes', key: 'qrcodes', icon: QrCode },
   { title: 'Missões', key: 'missions', icon: Target },
   { title: 'Influenciadores', key: 'influencers', icon: Users },
+  { title: 'Perfis', key: 'profiles', icon: UserCircle },
   { title: 'Analytics', key: 'analytics', icon: BarChart3, hasSubmenu: true },
   { title: 'Configurações', key: 'settings', icon: Settings },
 ];
@@ -30,23 +32,33 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
   const { state } = useSidebar();
   const collapsed = state === 'collapsed';
 
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent className="glass-sidebar border-r border-border/30">
+      <SidebarContent className="bg-sidebar border-r-[3px] border-sidebar-border">
         {/* Logo */}
-        <div className={`px-4 py-5 border-b border-border/20 ${collapsed ? 'px-2' : ''}`}>
+        <div className={`px-4 py-5 border-b-[3px] border-sidebar-border ${collapsed ? 'px-2' : ''}`}>
           <div className={`${collapsed ? 'text-center' : ''}`}>
-            <span className="font-['Nunito'] font-black text-xl text-accent" style={{ fontWeight: 900 }}>
+            <span className="font-nunito font-black text-xl text-accent">
               {collapsed ? 'C' : 'CIMED'}
             </span>
-            {!collapsed && <span className="font-['Nunito'] font-black text-xl text-foreground" style={{ fontWeight: 900 }}>GO</span>}
+            {!collapsed && <span className="font-nunito font-black text-xl text-sidebar-foreground"> GO</span>}
           </div>
-          {!collapsed && <p className="text-[10px] text-muted-foreground/60 mt-0.5 tracking-widest uppercase">Admin Panel</p>}
+          {!collapsed && <p className="text-[10px] text-muted-foreground mt-0.5 tracking-widest uppercase font-bold">Admin Panel</p>}
         </div>
 
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="text-[10px] text-muted-foreground/40 uppercase tracking-widest px-4 mb-1">
+            <SidebarGroupLabel className="text-[10px] text-muted-foreground uppercase tracking-widest px-4 mb-1 font-bold">
               Menu
             </SidebarGroupLabel>
           )}
@@ -58,14 +70,14 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
                   <SidebarMenuItem key={item.key}>
                     <SidebarMenuButton
                       onClick={() => onSectionChange(item.key)}
-                      className={`cursor-pointer transition-all duration-300 ${
+                      className={`cursor-pointer transition-all duration-150 rounded-none ${
                         isActive
-                          ? 'bg-accent text-accent-foreground font-bold shadow-sm active-glow-bar'
-                          : 'text-muted-foreground/70 hover:bg-accent/10 hover:text-foreground'
+                          ? 'bg-accent text-accent-foreground font-black border-l-[3px] border-accent-foreground'
+                          : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground font-bold'
                       }`}
                     >
                       <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-accent-foreground' : ''}`} />
-                      {!collapsed && <span className="flex-1 text-sm">{item.title}</span>}
+                      {!collapsed && <span className="flex-1 text-sm uppercase tracking-wider">{item.title}</span>}
                       {!collapsed && item.hasSubmenu && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -74,6 +86,17 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Theme toggle at bottom */}
+        <div className="mt-auto px-3 py-4 border-t-[3px] border-sidebar-border">
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className={`flex items-center gap-2 w-full px-3 py-2 text-sm font-bold uppercase tracking-wider text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground transition-all ${collapsed ? 'justify-center px-0' : ''}`}
+          >
+            {isDark ? <Sun className="w-4 h-4 shrink-0" /> : <Moon className="w-4 h-4 shrink-0" />}
+            {!collapsed && <span>{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>}
+          </button>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
