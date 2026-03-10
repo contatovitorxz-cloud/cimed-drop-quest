@@ -264,6 +264,7 @@ const InfluencerDashboard = () => {
           </Card>
         )}
       </div>
+      <InfluencerBottomNav />
     </div>
   );
 };

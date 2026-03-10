@@ -189,7 +189,7 @@ const InfluencerProfile = () => {
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </div>
-      <BottomNav />
+      <InfluencerBottomNav />
     </div>
   );
 };
