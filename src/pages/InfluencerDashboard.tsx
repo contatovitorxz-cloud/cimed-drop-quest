@@ -9,6 +9,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import cimedSymbol from '@/assets/cimed-symbol.png';
+import CimedWordmark from '@/assets/cimed-wordmark.svg?react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger
@@ -124,7 +125,8 @@ const InfluencerDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
-            <span className="font-nunito text-sm font-black">CIMED GO</span>
+            <CimedWordmark className="h-4 w-auto text-foreground" />
+            <span className="font-nunito text-accent text-sm font-black">GO</span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => setIsDark(!isDark)} className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all" aria-label="Alternar tema">
