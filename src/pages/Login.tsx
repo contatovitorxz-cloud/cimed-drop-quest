@@ -38,8 +38,8 @@ const Login = () => {
     <div className="fixed inset-0 flex flex-col bg-accent">
       <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
         {/* Logo */}
-        <div className="mb-10 mt-4 flex items-center justify-center w-full -ml-8">
-          <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
+        <div className="mb-10 mt-4 flex items-center justify-center w-full gap-2">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-12 h-12 object-contain" />
           <span className="font-anton text-4xl text-accent-foreground leading-none">CIMEDGO</span>
         </div>
 
@@ -47,43 +47,43 @@ const Login = () => {
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
-        <form onSubmit={handleSubmit} className="w-full space-y-4">
+        <form onSubmit={handleSubmit} className="w-full space-y-3">
           {isSignUp && (
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
               <input
                 placeholder="Nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
+                className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
               />
             </div>
           )}
 
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background/50 z-10" />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
+              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
           </div>
 
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-background/50 z-10" />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-11 pr-11 h-14 bg-accent-foreground text-background placeholder:text-background/50 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-background/30 transition-all"
+              className="w-full pl-12 pr-12 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-background/50 hover:text-background/80 transition-colors">
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
@@ -110,7 +110,7 @@ const Login = () => {
             });
             if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
           }}
-          className="w-full h-14 flex items-center justify-center gap-3 bg-accent-foreground text-background font-bold text-base uppercase rounded-lg hover:opacity-90 active:scale-[0.98] transition-all"
+          className="w-full h-14 flex items-center justify-center gap-3 bg-background text-foreground font-bold text-sm uppercase rounded-lg border border-border hover:bg-muted active:scale-[0.98] transition-all"
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
