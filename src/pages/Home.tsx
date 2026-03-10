@@ -182,7 +182,7 @@ const Home = () => {
 
         {/* Map Section */}
         <div className="relative overflow-hidden border-[3px] border-border shadow-[4px_4px_0_hsl(var(--border))]" style={{ height: 300 }}>
-          <MapContainer center={playerPosition} zoom={15} minZoom={13} maxZoom={19} className="h-full w-full" zoomControl={false} attributionControl={false}>
+          <MapContainer center={playerPosition} zoom={16} minZoom={13} maxZoom={18} className="h-full w-full" zoomControl={false} attributionControl={false}>
             <ThemeAwareTileLayer />
             <MapFollower position={displayPosition} shouldFollow={followPlayer} onDrag={() => setFollowPlayer(false)} />
             <PlayerAvatar position={displayPosition} heading={displayHeading} isMoving={isMoving} />
