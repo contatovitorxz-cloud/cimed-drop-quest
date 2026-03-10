@@ -19,8 +19,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="32" height="48"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="#FFD500" stroke="#0A0A0A" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="#0A0A0A"/></svg>`;
-const pharmacyIcon = new L.DivIcon({ html: pinSvg, className: '', iconSize: [32, 48], iconAnchor: [16, 48] });
+const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="24" height="36"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z" fill="#FFD500" stroke="#0A0A0A" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="#0A0A0A"/></svg>`;
+const pharmacyIcon = new L.DivIcon({ html: pinSvg, className: '', iconSize: [24, 36], iconAnchor: [12, 36] });
 
 function lerpAngle(a: number, b: number, t: number): number {
   let diff = ((b - a + 540) % 360) - 180;
