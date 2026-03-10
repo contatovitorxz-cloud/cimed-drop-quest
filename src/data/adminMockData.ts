@@ -46,6 +46,12 @@ export const mockMissions = [
 
 export const mockInfluencers = [
   {
+    id: '5', display_name: 'saBOR energético', username: 'sabor.energetico', commission_balance: 8750.00, drops_created: 45, claims: 2100,
+    avatar_url: saborEnergeticoAvatar, status: 'pending',
+    followers_total: 24530000, instagram: '@saborenergetico', tiktok: '@saborenergetico', youtube: 'saBOR energético',
+    instagram_followers: 10700000, tiktok_followers: 5600000, youtube_followers: 8230000, niche: 'Lifestyle & Energia',
+  },
+  {
     id: '1', display_name: 'Marina Silva', username: 'marina.silva', commission_balance: 1250.50, drops_created: 12, claims: 340,
     avatar_url: 'https://i.pravatar.cc/150?img=5', status: 'pending',
     followers_total: 820000, instagram: '@marina.silva', tiktok: '@marinasilva', youtube: 'Marina Silva',
@@ -68,12 +74,6 @@ export const mockInfluencers = [
     avatar_url: 'https://i.pravatar.cc/150?img=15', status: 'pending',
     followers_total: 290000, instagram: '@pedro.oliv', tiktok: '@pedrooliv', youtube: 'Pedro Oliveira',
     instagram_followers: 140000, tiktok_followers: 100000, youtube_followers: 50000, niche: 'Farmácia & Saúde',
-  },
-  {
-    id: '5', display_name: 'saBOR energético', username: 'sabor.energetico', commission_balance: 8750.00, drops_created: 45, claims: 2100,
-    avatar_url: saborEnergeticoAvatar, status: 'pending',
-    followers_total: 24530000, instagram: '@saborenergetico', tiktok: '@saborenergetico', youtube: 'saBOR energético',
-    instagram_followers: 10700000, tiktok_followers: 5600000, youtube_followers: 8230000, niche: 'Lifestyle & Energia',
   },
 ];
 
