@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import cimedSymbol from '@/assets/cimed-symbol.png';
-import { Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -36,85 +36,101 @@ const Login = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-accent">
-      <div className="flex-1 flex flex-col items-center justify-between px-6 w-full max-w-sm mx-auto py-16">
-        {/* Branding — top section with generous spacing */}
-        <div className="flex flex-col items-center gap-6 pt-8">
-          <img src={cimedSymbol} alt="Cimed" className="w-8 h-8 object-contain" />
-          <h1 className="font-anton text-7xl text-accent-foreground leading-[0.85] tracking-tight text-center">
-            CIMED<br />GO
-          </h1>
-          <p className="text-[10px] text-accent-foreground/50 font-bold uppercase tracking-[0.35em]">
-            {isSignUp ? 'Crie sua conta' : 'Sua jornada começa aqui'}
-          </p>
+      <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
+        {/* Logo */}
+        <div className="mb-10 mt-4 flex items-center justify-center w-full gap-2">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-12 h-12 object-contain" />
+          <span className="font-anton text-4xl text-accent-foreground leading-none">CIMEDGO</span>
         </div>
 
-        {/* Form — center section */}
+        <p className="text-accent-foreground/60 text-sm mb-8 font-bold uppercase tracking-wider">
+          {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
+        </p>
+
         <form onSubmit={handleSubmit} className="w-full space-y-3">
           {isSignUp && (
-            <input
-              placeholder="Nome de usuário"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 h-14 bg-background text-foreground placeholder:text-muted-foreground border border-accent-foreground/20 focus:outline-none focus:border-accent-foreground transition-colors"
-            />
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
+              <input
+                placeholder="Nome de usuário"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-none border-2 border-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+              />
+            </div>
           )}
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 h-14 bg-background text-foreground placeholder:text-muted-foreground border border-accent-foreground/20 focus:outline-none focus:border-accent-foreground transition-colors"
-          />
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-none border-2 border-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+            />
+          </div>
 
           <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground z-10" />
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 pr-12 h-14 bg-background text-foreground placeholder:text-muted-foreground border border-accent-foreground/20 focus:outline-none focus:border-accent-foreground transition-colors"
+              className="w-full pl-12 pr-12 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-none border-2 border-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
 
           <button type="submit" disabled={loading}
-                  className="w-full h-16 text-lg font-black uppercase tracking-[0.15em] bg-accent-foreground text-white hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
-            {loading ? '...' : isSignUp ? 'Criar Conta' : 'Entrar'}
+                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-white rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
+            {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </button>
         </form>
 
-        {/* Bottom links */}
-        <div className="flex flex-col items-center gap-4 pb-4">
-          <button
-            onClick={async () => {
-              const { error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: { redirectTo: window.location.origin + '/home' },
-              });
-              if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
-            }}
-            className="text-xs text-accent-foreground/40 hover:text-accent-foreground transition-colors uppercase tracking-[0.2em] underline underline-offset-4"
-          >
-            Continuar com Google
-          </button>
-
-          <button onClick={() => setIsSignUp(!isSignUp)}
-                  className="text-xs text-accent-foreground/40 hover:text-accent-foreground transition-colors">
-            {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
-            <span className="font-black uppercase">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
-          </button>
-
-          <button onClick={() => navigate('/influencer')}
-                  className="text-xs text-accent-foreground/30 hover:text-accent-foreground transition-colors">
-            Influencer? <span className="font-black uppercase">Inscreva-se</span>
-          </button>
+        {/* Separator */}
+        <div className="flex items-center gap-3 w-full my-5">
+          <div className="flex-1 h-px bg-accent-foreground/20" />
+          <span className="text-sm text-accent-foreground/50 font-bold uppercase">ou</span>
+          <div className="flex-1 h-px bg-accent-foreground/20" />
         </div>
+
+        {/* Google Button */}
+        <button
+          onClick={async () => {
+            const { error } = await supabase.auth.signInWithOAuth({
+              provider: 'google',
+              options: { redirectTo: window.location.origin + '/home' },
+            });
+            if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
+          }}
+          className="w-full h-14 flex items-center justify-center gap-3 bg-background text-foreground font-bold text-sm uppercase rounded-lg border border-gray-200 hover:bg-muted active:scale-[0.98] transition-all"
+        >
+          <svg width="20" height="20" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.01 24.01 0 0 0 0 21.56l7.98-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          Continuar com Google
+        </button>
+
+        <button onClick={() => setIsSignUp(!isSignUp)}
+                className="mt-6 text-sm text-accent-foreground/60 hover:text-accent-foreground transition-colors text-center w-full">
+          {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
+          <span className="text-accent-foreground font-black">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
+        </button>
+
+        <button onClick={() => navigate('/influencer')}
+                className="mt-3 text-sm text-accent-foreground/60 hover:text-accent-foreground transition-colors text-center w-full">
+          Você é influencer? <span className="text-accent-foreground font-black">Inscreva-se</span>
+        </button>
       </div>
     </div>
   );
