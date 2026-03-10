@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import cimedSymbol from '@/assets/cimed-symbol.png';
+import cimedLogo from '@/assets/cimed-logo-full.svg';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
