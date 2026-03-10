@@ -469,6 +469,7 @@ function InfluencersSection() {
         id: inf.id,
         display_name: inf.display_name,
         commission_balance: inf.commission_balance,
+        avatar_url: inf.avatar_url,
         profiles: { username: inf.username },
       }))
     : influencers;
