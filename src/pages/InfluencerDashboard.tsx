@@ -29,14 +29,14 @@ const InfluencerDashboard = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="sticky top-0 z-30 glass-header px-4 py-3">
+      <div className="sticky top-0 z-30 brutal-header px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
-            <span className="text-sm font-bold">Cimed GO</span>
+            <span className="font-anton text-sm">CIMED GO</span>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/influencer-profile')} className="avatar-ring w-9 h-9 rounded-full gradient-yellow flex items-center justify-center text-sm font-bold text-accent-foreground">
+            <button onClick={() => navigate('/influencer-profile')} className="w-9 h-9 bg-accent flex items-center justify-center text-sm font-black text-accent-foreground border-[2px] border-border">
               {initials}
             </button>
             <button onClick={() => navigate('/home')} className="text-muted-foreground hover:text-foreground transition-colors">
@@ -49,32 +49,32 @@ const InfluencerDashboard = () => {
       <div className="px-4 pb-8 space-y-5 pt-4 stagger-children">
         {/* Welcome */}
         <div>
-          <h2 className="text-xl font-bold">
-            Bem-vindo, <span className="text-gradient-orange">{username}</span>!
+          <h2 className="font-anton text-2xl">
+            BEM-VINDO, <span className="text-accent">{username.toUpperCase()}</span>!
           </h2>
-          <p className="text-sm text-muted-foreground mt-0.5">Crie drops e campanhas para a Cimed.</p>
+          <p className="text-sm text-muted-foreground mt-0.5 font-bold">Crie drops e campanhas para a Cimed.</p>
         </div>
 
         {/* CTA */}
-        <Button className="w-full h-14 text-base font-bold gradient-yellow text-accent-foreground rounded-xl shadow-depth hover:opacity-90 transition-all duration-300 gap-2">
+        <Button className="w-full h-14 text-base gap-2">
           <Plus className="w-5 h-5" />
-          Criar Drop
+          CRIAR DROP
         </Button>
 
         {/* Metrics */}
         <div className="grid grid-cols-3 gap-3">
           {metrics.map((m) => (
-            <Card key={m.label} className="relative bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl shadow-depth-xl hover:-translate-y-0.5 transition-all duration-300">
+            <Card key={m.label} className="brutal-card-hover">
               <CardContent className="p-4 text-center space-y-2">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 mx-auto flex items-center justify-center">
-                  <m.icon className="w-5 h-5 text-accent" />
+                <div className="w-10 h-10 bg-accent mx-auto flex items-center justify-center border-[2px] border-border">
+                  <m.icon className="w-5 h-5 text-accent-foreground" />
                 </div>
-                <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-medium">{m.label}</p>
-                <p className="text-xl font-extrabold">{m.value.toLocaleString('pt-BR')}</p>
+                <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">{m.label}</p>
+                <p className="text-xl font-black">{m.value.toLocaleString('pt-BR')}</p>
                 {m.change !== 0 && (
-                  <div className={`inline-flex items-center gap-0.5 ${m.change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  <div className={`inline-flex items-center gap-0.5 ${m.change > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
                     {m.change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                    <span className="text-[10px] font-medium">{m.change > 0 ? '+' : ''}{m.change}%</span>
+                    <span className="text-[10px] font-black">{m.change > 0 ? '+' : ''}{m.change}%</span>
                   </div>
                 )}
               </CardContent>
@@ -84,33 +84,33 @@ const InfluencerDashboard = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <Card className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl shadow-depth-xl cursor-pointer hover:-translate-y-0.5 transition-all duration-300">
+          <Card className="brutal-card-hover cursor-pointer">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                <Megaphone className="w-5 h-5 text-accent" />
+              <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
+                <Megaphone className="w-5 h-5 text-accent-foreground" />
               </div>
-              <h3 className="font-semibold text-sm">Campanhas</h3>
+              <h3 className="font-black text-sm uppercase">Campanhas</h3>
               <p className="text-xs text-muted-foreground">Gerencie suas campanhas.</p>
             </CardContent>
           </Card>
-          <Card className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl shadow-depth-xl cursor-pointer hover:-translate-y-0.5 transition-all duration-300">
+          <Card className="brutal-card-hover cursor-pointer">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                <QrCode className="w-5 h-5 text-accent" />
+              <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
+                <QrCode className="w-5 h-5 text-accent-foreground" />
               </div>
-              <h3 className="font-semibold text-sm">Meus QR Codes</h3>
+              <h3 className="font-black text-sm uppercase">Meus QR Codes</h3>
               <p className="text-xs text-muted-foreground">Ver e gerenciar QR Codes ativos.</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Performance Chart */}
-        <Card className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-2xl shadow-depth-xl">
+        <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-bold">Análise de Desempenho</CardTitle>
+              <CardTitle className="text-sm font-black uppercase">Análise de Desempenho</CardTitle>
               <Select value={period} onValueChange={setPeriod}>
-                <SelectTrigger className="w-[150px] h-8 text-xs bg-background/50 border-border/50">
+                <SelectTrigger className="w-[150px] h-8 text-xs border-[2px] border-border bg-background">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -123,19 +123,19 @@ const InfluencerDashboard = () => {
           </CardHeader>
           <CardContent className="pt-0">
             {mockInfluencerPerformance.length === 0 ? (
-              <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center h-40 text-sm text-muted-foreground font-bold">
                 Dados disponíveis após primeiras atividades
               </div>
             ) : (
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={mockInfluencerPerformance}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted-foreground) / 0.2)" vertical={false} />
                     <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} axisLine={false} tickLine={false} />
-                    <Tooltip contentStyle={{ background: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 12, fontSize: 12, color: 'hsl(var(--foreground))', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }} />
+                    <Tooltip contentStyle={{ background: 'hsl(var(--card))', border: '3px solid hsl(var(--border))', borderRadius: 0, fontSize: 12, color: 'hsl(var(--foreground))', boxShadow: '4px 4px 0 hsl(var(--border))' }} />
                     <Legend wrapperStyle={{ fontSize: 10 }} />
-                    <Line type="monotone" dataKey="cliques" stroke="hsl(var(--accent))" strokeWidth={2.5} dot={false} name="Cliques" />
+                    <Line type="monotone" dataKey="cliques" stroke="hsl(50,100%,50%)" strokeWidth={2.5} dot={false} name="Cliques" />
                     <Line type="monotone" dataKey="conversoes" stroke="hsl(25,100%,50%)" strokeWidth={2} dot={false} name="Conversões" />
                   </LineChart>
                 </ResponsiveContainer>

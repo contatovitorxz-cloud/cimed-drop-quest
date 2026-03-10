@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+        anton: ["Anton", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -50,11 +51,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        cimed: {
-          orange: "hsl(var(--cimed-orange))",
-          black: "hsl(var(--cimed-black))",
-          yellow: "hsl(var(--cimed-yellow))",
-          gray: "hsl(var(--cimed-gray))",
+        brutal: {
+          black: "hsl(var(--brutal-black))",
+          yellow: "hsl(var(--brutal-yellow))",
+          white: "hsl(var(--brutal-white))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -81,18 +81,9 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "logo-expand": {
-          "0%": { transform: "scale(0.5)", opacity: "0" },
-          "50%": { transform: "scale(1.1)", opacity: "1" },
-          "100%": { transform: "scale(1)", opacity: "1" },
-        },
         "fade-up": {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
-        },
-        "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px hsl(25, 100%, 50%, 0.3)" },
-          "50%": { boxShadow: "0 0 40px hsl(25, 100%, 50%, 0.6)" },
         },
         "bounce-in": {
           "0%": { transform: "scale(0)", opacity: "0" },
@@ -103,26 +94,13 @@ export default {
           "0%": { transform: "translateY(100%)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
-        "pin-drop": {
-          "0%": { transform: "translateY(-20px) scale(0)", opacity: "0" },
-          "60%": { transform: "translateY(3px) scale(1.1)", opacity: "1" },
-          "100%": { transform: "translateY(0) scale(1)", opacity: "1" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "logo-expand": "logo-expand 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "fade-up": "fade-up 0.5s ease-out forwards",
-        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "bounce-in": "bounce-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "slide-up": "slide-up 0.4s ease-out forwards",
-        "pin-drop": "pin-drop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        shimmer: "shimmer 2s linear infinite",
       },
     },
   },

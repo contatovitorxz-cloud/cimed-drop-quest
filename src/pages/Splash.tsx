@@ -21,7 +21,7 @@ const Splash = () => {
       <div className={`transition-all duration-700 ease-out ${phase === 'logo' ? 'scale-50 opacity-0' : 'scale-100 opacity-100'}`}>
         <img src={cimedLogo} alt="Cimed" className="h-16 md:h-20" />
       </div>
-      <p className={`mt-6 text-accent-foreground/70 text-sm font-medium tracking-wide transition-all duration-500 delay-300 ${phase === 'text' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <p className={`mt-6 text-accent-foreground/70 text-sm font-black tracking-widest uppercase transition-all duration-500 delay-300 ${phase === 'text' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Encontre, jogue e descubra
       </p>
     </div>

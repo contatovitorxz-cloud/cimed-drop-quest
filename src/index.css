@@ -1,99 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 10%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 10%;
+    --card-foreground: 0 0% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 0 0% 4%;
 
     --primary: 25 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 92%;
-    --secondary-foreground: 0 0% 15%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
 
     --muted: 0 0% 94%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 48 100% 50%;
-    --accent-foreground: 0 0% 6%;
+    --accent: 50 100% 50%;
+    --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
-    --ring: 25 100% 50%;
+    --border: 0 0% 4%;
+    --input: 0 0% 4%;
+    --ring: 50 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0px;
 
-    --cimed-orange: 25 100% 50%;
-    --cimed-black: 0 0% 6%;
-    --cimed-yellow: 48 100% 50%;
-    --cimed-gray: 0 0% 92%;
+    --brutal-black: 0 0% 4%;
+    --brutal-yellow: 50 100% 50%;
+    --brutal-white: 0 0% 100%;
 
-    --sidebar-background: 0 0% 97%;
-    --sidebar-foreground: 0 0% 15%;
-    --sidebar-primary: 25 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 92%;
-    --sidebar-accent-foreground: 0 0% 15%;
-    --sidebar-border: 0 0% 85%;
-    --sidebar-ring: 25 100% 50%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 50 100% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 4%;
+    --sidebar-ring: 50 100% 50%;
   }
 
   .dark {
-    --background: 0 0% 6%;
+    --background: 0 0% 4%;
     --foreground: 0 0% 100%;
 
-    --card: 0 0% 10%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 10%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 25 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 17%;
+    --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 17%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 48 100% 50%;
-    --accent-foreground: 0 0% 6%;
+    --accent: 50 100% 50%;
+    --accent-foreground: 0 0% 4%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 25 100% 50%;
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
+    --ring: 50 100% 50%;
 
-    --cimed-orange: 25 100% 50%;
-    --cimed-black: 0 0% 6%;
-    --cimed-yellow: 48 100% 50%;
-    --cimed-gray: 0 0% 17%;
+    --brutal-black: 0 0% 4%;
+    --brutal-yellow: 50 100% 50%;
+    --brutal-white: 0 0% 100%;
 
-    --sidebar-background: 0 0% 8%;
+    --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 25 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%;
+    --sidebar-primary: 50 100% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 25 100% 50%;
+    --sidebar-ring: 50 100% 50%;
   }
 }
 
@@ -103,119 +98,61 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
   }
 }
 
 @layer utilities {
-  .gradient-orange {
-    background: linear-gradient(135deg, hsl(25, 100%, 50%), hsl(35, 100%, 55%));
+  /* === NeoBrutalist System === */
+  .brutal-card {
+    background: hsl(var(--card));
+    border: 3px solid hsl(var(--border));
+    box-shadow: 4px 4px 0 hsl(var(--border));
   }
 
-  .gradient-yellow {
-    background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(40, 100%, 55%));
+  .brutal-card-hover {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .brutal-card-hover:hover {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
 
-  .gradient-dark {
-    background: linear-gradient(180deg, hsl(0, 0%, 8%), hsl(0, 0%, 4%));
+  .brutal-card-yellow {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    border: 3px solid hsl(var(--brutal-black));
+    box-shadow: 4px 4px 0 hsl(var(--brutal-black));
   }
 
-  .text-gradient-orange {
-    background: linear-gradient(135deg, hsl(25, 100%, 50%), hsl(48, 100%, 50%));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .brutal-card-dark {
+    background: hsl(var(--brutal-black));
+    color: hsl(var(--brutal-white));
+    border: 3px solid hsl(var(--accent));
+    box-shadow: 4px 4px 0 hsl(var(--accent));
   }
 
-
-  /* === Cinematic Glassmorphism === */
-  .glass-card {
-    background: hsl(var(--card) / 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.5);
+  .brutal-shadow {
+    box-shadow: 4px 4px 0 hsl(var(--border));
   }
 
-  .glass-header {
-    background: hsl(var(--background) / 0.6);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-bottom: 1px solid hsl(var(--border) / 0.4);
+  .brutal-shadow-yellow {
+    box-shadow: 4px 4px 0 hsl(var(--accent));
   }
 
-  .glass-sidebar {
-    background: linear-gradient(180deg, hsl(0, 0%, 7%) 0%, hsl(0, 0%, 5%) 100%);
+  .brutal-header {
+    background: hsl(var(--background));
+    border-bottom: 3px solid hsl(var(--border));
   }
 
-  /* === Depth Effects === */
-  .glow-border {
-    box-shadow:
-      0 1px 2px hsl(0, 0%, 0%, 0.08),
-      0 4px 12px hsl(0, 0%, 0%, 0.12),
-      inset 0 1px 0 hsl(var(--border) / 0.3);
+  .font-anton {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
-  .glow-border-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .glow-border-hover:hover {
-    box-shadow:
-      0 2px 4px hsl(0, 0%, 0%, 0.1),
-      0 8px 24px hsl(0, 0%, 0%, 0.18);
-    transform: translateY(-2px);
-  }
-
-  /* === Depth Shadows === */
-  .shadow-depth {
-    box-shadow:
-      0 1px 2px hsl(0, 0%, 0%, 0.06),
-      0 4px 8px hsl(0, 0%, 0%, 0.08),
-      0 12px 24px hsl(0, 0%, 0%, 0.12);
-  }
-
-  .shadow-depth-lg {
-    box-shadow:
-      0 2px 4px hsl(0, 0%, 0%, 0.06),
-      0 8px 16px hsl(0, 0%, 0%, 0.1),
-      0 24px 48px hsl(0, 0%, 0%, 0.16);
-  }
-
-  .shadow-depth-xl {
-    box-shadow:
-      0 2px 4px hsl(0, 0%, 0%, 0.1),
-      0 8px 16px hsl(0, 0%, 0%, 0.15),
-      0 20px 40px hsl(0, 0%, 0%, 0.2);
-  }
-
-  /* === Avatar Ring === */
-  .avatar-ring {
-    position: relative;
-  }
-  .avatar-ring::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(25, 100%, 50%), hsl(48, 100%, 50%));
-    z-index: -1;
-  }
-
-  .avatar-ring-square {
-    position: relative;
-  }
-  .avatar-ring-square::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 1rem;
-    background: linear-gradient(135deg, hsl(48, 100%, 50%), hsl(25, 100%, 50%), hsl(48, 100%, 50%));
-    z-index: -1;
-  }
-
-
-  /* === Active Glow Bar (sidebar) === */
+  /* === Active Bar (sidebar) === */
   .active-glow-bar {
     position: relative;
   }
@@ -231,15 +168,7 @@
   }
 }
 
-/* === Cinematic Keyframes === */
-
-@keyframes shimmer {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  100% { left: 100%; }
-}
-
-
+/* === Keyframes === */
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -248,7 +177,6 @@
 .animate-slide-up {
   animation: slide-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
-
 
 /* Stagger children */
 .stagger-children > * {
@@ -267,62 +195,44 @@
   50% { transform: translateY(-8px); }
 }
 
-@keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-
-@keyframes bounce-idle {
+@keyframes walk-bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  50% { transform: translateY(-2px); }
 }
-
-
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.4; }
-  100% { transform: scale(1.4); opacity: 0; }
-}
-
-@keyframes radar-pulse {
-  0% { transform: translateX(-50%) scale(0.6); opacity: 0.6; }
-  100% { transform: translateX(-50%) scale(1.8); opacity: 0; }
-}
-
 
 /* Marker styles */
 .marker-pharmacy {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, #FFD400, #FFC000);
-  border-radius: 50%;
+  background: hsl(var(--accent));
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 212, 0, 0.6);
-  box-shadow: 0 2px 10px rgba(255, 212, 0, 0.3);
+  border: 3px solid hsl(var(--brutal-black));
+  box-shadow: 3px 3px 0 hsl(var(--brutal-black));
 }
 
-/* Drop marker with badge count */
-  .marker-drop-badge {
-    width: 42px;
-    height: 42px;
-    background: linear-gradient(135deg, hsl(var(--accent)), hsl(40, 100%, 45%));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
+.marker-drop-badge {
+  width: 42px;
+  height: 42px;
+  background: hsl(var(--accent));
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid hsl(var(--brutal-black));
+  box-shadow: 3px 3px 0 hsl(var(--brutal-black));
+}
 .marker-drop-badge span { font-size: 18px; }
 .marker-badge-count {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -6px;
+  right: -6px;
   min-width: 18px;
   height: 18px;
-  border-radius: 9px;
+  border-radius: 0;
   background: hsl(var(--destructive));
   color: white;
   font-size: 10px;
@@ -331,22 +241,21 @@
   align-items: center;
   justify-content: center;
   padding: 0 4px;
-  border: 2px solid white;
+  border: 2px solid hsl(var(--brutal-black));
 }
 
-/* Rare drop marker */
-  .marker-rare-drop {
-    width: 46px;
-    height: 46px;
-    background: linear-gradient(135deg, hsl(var(--accent)), hsl(25, 100%, 50%));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  }
+.marker-rare-drop {
+  width: 46px;
+  height: 46px;
+  background: hsl(var(--accent));
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 3px solid hsl(var(--brutal-black));
+  box-shadow: 4px 4px 0 hsl(var(--brutal-black));
+}
 .marker-rare-drop span { font-size: 20px; }
 .marker-rare-tooltip {
   position: absolute;
@@ -359,43 +268,36 @@
   font-size: 10px;
   font-weight: 700;
   padding: 4px 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  border: 1px solid hsl(var(--border));
+  border: 2px solid hsl(var(--border));
+  box-shadow: 2px 2px 0 hsl(var(--border));
 }
 
-/* Mission marker */
-  .marker-mission-target {
-    width: 38px;
-    height: 38px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid hsl(var(--primary));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
+.marker-mission-target {
+  width: 38px;
+  height: 38px;
+  background: hsl(var(--card));
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid hsl(var(--primary));
+  box-shadow: 3px 3px 0 hsl(var(--primary));
+}
 .marker-mission-target span { font-size: 16px; }
 
-  .marker-influencer {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #FFD400, #FF8C00);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid rgba(255, 212, 0, 0.6);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  }
+.marker-influencer {
+  width: 48px;
+  height: 48px;
+  background: hsl(var(--accent));
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid hsl(var(--brutal-black));
+  box-shadow: 4px 4px 0 hsl(var(--brutal-black));
+}
 .marker-influencer span {
   font-size: 22px;
-}
-
-/* Pokemon GO 3D perspective */
-.pokemon-go-map {
-  overflow: hidden;
 }
 
 /* Player avatar */
@@ -403,41 +305,7 @@
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
 }
 
-/* Walking animation */
-@keyframes walk-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-}
-
-@keyframes walk-leg-left {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(-3px) rotate(-8deg); }
-  75% { transform: translateY(3px) rotate(8deg); }
-}
-
-@keyframes walk-leg-right {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(3px) rotate(8deg); }
-  75% { transform: translateY(-3px) rotate(-8deg); }
-}
-
-@keyframes walk-arm-left {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(10deg); }
-  75% { transform: rotate(-10deg); }
-}
-
-@keyframes walk-arm-right {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-10deg); }
-  75% { transform: rotate(10deg); }
-}
-
 .player-character-icon.walking {
-  animation: walk-bounce 0.4s ease-in-out infinite;
-}
-
-.player-character-icon.walking svg {
   animation: walk-bounce 0.4s ease-in-out infinite;
 }
 
@@ -445,33 +313,28 @@
   filter: none;
 }
 
-/* Player direction arrow */
 .player-direction-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease-out;
-  filter: drop-shadow(0 2px 4px rgba(0, 102, 255, 0.4));
 }
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #ffffff !important;
+  background: hsl(var(--background)) !important;
   height: 100%;
   width: 100%;
-  border-radius: inherit;
 }
-
-/* overridden inside .pokemon-go-map */
 
 .leaflet-control-zoom {
   border: none !important;
 }
 
 .leaflet-control-zoom a {
-  background: rgba(255,255,255,0.9) !important;
-  color: #333 !important;
-  border: 1px solid rgba(0,0,0,0.1) !important;
+  background: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 2px solid hsl(var(--border)) !important;
 }
 
 .leaflet-control-attribution {
@@ -479,8 +342,9 @@
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
+  border-radius: 0 !important;
+  border: 3px solid hsl(var(--border)) !important;
+  box-shadow: 4px 4px 0 hsl(var(--border)) !important;
 }
 
 .leaflet-popup-tip {
@@ -492,11 +356,11 @@
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(0, 0%, 6%);
+  background: hsl(var(--background));
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(0, 0%, 25%);
-  border-radius: 4px;
+  background: hsl(var(--muted-foreground));
+  border-radius: 0;
 }
 
 /* Safe area for mobile */

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import type { Drop } from '@/data/mockData';
-import { dropTypeColors } from '@/data/mockData';
 import { Clock, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -21,30 +20,28 @@ const DropCard = ({ drop }: { drop: Drop }) => {
     return () => clearInterval(i);
   }, [drop.expiresAt]);
 
-  const gradientClass = dropTypeColors[drop.type] || 'from-primary to-accent';
-
   return (
-    <div className="rounded-2xl border border-border overflow-hidden bg-card">
-      <div className={`bg-gradient-to-r ${gradientClass} p-4`}>
+    <div className="brutal-card brutal-card-hover overflow-hidden">
+      <div className="bg-accent p-4 border-b-[3px] border-border">
         <div className="flex items-center justify-between">
           <img src={drop.product.image_url} alt={drop.product.name} className="w-8 h-8 object-contain" />
-          <div className="flex items-center gap-1 bg-background/20 backdrop-blur-sm px-2 py-1 rounded-full">
+          <div className="flex items-center gap-1 bg-background px-2 py-1 border-[2px] border-border">
             <Clock className="w-3 h-3" />
-            <span className="text-xs font-bold">{timeLeft}</span>
+            <span className="text-xs font-black">{timeLeft}</span>
           </div>
         </div>
-        <h3 className="font-black text-sm mt-2">{drop.title}</h3>
+        <h3 className="font-black text-sm mt-2 text-accent-foreground uppercase">{drop.title}</h3>
       </div>
       <div className="p-4">
         <p className="text-xs text-muted-foreground">{drop.description}</p>
         <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
           <MapPin className="w-3 h-3" />
-          <span>{drop.pharmacy.name}</span>
+          <span className="font-bold">{drop.pharmacy.name}</span>
         </div>
         <div className="flex items-center justify-between mt-3">
-          <span className="text-xs text-muted-foreground">{drop.quantity} restantes</span>
-          <Button size="sm" className="gradient-orange border-0 rounded-xl text-xs font-bold h-8">
-            Resgatar
+          <span className="text-xs text-muted-foreground font-bold">{drop.quantity} restantes</span>
+          <Button size="sm" className="text-xs font-black h-8">
+            RESGATAR
           </Button>
         </div>
       </div>
