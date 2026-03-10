@@ -130,7 +130,7 @@ const InfluencerDashboard = () => {
             <span className="font-nunito text-accent text-sm font-black">GO</span>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsDark(!isDark)} className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all" aria-label="Alternar tema">
+            <button onClick={() => setIsDark(!isDark)} className="p-2 border-[2px] border-border/50 hover:bg-accent hover:text-accent-foreground transition-all" aria-label="Alternar tema">
               {isDark ? <Sun className="w-5 h-5" strokeWidth={2} /> : <Moon className="w-5 h-5" strokeWidth={2} />}
             </button>
             <DropdownMenu>
