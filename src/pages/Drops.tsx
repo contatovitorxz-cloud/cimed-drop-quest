@@ -5,7 +5,7 @@ import { Zap, Sparkles, Clock, MapPin, ScanLine } from 'lucide-react';
 import EmptyState from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import QRScanner from '@/components/qr/QRScanner';
 
 const Drops = () => {
   const { drops, influencerDrops, loading } = useDrops();
