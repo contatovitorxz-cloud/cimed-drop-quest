@@ -35,8 +35,8 @@ const Login = () => {
   };
 
   const inputClass =
-    'w-full pl-12 pr-4 h-[52px] bg-black text-white text-sm placeholder:text-white/40 rounded-xl border border-transparent focus:border-white/60 focus:outline-none transition-all';
-  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-white/50 z-10';
+    'w-full pl-12 pr-4 h-[52px] bg-white text-black text-sm placeholder:text-black/40 rounded-xl border border-transparent focus:border-black/30 focus:outline-none transition-all';
+  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-black/40 z-10';
 
   return (
     <div
