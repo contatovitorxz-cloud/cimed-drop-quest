@@ -6,6 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose
+} from '@/components/ui/dialog';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '@/components/ui/select';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger
@@ -13,7 +21,7 @@ import {
 import {
   Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
-  UserCircle, BarChart3, Settings
+  UserCircle, BarChart3, Settings, Check
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
@@ -22,6 +30,7 @@ import { useAdminStats } from '@/hooks/useSupabaseData';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 import {
   mockAdminMetrics, mockEngagementChart, mockDrops, mockQRCodes,
   mockMissions, mockInfluencers, mockProfiles, mockAnalyticsData
@@ -148,7 +157,15 @@ function DashboardSection() {
   const { stats, drops, loading } = useAdminStats();
   const isEmpty = !loading && stats.totalUsers === 0 && stats.totalScans === 0;
   const displayStats = isEmpty ? mockAdminMetrics : stats;
-  const displayDrops = isEmpty ? mockDrops : drops;
+  const [localDrops, setLocalDrops] = useState<any[]>([]);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editDrop, setEditDrop] = useState<any>(null);
+
+  useEffect(() => {
+    if (!loading) {
+      setLocalDrops(isEmpty ? [...mockDrops] : drops);
+    }
+  }, [loading, drops, isEmpty]);
 
   const adminMetrics = [
     { label: 'USUÁRIOS ATIVOS', value: displayStats.totalUsers },
@@ -157,6 +174,16 @@ function DashboardSection() {
     { label: 'DROPS RESGATADOS', value: displayStats.totalDropsClaimed },
   ];
 
+  const handleCreateDrop = (newDrop: any) => {
+    setLocalDrops(prev => [newDrop, ...prev]);
+    toast.success('Campanha criada com sucesso!');
+  };
+
+  const handleEditDrop = (updated: any) => {
+    setLocalDrops(prev => prev.map(d => d.id === updated.id ? updated : d));
+    toast.success('Campanha atualizada!');
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -164,13 +191,12 @@ function DashboardSection() {
           <h1 className="font-nunito text-2xl md:text-3xl font-black uppercase">DASHBOARD</h1>
           {isEmpty && <DemoBadge />}
         </div>
-        <Button className="gap-1.5 text-xs h-9 w-full sm:w-auto">
+        <Button className="gap-1.5 text-xs h-9 w-full sm:w-auto" onClick={() => setCreateOpen(true)}>
           <Plus className="w-4 h-4" /> CRIAR CAMPANHA
         </Button>
       </div>
 
       <div className="space-y-6">
-        {/* Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {adminMetrics.map((m, i) => {
             const Icon = metricIcons[i];
@@ -190,7 +216,6 @@ function DashboardSection() {
           })}
         </div>
 
-        {/* Engagement Chart */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-black uppercase flex items-center">
@@ -213,16 +238,18 @@ function DashboardSection() {
           </CardContent>
         </Card>
 
-        {/* Drops table */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-black uppercase">Drops Ativos</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <DropsTable drops={displayDrops} loading={loading} />
+            <DropsTable drops={localDrops} loading={loading} onEdit={setEditDrop} />
           </CardContent>
         </Card>
       </div>
+
+      <CreateDropDialog open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreateDrop} />
+      <EditDropDialog drop={editDrop} onOpenChange={(open) => !open && setEditDrop(null)} onSave={handleEditDrop} />
     </div>
   );
 }
@@ -233,6 +260,7 @@ function DropStatusBadge({ status, label }: { status: string; label?: string }) 
     ativo: 'bg-accent text-accent-foreground border-border',
     ended: 'bg-muted text-muted-foreground border-border',
     expired: 'bg-destructive/15 text-destructive border-destructive',
+    approved: 'bg-accent text-accent-foreground border-border',
   };
   return (
     <Badge className={`${styles[status] || styles.active} text-[9px] px-1.5 py-0 font-black border-[2px] rounded-none uppercase`}>
@@ -241,7 +269,7 @@ function DropStatusBadge({ status, label }: { status: string; label?: string }) 
   );
 }
 
-function DropsTable({ drops, loading }: { drops: any[]; loading: boolean }) {
+function DropsTable({ drops, loading, onEdit }: { drops: any[]; loading: boolean; onEdit?: (drop: any) => void }) {
   if (loading) return <div className="p-6 text-center text-sm text-muted-foreground">Carregando...</div>;
   if (drops.length === 0) {
     return <EmptyState icon={Gift} title="Nenhum drop" description="Crie sua primeira campanha para começar." />;
@@ -263,7 +291,7 @@ function DropsTable({ drops, loading }: { drops: any[]; loading: boolean }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-black uppercase">{d.title}</p>
-              <p className="text-[11px] text-muted-foreground">{d.pharmacies?.name || 'Sem farmácia'}</p>
+              <p className="text-[11px] text-muted-foreground">{d.pharmacies?.name || d.pharmacy || 'Sem farmácia'}</p>
             </div>
             <div className="text-center shrink-0 hidden md:block min-w-[80px]">
               <p className="text-sm font-black">{d.quantity}</p>
@@ -272,7 +300,7 @@ function DropsTable({ drops, loading }: { drops: any[]; loading: boolean }) {
               <DropStatusBadge status={d.active ? 'active' : 'ended'} label={d.active ? 'Ativo' : 'Encerrado'} />
             </div>
             <div className="shrink-0 flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={() => onEdit?.(d)}>
                 <Pencil className="w-3.5 h-3.5" />
               </Button>
             </div>
@@ -283,11 +311,327 @@ function DropsTable({ drops, loading }: { drops: any[]; loading: boolean }) {
   );
 }
 
+// ---- Create Drop Dialog ----
+function CreateDropDialog({ open, onOpenChange, onSave }: { open: boolean; onOpenChange: (o: boolean) => void; onSave: (d: any) => void }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [type, setType] = useState('coupon');
+  const [quantity, setQuantity] = useState('100');
+  const [pharmacy, setPharmacy] = useState('');
+
+  const handleSubmit = () => {
+    if (!title.trim()) { toast.error('Informe o título'); return; }
+    onSave({
+      id: crypto.randomUUID(),
+      title, description, type,
+      quantity: Number(quantity) || 100,
+      active: true,
+      pharmacies: { name: pharmacy || 'Sem farmácia' },
+      products: { name: 'Produto Genérico' },
+    });
+    setTitle(''); setDescription(''); setType('coupon'); setQuantity('100'); setPharmacy('');
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="border-[3px] border-border rounded-none max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-black uppercase text-lg">Criar Campanha</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Título *</Label>
+            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Ex: Vitamina C Drop" className="border-[2px] border-border rounded-none" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Descrição</Label>
+            <Textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Descrição da campanha..." className="border-[2px] border-border rounded-none min-h-[60px]" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Tipo</Label>
+              <Select value={type} onValueChange={setType}>
+                <SelectTrigger className="border-[2px] border-border rounded-none">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-[2px] border-border rounded-none">
+                  <SelectItem value="coupon">Cupom</SelectItem>
+                  <SelectItem value="discount">Desconto</SelectItem>
+                  <SelectItem value="free">Grátis</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Quantidade</Label>
+              <Input type="number" value={quantity} onChange={e => setQuantity(e.target.value)} className="border-[2px] border-border rounded-none" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Farmácia</Label>
+            <Input value={pharmacy} onChange={e => setPharmacy(e.target.value)} placeholder="Ex: Drogasil Centro" className="border-[2px] border-border rounded-none" />
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <DialogClose asChild>
+            <Button variant="outline" className="rounded-none">Cancelar</Button>
+          </DialogClose>
+          <Button onClick={handleSubmit} className="rounded-none gap-1.5">
+            <Plus className="w-4 h-4" /> Criar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ---- Edit Drop Dialog ----
+function EditDropDialog({ drop, onOpenChange, onSave }: { drop: any; onOpenChange: (o: boolean) => void; onSave: (d: any) => void }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (drop) {
+      setTitle(drop.title || '');
+      setDescription(drop.description || '');
+      setQuantity(String(drop.quantity || 0));
+      setActive(drop.active ?? true);
+    }
+  }, [drop]);
+
+  const handleSubmit = () => {
+    onSave({ ...drop, title, description, quantity: Number(quantity), active });
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={!!drop} onOpenChange={onOpenChange}>
+      <DialogContent className="border-[3px] border-border rounded-none max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-black uppercase text-lg">Editar Drop</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Título</Label>
+            <Input value={title} onChange={e => setTitle(e.target.value)} className="border-[2px] border-border rounded-none" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Descrição</Label>
+            <Textarea value={description} onChange={e => setDescription(e.target.value)} className="border-[2px] border-border rounded-none min-h-[60px]" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Quantidade</Label>
+              <Input type="number" value={quantity} onChange={e => setQuantity(e.target.value)} className="border-[2px] border-border rounded-none" />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Status</Label>
+              <Select value={active ? 'true' : 'false'} onValueChange={v => setActive(v === 'true')}>
+                <SelectTrigger className="border-[2px] border-border rounded-none">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-[2px] border-border rounded-none">
+                  <SelectItem value="true">Ativo</SelectItem>
+                  <SelectItem value="false">Encerrado</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <DialogClose asChild>
+            <Button variant="outline" className="rounded-none">Cancelar</Button>
+          </DialogClose>
+          <Button onClick={handleSubmit} className="rounded-none gap-1.5">
+            <Check className="w-4 h-4" /> Salvar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ---- Create QR Code Dialog ----
+function CreateQRDialog({ open, onOpenChange, onSave }: { open: boolean; onOpenChange: (o: boolean) => void; onSave: (q: any) => void }) {
+  const [code, setCode] = useState('');
+  const [type, setType] = useState('checkin');
+  const [points, setPoints] = useState('50');
+  const [product, setProduct] = useState('');
+  const [pharmacy, setPharmacy] = useState('');
+
+  const handleSubmit = () => {
+    if (!code.trim()) { toast.error('Informe o código'); return; }
+    onSave({
+      id: crypto.randomUUID(),
+      code: code.toUpperCase(), type,
+      points_value: Number(points) || 50,
+      active: true, product: product || '—', pharmacy: pharmacy || '—',
+    });
+    setCode(''); setType('checkin'); setPoints('50'); setProduct(''); setPharmacy('');
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="border-[3px] border-border rounded-none max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-black uppercase text-lg">Criar QR Code</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Código *</Label>
+            <Input value={code} onChange={e => setCode(e.target.value)} placeholder="Ex: CIMED-VIT-C-006" className="border-[2px] border-border rounded-none uppercase" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Tipo</Label>
+              <Select value={type} onValueChange={setType}>
+                <SelectTrigger className="border-[2px] border-border rounded-none">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-[2px] border-border rounded-none">
+                  <SelectItem value="checkin">Check-in</SelectItem>
+                  <SelectItem value="purchase">Compra</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Pontos</Label>
+              <Input type="number" value={points} onChange={e => setPoints(e.target.value)} className="border-[2px] border-border rounded-none" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Produto</Label>
+            <Input value={product} onChange={e => setProduct(e.target.value)} placeholder="Ex: Vitamina C 1000mg" className="border-[2px] border-border rounded-none" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Farmácia</Label>
+            <Input value={pharmacy} onChange={e => setPharmacy(e.target.value)} placeholder="Ex: Drogasil Centro" className="border-[2px] border-border rounded-none" />
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <DialogClose asChild>
+            <Button variant="outline" className="rounded-none">Cancelar</Button>
+          </DialogClose>
+          <Button onClick={handleSubmit} className="rounded-none gap-1.5">
+            <Plus className="w-4 h-4" /> Criar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ---- Create Mission Dialog ----
+function CreateMissionDialog({ open, onOpenChange, onSave }: { open: boolean; onOpenChange: (o: boolean) => void; onSave: (m: any) => void }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [missionType, setMissionType] = useState('weekly');
+  const [reward, setReward] = useState('100');
+  const [icon, setIcon] = useState('🏆');
+
+  const handleSubmit = () => {
+    if (!title.trim()) { toast.error('Informe o título'); return; }
+    onSave({
+      id: crypto.randomUUID(),
+      title, description, mission_type: missionType,
+      reward_value: Number(reward) || 100,
+      icon, active: true, progress: 0,
+    });
+    setTitle(''); setDescription(''); setMissionType('weekly'); setReward('100'); setIcon('🏆');
+    onOpenChange(false);
+  };
+
+  const icons = ['🏆', '🗺️', '📱', '🎁', '⭐', '🔥', '💊', '🏃'];
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="border-[3px] border-border rounded-none max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-black uppercase text-lg">Criar Missão</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Título *</Label>
+            <Input value={title} onChange={e => setTitle(e.target.value)} placeholder="Ex: Explorador Semanal" className="border-[2px] border-border rounded-none" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Descrição</Label>
+            <Textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Descrição da missão..." className="border-[2px] border-border rounded-none min-h-[60px]" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Tipo</Label>
+              <Select value={missionType} onValueChange={setMissionType}>
+                <SelectTrigger className="border-[2px] border-border rounded-none">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="border-[2px] border-border rounded-none">
+                  <SelectItem value="daily">Diária</SelectItem>
+                  <SelectItem value="weekly">Semanal</SelectItem>
+                  <SelectItem value="monthly">Mensal</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Recompensa (pts)</Label>
+              <Input type="number" value={reward} onChange={e => setReward(e.target.value)} className="border-[2px] border-border rounded-none" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs font-black uppercase">Ícone</Label>
+            <div className="flex gap-2 flex-wrap">
+              {icons.map(ic => (
+                <button
+                  key={ic}
+                  type="button"
+                  onClick={() => setIcon(ic)}
+                  className={`w-10 h-10 text-lg flex items-center justify-center border-[2px] transition-all ${icon === ic ? 'border-accent bg-accent/20 scale-110' : 'border-border bg-muted/50 hover:bg-muted'}`}
+                >
+                  {ic}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <DialogClose asChild>
+            <Button variant="outline" className="rounded-none">Cancelar</Button>
+          </DialogClose>
+          <Button onClick={handleSubmit} className="rounded-none gap-1.5">
+            <Plus className="w-4 h-4" /> Criar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 // ---- Drops Section ----
 function DropsSection() {
   const { drops, loading } = useAdminStats();
-  const displayDrops = !loading && drops.length === 0 ? mockDrops : drops;
+  const [localDrops, setLocalDrops] = useState<any[]>([]);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editDrop, setEditDrop] = useState<any>(null);
   const isEmpty = !loading && drops.length === 0;
+
+  useEffect(() => {
+    if (!loading) {
+      setLocalDrops(isEmpty ? [...mockDrops] : drops);
+    }
+  }, [loading, drops, isEmpty]);
+
+  const handleCreate = (d: any) => {
+    setLocalDrops(prev => [d, ...prev]);
+    toast.success('Campanha criada com sucesso!');
+  };
+
+  const handleEdit = (d: any) => {
+    setLocalDrops(prev => prev.map(x => x.id === d.id ? d : x));
+    toast.success('Campanha atualizada!');
+  };
 
   return (
     <div className="space-y-6">
@@ -296,15 +640,17 @@ function DropsSection() {
           <h2 className="font-nunito text-xl md:text-2xl font-black uppercase">Gestão de Campanhas & Drops</h2>
           {isEmpty && <DemoBadge />}
         </div>
-        <Button className="gap-1.5 w-full sm:w-auto">
+        <Button className="gap-1.5 w-full sm:w-auto" onClick={() => setCreateOpen(true)}>
           <Plus className="w-4 h-4" /> CRIAR CAMPANHA
         </Button>
       </div>
       <Card>
         <CardContent className="p-0">
-          <DropsTable drops={displayDrops} loading={loading} />
+          <DropsTable drops={localDrops} loading={loading} onEdit={setEditDrop} />
         </CardContent>
       </Card>
+      <CreateDropDialog open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreate} />
+      <EditDropDialog drop={editDrop} onOpenChange={(o) => !o && setEditDrop(null)} onSave={handleEdit} />
     </div>
   );
 }
@@ -313,6 +659,7 @@ function DropsSection() {
 function QRCodesSection() {
   const [qrCodes, setQrCodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [createOpen, setCreateOpen] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -324,10 +671,25 @@ function QRCodesSection() {
   }, []);
 
   const isEmpty = !loading && qrCodes.length === 0;
-  const displayData = isEmpty ? mockQRCodes : qrCodes.map(q => ({
-    id: q.id, code: q.code, type: q.type, points_value: q.points_value,
-    active: q.active, product: q.products?.name || '—', pharmacy: q.pharmacies?.name || '—',
-  }));
+  const [localData, setLocalData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!loading) {
+      setLocalData(
+        isEmpty
+          ? [...mockQRCodes]
+          : qrCodes.map(q => ({
+              id: q.id, code: q.code, type: q.type, points_value: q.points_value,
+              active: q.active, product: q.products?.name || '—', pharmacy: q.pharmacies?.name || '—',
+            }))
+      );
+    }
+  }, [loading, qrCodes, isEmpty]);
+
+  const handleCreate = (q: any) => {
+    setLocalData(prev => [q, ...prev]);
+    toast.success('QR Code criado com sucesso!');
+  };
 
   return (
     <div className="space-y-6">
@@ -336,7 +698,7 @@ function QRCodesSection() {
           <h2 className="font-nunito text-xl md:text-2xl font-black uppercase">QR Codes</h2>
           {isEmpty && <DemoBadge />}
         </div>
-        <Button className="gap-1.5 w-full sm:w-auto">
+        <Button className="gap-1.5 w-full sm:w-auto" onClick={() => setCreateOpen(true)}>
           <Plus className="w-4 h-4" /> CRIAR QR CODE
         </Button>
       </div>
@@ -354,7 +716,7 @@ function QRCodesSection() {
                 <div className="min-w-[80px] text-center">Status</div>
               </div>
               <div className="divide-y-[2px] divide-border">
-                {displayData.map((q: any) => (
+                {localData.map((q: any) => (
                   <div key={q.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
                     <div className="w-10 h-10 bg-accent flex items-center justify-center shrink-0 border-[2px] border-border">
                       <QrCode className="w-5 h-5 text-accent-foreground" />
@@ -381,6 +743,7 @@ function QRCodesSection() {
           )}
         </CardContent>
       </Card>
+      <CreateQRDialog open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreate} />
     </div>
   );
 }
@@ -389,6 +752,7 @@ function QRCodesSection() {
 function MissionsSection() {
   const [missions, setMissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [createOpen, setCreateOpen] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -400,7 +764,18 @@ function MissionsSection() {
   }, []);
 
   const isEmpty = !loading && missions.length === 0;
-  const displayData = isEmpty ? mockMissions : missions;
+  const [localData, setLocalData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!loading) {
+      setLocalData(isEmpty ? [...mockMissions] : missions);
+    }
+  }, [loading, missions, isEmpty]);
+
+  const handleCreate = (m: any) => {
+    setLocalData(prev => [m, ...prev]);
+    toast.success('Missão criada com sucesso!');
+  };
 
   return (
     <div className="space-y-6">
@@ -409,7 +784,7 @@ function MissionsSection() {
           <h2 className="font-nunito text-xl md:text-2xl font-black uppercase">Gestão de Missões</h2>
           {isEmpty && <DemoBadge />}
         </div>
-        <Button className="gap-1.5 w-full sm:w-auto">
+        <Button className="gap-1.5 w-full sm:w-auto" onClick={() => setCreateOpen(true)}>
           <Plus className="w-4 h-4" /> CRIAR MISSÃO
         </Button>
       </div>
@@ -419,7 +794,7 @@ function MissionsSection() {
             <div className="p-6 text-center text-sm text-muted-foreground">Carregando...</div>
           ) : (
             <div className="divide-y-[2px] divide-border">
-              {displayData.map((m: any) => (
+              {localData.map((m: any) => (
                 <div key={m.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
                   <div className="w-10 h-10 bg-accent flex items-center justify-center shrink-0 border-[2px] border-border text-lg">
                     {m.icon || '🏆'}
@@ -443,6 +818,7 @@ function MissionsSection() {
           )}
         </CardContent>
       </Card>
+      <CreateMissionDialog open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreate} />
     </div>
   );
 }
@@ -464,15 +840,31 @@ function InfluencersSection() {
   }, []);
 
   const isEmpty = !loading && influencers.length === 0;
-  const displayData = isEmpty
-    ? mockInfluencers.map(inf => ({
-        id: inf.id,
-        display_name: inf.display_name,
-        commission_balance: inf.commission_balance,
-        avatar_url: inf.avatar_url,
-        profiles: { username: inf.username },
-      }))
-    : influencers;
+  const [localData, setLocalData] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!loading) {
+      setLocalData(
+        isEmpty
+          ? mockInfluencers.map(inf => ({
+              id: inf.id,
+              display_name: inf.display_name,
+              commission_balance: inf.commission_balance,
+              avatar_url: inf.avatar_url,
+              profiles: { username: inf.username },
+              status: inf.status || 'pending',
+            }))
+          : influencers.map(inf => ({ ...inf, status: 'pending' }))
+      );
+    }
+  }, [loading, influencers, isEmpty]);
+
+  const handleApprove = (id: string) => {
+    setLocalData(prev =>
+      prev.map(inf => inf.id === id ? { ...inf, status: 'approved' } : inf)
+    );
+    toast.success('Influenciador aprovado com sucesso!');
+  };
 
   return (
     <div className="space-y-6">
@@ -486,11 +878,12 @@ function InfluencersSection() {
             <div className="p-6 text-center text-sm text-muted-foreground">Carregando...</div>
           ) : (
             <div className="divide-y-[2px] divide-border">
-              {displayData.map((inf: any) => {
+              {localData.map((inf: any) => {
                 const profile = inf.profiles;
                 const name = inf.display_name || profile?.username || 'Influenciador';
                 const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
                 const avatarUrl = inf.avatar_url;
+                const isApproved = inf.status === 'approved';
                 return (
                   <div key={inf.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
                     <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0 overflow-hidden">
@@ -504,7 +897,16 @@ function InfluencersSection() {
                       <span className="font-black text-sm uppercase">{name}</span>
                       <p className="text-[10px] text-muted-foreground">Comissão: R$ {Number(inf.commission_balance || 0).toFixed(2)}</p>
                     </div>
-                    <span className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-orange-400 text-foreground uppercase">Aprovar</span>
+                    {isApproved ? (
+                      <DropStatusBadge status="approved" label="Aprovado" />
+                    ) : (
+                      <button
+                        onClick={() => handleApprove(inf.id)}
+                        className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-orange-400 text-foreground uppercase hover:bg-orange-500 transition-colors cursor-pointer"
+                      >
+                        Aprovar
+                      </button>
+                    )}
                   </div>
                 );
               })}
