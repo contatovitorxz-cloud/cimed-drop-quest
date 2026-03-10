@@ -130,7 +130,7 @@ const InfluencerDashboard = () => {
             <span className="font-nunito text-accent text-sm font-black">GO</span>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsDark(!isDark)} className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all" aria-label="Alternar tema">
+            <button onClick={() => setIsDark(!isDark)} className="p-2 border-[2px] border-border/50 hover:bg-accent hover:text-accent-foreground transition-all" aria-label="Alternar tema">
               {isDark ? <Sun className="w-5 h-5" strokeWidth={2} /> : <Moon className="w-5 h-5" strokeWidth={2} />}
             </button>
             <DropdownMenu>
@@ -188,8 +188,8 @@ const InfluencerDashboard = () => {
           {metrics.map((m) => (
             <Card key={m.label}>
               <CardContent className="p-4 text-center space-y-2">
-                <div className="w-10 h-10 bg-accent mx-auto flex items-center justify-center border-[2px] border-border">
-                  <m.icon className="w-5 h-5 text-accent-foreground" />
+                <div className="w-10 h-10 bg-accent/20 dark:bg-accent/15 mx-auto flex items-center justify-center border-[2px] border-border/30">
+                  <m.icon className="w-5 h-5 text-accent" />
                 </div>
                 <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">{m.label}</p>
                 <p className="text-xl font-black">{m.value.toLocaleString('pt-BR')}</p>
@@ -204,9 +204,9 @@ const InfluencerDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             {drops.slice(0, 5).map(d => (
-              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border">
-                <div className="w-8 h-8 bg-accent flex items-center justify-center border-[2px] border-border shrink-0">
-                  <Megaphone className="w-4 h-4 text-accent-foreground" />
+              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border/30">
+                <div className="w-8 h-8 bg-accent/20 dark:bg-accent/15 flex items-center justify-center border-[2px] border-border/30 shrink-0">
+                  <Megaphone className="w-4 h-4 text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-black uppercase truncate">{d.title}</p>
@@ -223,8 +223,8 @@ const InfluencerDashboard = () => {
         <div className="grid grid-cols-2 gap-3">
           <Card className="cursor-pointer hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
-                <Megaphone className="w-5 h-5 text-accent-foreground" />
+              <div className="w-10 h-10 bg-accent/20 dark:bg-accent/15 flex items-center justify-center border-[2px] border-border/30">
+                <Megaphone className="w-5 h-5 text-accent" />
               </div>
               <h3 className="font-black text-sm uppercase">Campanhas</h3>
               <p className="text-xs text-muted-foreground">Gerencie suas campanhas.</p>
@@ -232,8 +232,8 @@ const InfluencerDashboard = () => {
           </Card>
           <Card className="cursor-pointer hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
             <CardContent className="p-4 space-y-2">
-              <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
-                <QrCode className="w-5 h-5 text-accent-foreground" />
+              <div className="w-10 h-10 bg-accent/20 dark:bg-accent/15 flex items-center justify-center border-[2px] border-border/30">
+                <QrCode className="w-5 h-5 text-accent" />
               </div>
               <h3 className="font-black text-sm uppercase">Meus QR Codes</h3>
               <p className="text-xs text-muted-foreground">Ver e gerenciar QR Codes ativos.</p>
