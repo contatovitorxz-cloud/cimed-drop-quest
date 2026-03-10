@@ -46,8 +46,12 @@ const AppHeader = () => {
             <Bell className="w-5 h-5 text-foreground" strokeWidth={2} />
             <span className="absolute -top-1 -right-1 min-w-[18px] min-h-[18px] bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center border-[2px] border-border">3</span>
           </button>
-          <div className="w-9 h-9 bg-accent flex items-center justify-center text-accent-foreground font-black text-xs border-[2px] border-border">
-            {initials}
+          <div className="w-9 h-9 bg-accent flex items-center justify-center text-accent-foreground font-black text-xs border-[2px] border-border overflow-hidden">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              initials
+            )}
           </div>
         </div>
       </div>
