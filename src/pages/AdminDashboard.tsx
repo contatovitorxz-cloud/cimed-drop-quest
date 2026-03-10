@@ -823,10 +823,119 @@ function MissionsSection() {
   );
 }
 
+// ---- Influencer Profile Dialog ----
+function InfluencerProfileDialog({ influencer, open, onOpenChange, onApprove }: {
+  influencer: any | null;
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onApprove: (id: string) => void;
+}) {
+  if (!influencer) return null;
+  const inf = influencer._raw || influencer;
+  const name = inf.display_name || 'Influenciador';
+  const isApproved = influencer.status === 'approved';
+
+  const formatFollowers = (n: number) => {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0', '') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(0) + 'k';
+    return String(n);
+  };
+
+  const socials = [
+    { label: 'Instagram', handle: inf.instagram, followers: inf.instagram_followers, color: 'bg-pink-500' },
+    { label: 'TikTok', handle: inf.tiktok, followers: inf.tiktok_followers, color: 'bg-foreground' },
+    { label: 'YouTube', handle: inf.youtube, followers: inf.youtube_followers, color: 'bg-red-500' },
+  ];
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md border-[3px] border-border bg-background p-0 overflow-hidden">
+        {/* Header */}
+        <div className="bg-accent/10 p-6 flex flex-col items-center gap-3 border-b-[3px] border-border">
+          <div className="w-20 h-20 bg-accent border-[3px] border-border overflow-hidden flex items-center justify-center">
+            {inf.avatar_url ? (
+              <img src={inf.avatar_url} alt={name} className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-2xl font-black text-accent-foreground">
+                {name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
+              </span>
+            )}
+          </div>
+          <div className="text-center">
+            <h3 className="font-black text-lg uppercase">{name}</h3>
+            <p className="text-xs text-muted-foreground font-bold">@{inf.username}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge className="bg-accent text-accent-foreground border-[2px] border-border rounded-none font-black text-xs px-2">
+              {inf.niche || 'Influenciador'}
+            </Badge>
+            {isApproved ? (
+              <Badge className="bg-green-500 text-white border-[2px] border-border rounded-none font-black text-xs px-2">
+                ✓ APROVADO
+              </Badge>
+            ) : (
+              <Badge className="bg-orange-400 text-foreground border-[2px] border-border rounded-none font-black text-xs px-2">
+                PENDENTE
+              </Badge>
+            )}
+          </div>
+        </div>
+
+        {/* Total followers */}
+        <div className="px-6 pt-4 pb-2 text-center">
+          <p className="text-3xl font-black text-accent">{formatFollowers(inf.followers_total || 0)}+</p>
+          <p className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">Seguidores totais</p>
+        </div>
+
+        {/* Social breakdown */}
+        <div className="px-6 pb-3 grid grid-cols-3 gap-2">
+          {socials.map(s => (
+            <div key={s.label} className="border-[2px] border-border p-2 text-center">
+              <p className="text-xs font-black uppercase text-muted-foreground">{s.label}</p>
+              <p className="text-lg font-black">{formatFollowers(s.followers || 0)}</p>
+              <p className="text-[9px] text-muted-foreground truncate">{s.handle}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Stats */}
+        <div className="px-6 pb-4 grid grid-cols-3 gap-2">
+          <div className="border-[2px] border-border p-2 text-center bg-accent/5">
+            <p className="text-lg font-black">{inf.drops_created || 0}</p>
+            <p className="text-[9px] uppercase font-black text-muted-foreground">Drops</p>
+          </div>
+          <div className="border-[2px] border-border p-2 text-center bg-accent/5">
+            <p className="text-lg font-black">{formatFollowers(inf.claims || 0)}</p>
+            <p className="text-[9px] uppercase font-black text-muted-foreground">Resgates</p>
+          </div>
+          <div className="border-[2px] border-border p-2 text-center bg-accent/5">
+            <p className="text-lg font-black">R$ {Number(inf.commission_balance || 0).toFixed(0)}</p>
+            <p className="text-[9px] uppercase font-black text-muted-foreground">Comissão</p>
+          </div>
+        </div>
+
+        {/* Approve button */}
+        {!isApproved && (
+          <div className="px-6 pb-5">
+            <Button
+              className="w-full"
+              onClick={() => { onApprove(influencer.id); onOpenChange(false); }}
+            >
+              <Check className="w-4 h-4 mr-1" /> Aprovar Influenciador
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 // ---- Influencers Section ----
 function InfluencersSection() {
   const [influencers, setInfluencers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedInfluencer, setSelectedInfluencer] = useState<any | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -853,8 +962,9 @@ function InfluencersSection() {
               avatar_url: inf.avatar_url,
               profiles: { username: inf.username },
               status: inf.status || 'pending',
+              _raw: inf,
             }))
-          : influencers.map(inf => ({ ...inf, status: 'pending' }))
+          : influencers.map(inf => ({ ...inf, status: 'pending', _raw: inf }))
       );
     }
   }, [loading, influencers, isEmpty]);
@@ -864,6 +974,11 @@ function InfluencersSection() {
       prev.map(inf => inf.id === id ? { ...inf, status: 'approved' } : inf)
     );
     toast.success('Influenciador aprovado com sucesso!');
+  };
+
+  const openProfile = (inf: any) => {
+    setSelectedInfluencer(inf);
+    setProfileOpen(true);
   };
 
   return (
@@ -885,7 +1000,11 @@ function InfluencersSection() {
                 const avatarUrl = inf.avatar_url;
                 const isApproved = inf.status === 'approved';
                 return (
-                  <div key={inf.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
+                  <div
+                    key={inf.id}
+                    className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all cursor-pointer"
+                    onClick={() => openProfile(inf)}
+                  >
                     <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0 overflow-hidden">
                       {avatarUrl ? (
                         <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
@@ -901,7 +1020,7 @@ function InfluencersSection() {
                       <DropStatusBadge status="approved" label="Aprovado" />
                     ) : (
                       <button
-                        onClick={() => handleApprove(inf.id)}
+                        onClick={(e) => { e.stopPropagation(); handleApprove(inf.id); }}
                         className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-orange-400 text-foreground uppercase hover:bg-orange-500 transition-colors cursor-pointer"
                       >
                         Aprovar
@@ -914,6 +1033,12 @@ function InfluencersSection() {
           )}
         </CardContent>
       </Card>
+      <InfluencerProfileDialog
+        influencer={selectedInfluencer}
+        open={profileOpen}
+        onOpenChange={setProfileOpen}
+        onApprove={handleApprove}
+      />
     </div>
   );
 }
