@@ -81,7 +81,7 @@ const InfluencerProfile = () => {
     <div className="min-h-screen bg-background text-foreground">
       <AppHeader />
 
-      <div className="px-4 pb-8 space-y-5 pt-20">
+      <div className="px-4 pb-24 space-y-5 pt-20">
         {/* Back button */}
         <button
           onClick={() => navigate('/influencer-dashboard')}
