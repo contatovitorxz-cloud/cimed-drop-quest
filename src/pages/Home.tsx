@@ -168,7 +168,7 @@ const Home = () => {
       <div className="px-4 pt-[72px] space-y-3 stagger-children">
         {/* Level Card */}
         <div className="brutal-card-dark p-4 flex items-center gap-3">
-          <div className="w-12 h-12 flex-shrink-0 border-[2px] border-accent overflow-hidden bg-muted">
+          <div className="w-12 h-12 flex-shrink-0 overflow-hidden bg-muted">
             {profile?.avatar_url ? (
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
