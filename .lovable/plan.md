@@ -1,42 +1,60 @@
 
 
-## Plan: Fake Data no Admin + Role Admin + Menu de Alternância de Painéis
+## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
 
-### 1. Criar tabela `user_roles` no Supabase
-- Criar enum `app_role` (admin, moderator, user)
-- Criar tabela `user_roles` com RLS
-- Criar função `has_role()` security definer
-- Inserir role `admin` para o email `contatovitorxz@gmail.com` (buscar user_id via profiles/auth)
+### Análise das diferenças (comparando imagens com código atual)
 
-### 2. Dados fake no Admin Dashboard
-Quando o banco estiver vazio, mostrar dados fake em **todas as seções**:
+**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
+- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
+- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
+- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
+- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
+- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
 
-- **Dashboard**: métricas fake (1.247 usuários, 856 missões, 3.421 scans, 612 drops) + gráfico de engajamento com dados fake mensais
-- **Drops**: lista de 5 drops fake (Vitamina C Drop, Kit Protetor Solar, Desconto Lavitan, etc.)
-- **QR Codes**: seção com lista fake de QR codes cadastrados
-- **Missões**: lista fake de missões ativas com progresso
-- **Influenciadores**: lista fake de 4 influenciadores com comissões
-- **Perfis**: lista fake de ~8 perfis com níveis e pontos variados
-- **Analytics**: gráficos fake de engajamento
-- **Configurações**: placeholder
+**Imagem 2 (image-5)** - Layout com sidebar direita:
+- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
+- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
+- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
+- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
+- Sidebar direita: Ranking dos Drops + Novos Influenciadores
 
-Implementação: criar `src/data/adminMockData.ts` com todos os dados fake. Cada seção mostra dados fake quando o banco retorna vazio, com um badge "DADOS DEMO" sutil.
+**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
 
-### 3. Menu de alternância no avatar do Admin Header
-- No canto superior direito do admin, ao clicar no avatar/nome, abrir dropdown com:
-  - **Painel Admin** (atual)
-  - **Painel Influencer** → navega para `/influencer-dashboard`
-  - **Painel Usuário** → navega para `/home`
-  - Separador + **Sair**
-- Mostrar foto de perfil real do usuário logado (usar `useProfile`)
+### Mudanças necessárias
 
-### 4. Proteger rota `/admin`
-- No `AdminDashboard`, verificar se o usuário tem role `admin` via query à tabela `user_roles`
-- Se não for admin, redirecionar para `/home`
+**1. `src/data/mockData.ts`**
+- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
+- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
+- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
+- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
 
-### Arquivos a criar/editar:
-- **Nova migration SQL**: criar enum, tabela `user_roles`, função `has_role`, inserir admin
-- **Novo**: `src/data/adminMockData.ts` — dados fake para todas as seções
-- **Editar**: `src/pages/AdminDashboard.tsx` — fallback para mock data, dropdown no avatar, seções QR/Missões/Analytics/Config, proteção de rota
-- **Editar**: `src/hooks/useSupabaseData.ts` — adicionar hook `useUserRole`
+**2. `src/pages/AdminDashboard.tsx`**
+- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
+- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
+- **Gráfico**:
+  - Eixo X: Meses (Jan, Fev, Mar... Ago)
+  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
+  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
+  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
+  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
+- **Tabela "Últimos Drops Liberados"**:
+  - Header de coluna: "Drop | Resgates | Status | Ações"
+  - Formato resgates: "450/500" (não "2,00 m")
+  - Badge "Encerrado" cinza escuro
+  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
+- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
+
+**3. `src/components/admin/AdminSidebar.tsx`**
+- Adicionar label "Menu" acima dos itens do menu
+- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
+- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
+- Ícones brancos para itens inativos
+
+### Arquivos
+
+| Arquivo | Ação |
+|---|---|
+| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
+| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
+| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
 
