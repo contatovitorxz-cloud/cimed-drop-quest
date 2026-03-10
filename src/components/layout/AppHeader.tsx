@@ -24,7 +24,7 @@ const AppHeader = () => {
         <div className="flex items-center gap-2.5">
           <img src={cimedSymbol} alt="Cimed" className="h-9 w-9 object-contain" />
           <div>
-            <h1 className="font-anton text-foreground text-lg leading-tight">
+            <h1 className="font-nunito text-foreground text-lg font-black leading-tight">
               CIMED GO
             </h1>
             <p className="text-muted-foreground text-[10px] font-bold leading-tight tracking-widest uppercase">Creator Hub</p>

@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         anton: ["Anton", "sans-serif"],
+        nunito: ["Nunito", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
