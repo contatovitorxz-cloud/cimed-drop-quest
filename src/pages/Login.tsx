@@ -35,27 +35,26 @@ const Login = () => {
   };
 
   const inputClass =
-    'w-full pl-12 pr-4 h-14 bg-black text-white placeholder:text-white/40 rounded-xl border border-transparent focus:border-white/60 focus:outline-none transition-all';
-  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50 z-10';
+    'w-full pl-12 pr-4 h-[52px] bg-black text-white text-sm placeholder:text-white/40 rounded-xl border border-transparent focus:border-white/60 focus:outline-none transition-all';
+  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-white/50 z-10';
 
   return (
     <div
       className="fixed inset-0 flex items-center justify-center px-5"
       style={{ background: 'radial-gradient(ellipse at top, #1a1a1a 0%, #000 100%)' }}
     >
-      {/* Card central amarelo */}
-      <div className="w-full max-w-sm rounded-2xl p-8 shadow-[0_25px_60px_rgba(0,0,0,0.5)]" style={{ background: '#FFD500' }}>
+      <div className="w-full max-w-[380px] rounded-3xl p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)]" style={{ background: '#FFD500' }}>
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2.5 mb-2">
-          <img src={cimedSymbol} alt="Cimed GO" className="w-11 h-11 object-contain" />
-          <span className="font-anton text-5xl text-black leading-none">CIMEDGO</span>
+        <div className="flex items-center justify-center gap-3 mb-1">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
+          <span className="font-anton text-6xl text-black leading-none">CIMEDGO</span>
         </div>
 
-        <p className="text-center text-black/50 text-xs font-bold uppercase tracking-[0.25em] mb-8">
+        <p className="text-center text-black/50 text-xs font-bold uppercase tracking-[0.3em] mb-10">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {isSignUp && (
             <div className="relative">
               <User className={iconClass} />
@@ -95,16 +94,16 @@ const Login = () => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
             >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
             </button>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-14 text-lg font-black uppercase tracking-wider bg-black text-white rounded-xl hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50"
+            className="w-full h-[52px] mt-2 text-lg font-anton tracking-[0.15em] bg-black text-white rounded-xl hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50"
           >
-            {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
+            {loading ? 'Carregando...' : isSignUp ? 'CRIAR CONTA' : 'ENTRAR'}
           </button>
         </form>
 
@@ -124,7 +123,7 @@ const Login = () => {
             });
             if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
           }}
-          className="w-full h-14 flex items-center justify-center gap-3 bg-black/10 text-black font-bold text-sm uppercase rounded-xl border-none hover:bg-black/15 active:scale-[0.98] transition-all"
+          className="w-full h-[52px] flex items-center justify-center gap-3 bg-black/10 text-black font-bold text-sm uppercase rounded-xl border-none hover:bg-black/15 active:scale-[0.98] transition-all"
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
@@ -137,7 +136,7 @@ const Login = () => {
 
         <button
           onClick={() => setIsSignUp(!isSignUp)}
-          className="mt-6 text-sm text-black/50 hover:text-black transition-colors text-center w-full"
+          className="mt-8 text-[13px] text-black/50 hover:text-black transition-colors text-center w-full"
         >
           {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
           <span className="text-black font-black">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
@@ -145,7 +144,7 @@ const Login = () => {
 
         <button
           onClick={() => navigate('/influencer')}
-          className="mt-3 text-sm text-black/50 hover:text-black transition-colors text-center w-full"
+          className="mt-3 text-[13px] text-black/50 hover:text-black transition-colors text-center w-full"
         >
           Você é influencer? <span className="text-black font-black">Inscreva-se</span>
         </button>
