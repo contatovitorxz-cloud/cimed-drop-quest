@@ -1,5 +1,7 @@
 // Dados fake para o Admin Dashboard quando o banco está vazio
 
+import saborEnergeticoAvatar from '@/assets/sabor-energetico.png';
+
 export const mockAdminMetrics = {
   totalUsers: 1247,
   totalMissions: 856,
@@ -43,10 +45,36 @@ export const mockMissions = [
 ];
 
 export const mockInfluencers = [
-  { id: '1', display_name: 'Marina Silva', username: 'marina.silva', commission_balance: 1250.50, drops_created: 12, claims: 340, avatar_url: 'https://i.pravatar.cc/150?img=5', status: 'pending' },
-  { id: '2', display_name: 'Lucas Mendes', username: 'lucas.mendes', commission_balance: 890.00, drops_created: 8, claims: 215, avatar_url: 'https://i.pravatar.cc/150?img=12', status: 'pending' },
-  { id: '3', display_name: 'Ana Costa', username: 'ana.costa', commission_balance: 2100.75, drops_created: 18, claims: 520, avatar_url: 'https://i.pravatar.cc/150?img=9', status: 'pending' },
-  { id: '4', display_name: 'Pedro Oliveira', username: 'pedro.oliv', commission_balance: 450.30, drops_created: 5, claims: 128, avatar_url: 'https://i.pravatar.cc/150?img=15', status: 'pending' },
+  {
+    id: '1', display_name: 'Marina Silva', username: 'marina.silva', commission_balance: 1250.50, drops_created: 12, claims: 340,
+    avatar_url: 'https://i.pravatar.cc/150?img=5', status: 'pending',
+    followers_total: 820000, instagram: '@marina.silva', tiktok: '@marinasilva', youtube: 'Marina Silva',
+    instagram_followers: 380000, tiktok_followers: 310000, youtube_followers: 130000, niche: 'Saúde & Bem-estar',
+  },
+  {
+    id: '2', display_name: 'Lucas Mendes', username: 'lucas.mendes', commission_balance: 890.00, drops_created: 8, claims: 215,
+    avatar_url: 'https://i.pravatar.cc/150?img=12', status: 'pending',
+    followers_total: 450000, instagram: '@lucas.mendes', tiktok: '@lucasmendes', youtube: 'Lucas Mendes',
+    instagram_followers: 210000, tiktok_followers: 170000, youtube_followers: 70000, niche: 'Fitness & Nutrição',
+  },
+  {
+    id: '3', display_name: 'Ana Costa', username: 'ana.costa', commission_balance: 2100.75, drops_created: 18, claims: 520,
+    avatar_url: 'https://i.pravatar.cc/150?img=9', status: 'pending',
+    followers_total: 1200000, instagram: '@ana.costa', tiktok: '@anacosta', youtube: 'Ana Costa',
+    instagram_followers: 560000, tiktok_followers: 420000, youtube_followers: 220000, niche: 'Beleza & Skincare',
+  },
+  {
+    id: '4', display_name: 'Pedro Oliveira', username: 'pedro.oliv', commission_balance: 450.30, drops_created: 5, claims: 128,
+    avatar_url: 'https://i.pravatar.cc/150?img=15', status: 'pending',
+    followers_total: 290000, instagram: '@pedro.oliv', tiktok: '@pedrooliv', youtube: 'Pedro Oliveira',
+    instagram_followers: 140000, tiktok_followers: 100000, youtube_followers: 50000, niche: 'Farmácia & Saúde',
+  },
+  {
+    id: '5', display_name: 'saBOR energético', username: 'sabor.energetico', commission_balance: 8750.00, drops_created: 45, claims: 2100,
+    avatar_url: saborEnergeticoAvatar, status: 'pending',
+    followers_total: 15000000, instagram: '@saborenergetico', tiktok: '@saborenergetico', youtube: 'saBOR energético',
+    instagram_followers: 6200000, tiktok_followers: 5800000, youtube_followers: 3000000, niche: 'Lifestyle & Energia',
+  },
 ];
 
 export const mockProfiles = [
