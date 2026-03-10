@@ -3,7 +3,7 @@ import { LayoutDashboard, Gift, UserRound } from 'lucide-react';
 
 const tabs = [
   { path: '/influencer-dashboard', label: 'DASHBOARD', icon: LayoutDashboard },
-  { path: '/drops', label: 'DROPS', icon: Gift, center: true },
+  { path: '/influencer-drops', label: 'DROPS', icon: Gift, center: true },
   { path: '/influencer-profile', label: 'PERFIL', icon: UserRound },
 ];
 

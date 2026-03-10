@@ -20,6 +20,7 @@ import ScanHistory from "./pages/ScanHistory";
 import Analytics from "./pages/Analytics";
 import InfluencerRegister from "./pages/InfluencerRegister";
 import InfluencerDashboard from "./pages/InfluencerDashboard";
+import InfluencerDrops from "./pages/InfluencerDrops";
 import InfluencerProfile from "./pages/InfluencerProfile";
 import AdminDashboard from "./pages/AdminDashboard";
 import TermsOfUse from "./pages/TermsOfUse";
