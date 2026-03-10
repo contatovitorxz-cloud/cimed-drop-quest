@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import cimedLogo from '@/assets/cimed-logo-full.svg';
+import cimedSymbol from '@/assets/cimed-symbol.png';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
@@ -35,8 +35,8 @@ const Login = () => {
   };
 
   const inputClass =
-    'w-full pl-12 pr-4 h-[52px] bg-white text-black text-sm placeholder:text-black/40 rounded-xl border border-transparent focus:border-black/30 focus:outline-none transition-all';
-  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-black/40 z-10';
+    'w-full pl-12 pr-4 h-[52px] bg-black text-white text-sm placeholder:text-white/40 rounded-xl border border-transparent focus:border-white/60 focus:outline-none transition-all';
+  const iconClass = 'absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-white/50 z-10';
 
   return (
     <div
@@ -45,9 +45,9 @@ const Login = () => {
     >
       <div className="w-full max-w-[380px] rounded-3xl p-10 shadow-[0_25px_60px_rgba(0,0,0,0.5)]" style={{ background: '#FFD500' }}>
         {/* Logo */}
-        <div className="flex flex-col items-center mb-1">
-          <img src={cimedLogo} alt="Cimed" className="h-8 object-contain mb-3" />
-          <span className="font-anton text-5xl text-black leading-none tracking-wider">GO</span>
+        <div className="flex items-center justify-center gap-3 mb-1">
+          <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
+          <span className="font-anton text-6xl text-black leading-none">CIMEDGO</span>
         </div>
 
         <p className="text-center text-black/50 text-xs font-bold uppercase tracking-[0.3em] mb-10">
@@ -92,7 +92,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-black transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
             >
               {showPassword ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
             </button>
