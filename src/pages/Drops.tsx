@@ -23,10 +23,12 @@ const Drops = () => {
           </div>
           <Button
             size="sm"
-            onClick={() => navigate('/scan')}
+            onClick={() => setShowScanner(true)}
             className="flex items-center gap-2 text-xs font-black h-9"
           >
             <ScanLine className="w-4 h-4" />
+            SCAN QR
+          </Button>
             SCAN QR
           </Button>
         </div>
