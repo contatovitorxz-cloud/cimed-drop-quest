@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Eye, MousePointerClick, ShoppingBag, Plus, QrCode, Megaphone, X, TrendingUp, TrendingDown } from 'lucide-react';
+import { Eye, MousePointerClick, ShoppingBag, Plus, QrCode, Megaphone, X, TrendingUp, TrendingDown, Sun, Moon } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,6 +16,16 @@ const InfluencerDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [period, setPeriod] = useState('7d');
+
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   const username = user?.user_metadata?.username || user?.email?.split('@')[0] || 'Creator';
   const initials = username.slice(0, 1).toUpperCase();
@@ -33,23 +43,30 @@ const InfluencerDashboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
-            <span className="font-anton text-sm">CIMED GO</span>
+            <span className="font-nunito text-sm font-black">CIMED GO</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all"
+              aria-label="Alternar tema"
+            >
+              {isDark ? <Sun className="w-5 h-5" strokeWidth={2} /> : <Moon className="w-5 h-5" strokeWidth={2} />}
+            </button>
             <button onClick={() => navigate('/influencer-profile')} className="w-9 h-9 bg-accent flex items-center justify-center text-sm font-black text-accent-foreground border-[2px] border-border">
               {initials}
             </button>
-            <button onClick={() => navigate('/home')} className="text-muted-foreground hover:text-foreground transition-colors">
+            <button onClick={() => navigate('/home')} className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all">
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="px-4 pb-8 space-y-5 pt-4 stagger-children">
+      <div className="px-4 pb-8 space-y-5 pt-4">
         {/* Welcome */}
         <div>
-          <h2 className="font-anton text-2xl">
+          <h2 className="font-nunito text-2xl font-black uppercase">
             BEM-VINDO, <span className="text-accent">{username.toUpperCase()}</span>!
           </h2>
           <p className="text-sm text-muted-foreground mt-0.5 font-bold">Crie drops e campanhas para a Cimed.</p>
@@ -64,7 +81,7 @@ const InfluencerDashboard = () => {
         {/* Metrics */}
         <div className="grid grid-cols-3 gap-3">
           {metrics.map((m) => (
-            <Card key={m.label} className="brutal-card-hover">
+            <Card key={m.label}>
               <CardContent className="p-4 text-center space-y-2">
                 <div className="w-10 h-10 bg-accent mx-auto flex items-center justify-center border-[2px] border-border">
                   <m.icon className="w-5 h-5 text-accent-foreground" />
@@ -84,7 +101,7 @@ const InfluencerDashboard = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <Card className="brutal-card-hover cursor-pointer">
+          <Card className="cursor-pointer hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
             <CardContent className="p-4 space-y-2">
               <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
                 <Megaphone className="w-5 h-5 text-accent-foreground" />
@@ -93,7 +110,7 @@ const InfluencerDashboard = () => {
               <p className="text-xs text-muted-foreground">Gerencie suas campanhas.</p>
             </CardContent>
           </Card>
-          <Card className="brutal-card-hover cursor-pointer">
+          <Card className="cursor-pointer hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
             <CardContent className="p-4 space-y-2">
               <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
                 <QrCode className="w-5 h-5 text-accent-foreground" />
