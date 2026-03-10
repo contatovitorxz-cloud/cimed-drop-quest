@@ -489,16 +489,21 @@ function InfluencersSection() {
                 const profile = inf.profiles;
                 const name = inf.display_name || profile?.username || 'Influenciador';
                 const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+                const avatarUrl = inf.avatar_url;
                 return (
                   <div key={inf.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
-                    <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0">
-                      <span className="text-xs font-black text-accent-foreground">{initials}</span>
+                    <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0 overflow-hidden">
+                      {avatarUrl ? (
+                        <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-xs font-black text-accent-foreground">{initials}</span>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className="font-black text-sm uppercase">{name}</span>
                       <p className="text-[10px] text-muted-foreground">Comissão: R$ {Number(inf.commission_balance || 0).toFixed(2)}</p>
                     </div>
-                    <DropStatusBadge status="active" label="Ativo" />
+                    <span className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-orange-400 text-foreground uppercase">Aprovar</span>
                   </div>
                 );
               })}
