@@ -35,11 +35,9 @@ const AppHeader = () => {
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2.5">
           <img src={cimedSymbol} alt="Cimed" className="h-9 w-9 object-contain" />
-          <div>
-            <h1 className="font-nunito text-foreground text-lg font-black leading-tight">
-              CIMED GO
-            </h1>
-            <p className="text-muted-foreground text-[10px] font-bold leading-tight tracking-widest uppercase">Creator Hub</p>
+          <div className="flex items-center gap-1">
+            <CimedWordmark className="h-5 w-auto text-foreground" />
+            <span className="font-nunito text-accent text-lg font-black leading-tight">GO</span>
           </div>
         </div>
 
