@@ -13,7 +13,7 @@ const InfluencerBottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-card border-t-[3px] border-border">
-      <div className="flex items-end justify-around px-2 py-2">
+      <div className="flex items-end justify-center gap-8 px-4 py-2">
         {tabs.map((tab) => {
           const isActive = location.pathname === tab.path;
           const Icon = tab.icon;
