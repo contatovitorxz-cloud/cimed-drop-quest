@@ -9,6 +9,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import cimedSymbol from '@/assets/cimed-symbol.png';
+import CimedWordmark from '@/assets/cimed-wordmark.svg?react';
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger
