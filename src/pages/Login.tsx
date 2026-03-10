@@ -55,7 +55,7 @@ const Login = () => {
                 placeholder="Nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+                className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
               />
             </div>
           )}
@@ -68,7 +68,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
           </div>
 
@@ -80,7 +80,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-12 pr-12 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+              className="w-full pl-12 pr-12 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
@@ -89,7 +89,7 @@ const Login = () => {
           </div>
 
           <button type="submit" disabled={loading}
-                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
+                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-white rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </button>
         </form>
@@ -110,7 +110,7 @@ const Login = () => {
             });
             if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
           }}
-          className="w-full h-14 flex items-center justify-center gap-3 bg-background text-foreground font-bold text-sm uppercase rounded-lg border border-border hover:bg-muted active:scale-[0.98] transition-all"
+          className="w-full h-14 flex items-center justify-center gap-3 bg-background text-foreground font-bold text-sm uppercase rounded-lg border border-gray-200 hover:bg-muted active:scale-[0.98] transition-all"
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
