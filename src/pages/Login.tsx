@@ -37,71 +37,71 @@ const Login = () => {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-[#FFD400]">
+    <div className="fixed inset-0 flex flex-col bg-accent">
       <div className="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-sm mx-auto">
         {/* Logo */}
         <div className="mb-10 mt-4 animate-bounce-in flex items-center justify-center w-full -ml-8">
           <img src={cimedSymbol} alt="Cimed GO" className="w-14 h-14 object-contain" />
-          <span className="text-4xl font-black text-black tracking-tight leading-none font-['Nunito']">CIMEDGO</span>
+          <span className="font-anton text-4xl text-accent-foreground leading-none">CIMEDGO</span>
         </div>
 
-        <p className="text-black/60 text-sm mb-8 font-['Nunito']">
+        <p className="text-accent-foreground/60 text-sm mb-8 font-bold uppercase tracking-wider">
           {isSignUp ? 'Crie sua conta e comece a jogar' : 'Entre na sua conta'}
         </p>
 
         <form onSubmit={handleSubmit} className="w-full space-y-4">
           {isSignUp && (
             <div className="relative animate-fade-up">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
                 placeholder="Nome de usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="pl-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
+                className="pl-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
               />
             </div>
           )}
 
           <div className="relative animate-fade-up" style={{ animationDelay: '0.05s' }}>
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="pl-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
+              className="pl-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
             />
           </div>
 
           <div className="relative animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <Input
               type={showPassword ? 'text' : 'password'}
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="pl-11 pr-11 h-14 bg-white border-gray-200 rounded-xl text-black placeholder:text-gray-400"
+              className="pl-11 pr-11 h-14 bg-background border-[3px] border-accent-foreground text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0_hsl(var(--brutal-black))]"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
           </div>
 
-          <Button type="submit" disabled={loading}
-                  className="w-full h-14 text-lg font-bold bg-black hover:bg-black text-white border-0 rounded-xl hover:scale-105 transition-transform duration-200 animate-fade-up"
+          <button type="submit" disabled={loading}
+                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent border-[3px] border-accent-foreground shadow-[4px_4px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all animate-fade-up disabled:opacity-50"
                   style={{ animationDelay: '0.15s' }}>
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
-          </Button>
+          </button>
         </form>
 
         {/* Separator */}
         <div className="flex items-center gap-3 w-full my-5 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-          <div className="flex-1 h-px bg-black/20" />
-          <span className="text-sm text-black/50 font-medium font-['Nunito']">ou</span>
-          <div className="flex-1 h-px bg-black/20" />
+          <div className="flex-1 h-[2px] bg-accent-foreground/20" />
+          <span className="text-sm text-accent-foreground/50 font-black uppercase">ou</span>
+          <div className="flex-1 h-[2px] bg-accent-foreground/20" />
         </div>
 
         {/* Google Button */}
@@ -113,7 +113,7 @@ const Login = () => {
             });
             if (error) toast({ title: 'Erro', description: error.message, variant: 'destructive' });
           }}
-          className="w-full h-14 flex items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl text-black font-bold text-base hover:bg-gray-50 hover:scale-105 transition-all duration-200 animate-fade-up"
+          className="w-full h-14 flex items-center justify-center gap-3 bg-background border-[3px] border-accent-foreground text-foreground font-black text-base uppercase shadow-[3px_3px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all animate-fade-up"
           style={{ animationDelay: '0.25s' }}
         >
           <svg width="20" height="20" viewBox="0 0 48 48">
@@ -126,14 +126,14 @@ const Login = () => {
         </button>
 
         <button onClick={() => setIsSignUp(!isSignUp)}
-                className="mt-6 text-sm text-black/60 hover:text-black transition-colors text-center w-full">
+                className="mt-6 text-sm text-accent-foreground/60 hover:text-accent-foreground transition-colors text-center w-full">
           {isSignUp ? 'Já tem conta? ' : 'Não tem conta? '}
-          <span className="text-black font-semibold">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
+          <span className="text-accent-foreground font-black">{isSignUp ? 'Entrar' : 'Criar conta'}</span>
         </button>
 
         <button onClick={() => navigate('/influencer')}
-                className="mt-3 text-sm text-black/60 hover:text-black transition-colors text-center w-full">
-          Você é influencer? <span className="text-black font-semibold">Inscreva-se</span>
+                className="mt-3 text-sm text-accent-foreground/60 hover:text-accent-foreground transition-colors text-center w-full">
+          Você é influencer? <span className="text-accent-foreground font-black">Inscreva-se</span>
         </button>
       </div>
     </div>

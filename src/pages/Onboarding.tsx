@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import cimedLogo from '@/assets/cimed-logo.svg';
 
@@ -15,19 +14,19 @@ const Onboarding = () => {
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-accent">
       <div className="flex-1 flex flex-col items-center justify-center">
         <img src={cimedLogo} alt="Cimed" className="h-16 md:h-20 mb-6" />
-        <p className="text-accent-foreground/70 text-sm font-medium tracking-wide">
+        <p className="text-accent-foreground/70 text-sm font-black tracking-widest uppercase">
           Encontre, jogue e descubra
         </p>
       </div>
 
       <div className="w-full p-8 pb-12">
-        <Button
+        <button
           onClick={handleStart}
-          className="w-full h-14 text-lg font-bold bg-black text-white border-0 rounded-2xl hover:scale-105 hover:bg-black transition-transform duration-200"
+          className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent border-[3px] border-accent-foreground shadow-[4px_4px_0_hsl(var(--brutal-black))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2"
         >
           Começar
-          <ChevronRight className="ml-2 w-5 h-5" />
-        </Button>
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );

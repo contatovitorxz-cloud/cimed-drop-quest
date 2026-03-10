@@ -10,15 +10,15 @@ const Challenges = () => (
     <div className="px-4 pt-4">
       <div className="flex items-center gap-2 mb-4">
         <Trophy className="w-6 h-6 text-accent" />
-        <h2 className="text-xl font-black">Desafios</h2>
+        <h2 className="font-anton text-2xl">DESAFIOS</h2>
       </div>
 
       {/* Active challenges summary */}
-      <div className="gradient-orange rounded-2xl p-4 mb-4">
-        <p className="text-sm font-bold text-primary-foreground">
+      <div className="brutal-card-dark p-4 mb-4">
+        <p className="text-sm font-black uppercase">
           {mockChallenges.filter((c) => c.progress > 0).length} desafios em andamento
         </p>
-        <p className="text-xs text-primary-foreground/70 mt-1">
+        <p className="text-xs opacity-70 mt-1">
           Complete desafios para ganhar pontos, badges e produtos!
         </p>
       </div>

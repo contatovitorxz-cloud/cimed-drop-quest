@@ -8,11 +8,11 @@ const Leaderboard = () => {
   return (
     <div className="min-h-screen bg-background pb-8">
       <div className="flex items-center gap-3 p-4">
-        <button onClick={() => navigate(-1)} className="p-2 rounded-xl bg-secondary">
+        <button onClick={() => navigate(-1)} className="p-2 border-[2px] border-border bg-card shadow-[2px_2px_0_hsl(var(--border))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <Crown className="w-6 h-6 text-accent" />
-        <h1 className="text-xl font-black">Leaderboard</h1>
+        <h1 className="font-anton text-2xl">LEADERBOARD</h1>
       </div>
 
       <EmptyState

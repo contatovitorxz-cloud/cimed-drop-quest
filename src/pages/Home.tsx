@@ -155,9 +155,9 @@ const Home = () => {
   const handleRecenter = useCallback(() => setFollowPlayer(true), []);
 
   const actionCards = [
-    { icon: Gift, title: 'Drops perto de você', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2', gradient: 'from-accent/15 to-accent/5' },
-    { icon: Target, title: 'Missões da semana', subtitle: 'Complete desafios e ganhe pontos', path: '/missions', gradient: 'from-accent/10 to-accent/5' },
-    { icon: Trophy, title: 'Ranking da cidade', subtitle: 'Veja quem está no topo', path: '/leaderboard', gradient: 'from-accent/10 to-accent/5' },
+    { icon: Gift, title: 'DROPS PERTO DE VOCÊ', subtitle: 'Resgate prêmios e recompensas', path: '/drops', badge: '2' },
+    { icon: Target, title: 'MISSÕES DA SEMANA', subtitle: 'Complete desafios e ganhe pontos', path: '/missions' },
+    { icon: Trophy, title: 'RANKING DA CIDADE', subtitle: 'Veja quem está no topo', path: '/leaderboard' },
   ];
 
   return (
@@ -166,21 +166,21 @@ const Home = () => {
 
       <div className="px-4 pt-[72px] space-y-3 stagger-children">
         {/* Level Card */}
-        <div className="glass-card glow-border rounded-2xl p-4 flex items-center gap-3 shadow-depth">
-          <div className="w-12 h-12 rounded-xl gradient-yellow flex items-center justify-center flex-shrink-0 shadow-depth">
+        <div className="brutal-card p-4 flex items-center gap-3">
+          <div className="w-12 h-12 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
             <Gift className="w-6 h-6 text-accent-foreground" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-foreground font-bold text-sm">Nível 1 · {username}</p>
+            <p className="text-foreground font-black text-sm uppercase">{username} · Nível 1</p>
             <p className="text-muted-foreground text-xs">0 pontos</p>
-            <div className="w-full h-1 rounded-full bg-muted mt-2 overflow-hidden">
-              <div className="h-full w-0 rounded-full gradient-yellow" />
+            <div className="w-full h-2 bg-muted mt-2 overflow-hidden border-[2px] border-border">
+              <div className="h-full w-0 bg-accent" />
             </div>
           </div>
         </div>
 
         {/* Map Section */}
-        <div className="relative rounded-2xl overflow-hidden border border-border shadow-depth-lg" style={{ height: 300 }}>
+        <div className="relative overflow-hidden border-[3px] border-border shadow-[4px_4px_0_hsl(var(--border))]" style={{ height: 300 }}>
           <MapContainer
             center={playerPosition}
             zoom={15}
@@ -197,8 +197,8 @@ const Home = () => {
               <Marker key={p.id} position={[p.lat, p.lng]} icon={pharmacyIcon}>
                 <Popup>
                   <div className="p-2 min-w-[200px]">
-                    <h3 className="font-bold text-sm">{p.name}</h3>
-                    <p className="text-[10px] text-gray-500">{p.address}</p>
+                    <h3 className="font-black text-sm uppercase">{p.name}</h3>
+                    <p className="text-[10px] text-muted-foreground">{p.address}</p>
                   </div>
                 </Popup>
               </Marker>
@@ -207,14 +207,14 @@ const Home = () => {
 
           <button
             onClick={handleRecenter}
-            className="absolute top-3 right-3 z-[1000] w-10 h-10 rounded-full glass-card flex items-center justify-center shadow-depth active:scale-95 transition-transform"
+            className="absolute top-3 right-3 z-[1000] w-10 h-10 bg-card flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
           >
             <Navigation className="w-5 h-5 text-accent" />
           </button>
 
           <button
             onClick={() => navigate('/scan-history')}
-            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-depth active:scale-95 transition-transform"
+            className="absolute bottom-3 right-3 z-[1000] w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border shadow-[2px_2px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
           >
             <Camera className="w-5 h-5 text-accent-foreground" />
           </button>
@@ -226,22 +226,22 @@ const Home = () => {
             <button
               key={card.path}
               onClick={() => navigate(card.path)}
-              className="w-full glass-card glow-border-hover rounded-2xl p-4 flex items-center gap-3 active:scale-[0.98] transition-all duration-300 text-left shadow-depth"
+              className="w-full brutal-card brutal-card-hover p-4 flex items-center gap-3 text-left"
             >
-              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center flex-shrink-0`}>
-                <card.icon className="w-6 h-6 text-accent" />
+              <div className="w-11 h-11 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
+                <card.icon className="w-6 h-6 text-accent-foreground" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-foreground font-bold text-sm">{card.title}</p>
+                <p className="text-foreground font-black text-sm">{card.title}</p>
                 <p className="text-muted-foreground text-xs">{card.subtitle}</p>
               </div>
               {card.badge ? (
-                <div className="flex items-center gap-1 bg-accent/20 px-2.5 py-1 rounded-full">
-                  <span className="text-accent text-xs font-bold">{card.badge}</span>
-                  <ChevronRight className="w-4 h-4 text-accent" />
+                <div className="flex items-center gap-1 bg-accent px-2.5 py-1 border-[2px] border-border">
+                  <span className="text-accent-foreground text-xs font-black">{card.badge}</span>
+                  <ChevronRight className="w-4 h-4 text-accent-foreground" />
                 </div>
               ) : (
-                <ChevronRight className="w-5 h-5 text-accent flex-shrink-0" />
+                <ChevronRight className="w-5 h-5 text-foreground flex-shrink-0" />
               )}
             </button>
           ))}
