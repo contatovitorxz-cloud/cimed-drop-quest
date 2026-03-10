@@ -204,9 +204,9 @@ const InfluencerDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             {drops.slice(0, 5).map(d => (
-              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border">
-                <div className="w-8 h-8 bg-accent flex items-center justify-center border-[2px] border-border shrink-0">
-                  <Megaphone className="w-4 h-4 text-accent-foreground" />
+              <div key={d.id} className="flex items-center gap-3 p-2 border-[2px] border-border/30">
+                <div className="w-8 h-8 bg-accent/20 dark:bg-accent/15 flex items-center justify-center border-[2px] border-border/30 shrink-0">
+                  <Megaphone className="w-4 h-4 text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-black uppercase truncate">{d.title}</p>
