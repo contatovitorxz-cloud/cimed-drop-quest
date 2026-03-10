@@ -68,7 +68,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
+              className="w-full pl-12 pr-4 h-14 bg-background text-foreground placeholder:text-muted-foreground rounded-none border-2 border-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent-foreground/20 transition-all"
             />
           </div>
 
