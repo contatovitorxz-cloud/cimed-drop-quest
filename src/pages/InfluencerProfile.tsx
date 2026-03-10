@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Camera, Wallet, DollarSign } from 'lucide-react';
-import BottomNav from '@/components/layout/BottomNav';
+import InfluencerBottomNav from '@/components/layout/InfluencerBottomNav';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -189,7 +189,7 @@ const InfluencerProfile = () => {
           {saving ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </div>
-      <BottomNav />
+      <InfluencerBottomNav />
     </div>
   );
 };
