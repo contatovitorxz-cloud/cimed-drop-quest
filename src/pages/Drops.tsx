@@ -1,22 +1,34 @@
 import AppHeader from '@/components/layout/AppHeader';
 import BottomNav from '@/components/layout/BottomNav';
 import { useDrops } from '@/hooks/useSupabaseData';
-import { Zap, Sparkles, Clock, MapPin } from 'lucide-react';
+import { Zap, Sparkles, Clock, MapPin, ScanLine } from 'lucide-react';
 import EmptyState from '@/components/ui/empty-state';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Drops = () => {
   const { drops, influencerDrops, loading } = useDrops();
+  const navigate = useNavigate();
   const hasDrops = drops.length > 0 || influencerDrops.length > 0;
 
   return (
     <div className="min-h-screen bg-background pb-20 pt-14">
       <AppHeader />
       <div className="px-4 pt-4">
-        <div className="flex items-center gap-2 mb-4">
-          <Zap className="w-6 h-6 text-accent" />
-          <h2 className="text-xl font-black">Drops</h2>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Zap className="w-6 h-6 text-accent" />
+            <h2 className="text-xl font-black">Drops</h2>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => navigate('/scan')}
+            className="flex items-center gap-2 text-xs font-black h-9"
+          >
+            <ScanLine className="w-4 h-4" />
+            SCAN QR
+          </Button>
         </div>
 
         {loading ? (
