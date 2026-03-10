@@ -89,7 +89,7 @@ const Login = () => {
           </div>
 
           <button type="submit" disabled={loading}
-                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-accent rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
+                  className="w-full h-14 text-lg font-black uppercase tracking-wider bg-accent-foreground text-white rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50">
             {loading ? 'Carregando...' : isSignUp ? 'Criar Conta' : 'Entrar'}
           </button>
         </form>
