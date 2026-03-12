@@ -98,7 +98,7 @@ function DropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['drops'][0] })
 
   return (
     <div className="brutal-card brutal-card-hover overflow-hidden">
-      <div className="bg-accent p-4 border-b-[3px] border-border">
+      <div className="bg-accent dark:bg-accent/10 p-4 border-b-[3px] border-border">
         <div className="flex items-center justify-between">
           {drop.product?.image_url && (
             <img src={drop.product.image_url} alt={drop.product.name} className="w-8 h-8 object-contain" />
