@@ -21,7 +21,7 @@ import {
 import {
   Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
-  UserCircle, BarChart3, Settings, Check
+  UserCircle, BarChart3, Settings, Check, Sun, Moon
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
