@@ -163,7 +163,7 @@ function InfluencerDropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['inf
             </div>
             <p className="text-sm font-black truncate uppercase">{drop.influencer_name}</p>
           </div>
-          <div className="flex items-center gap-1 bg-background px-2 py-1 border-[2px] border-border">
+          <div className="flex items-center gap-1 bg-card px-2 py-1 border-[2px] border-border">
             <Clock className="w-3 h-3 text-accent" />
             <span className="text-xs font-black text-accent">{timeLeft}</span>
           </div>

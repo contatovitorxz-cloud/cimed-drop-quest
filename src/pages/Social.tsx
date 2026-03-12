@@ -33,7 +33,7 @@ const Social = () => {
       <div className="px-4 pt-4">
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-6 h-6 text-accent" />
-          <h1 className="text-xl font-black">Comunidade</h1>
+          <h1 className="font-anton text-2xl">COMUNIDADE</h1>
         </div>
 
         {/* Stats bar */}
@@ -70,8 +70,8 @@ const Social = () => {
               const Icon = typeIcons[activity.type] || Gift;
               return (
                 <div key={activity.id} className="flex items-start gap-3 p-3 brutal-card">
-                  <div className="w-10 h-10 bg-accent flex items-center justify-center shrink-0 border-[2px] border-border">
-                    <Icon className="w-4 h-4 text-accent-foreground" />
+                  <div className="w-10 h-10 bg-accent dark:bg-accent/15 flex items-center justify-center shrink-0 border-[2px] border-border dark:border-border/50">
+                    <Icon className="w-4 h-4 text-accent-foreground dark:text-accent" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">

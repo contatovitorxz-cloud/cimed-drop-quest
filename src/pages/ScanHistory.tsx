@@ -23,14 +23,14 @@ const ScanHistory = () => {
           <ArrowLeft className="w-5 h-5" />
         </button>
         <QrCode className="w-6 h-6 text-accent" />
-        <h1 className="text-xl font-black">Histórico de Scans</h1>
+        <h1 className="font-anton text-2xl">HISTÓRICO DE SCANS</h1>
       </div>
 
       <div className="px-4">
         <div className="brutal-card-dark p-4 mb-6">
-          <p className="text-xs opacity-70">Total de pontos por scans</p>
+          <p className="text-xs text-muted-foreground font-black uppercase">Total de pontos por scans</p>
           <p className="text-3xl font-black">{totalPoints.toLocaleString('pt-BR')}</p>
-          <p className="text-xs opacity-70 mt-1">{scans.length} scans realizados</p>
+          <p className="text-xs text-muted-foreground mt-1 font-bold">{scans.length} scans realizados</p>
         </div>
 
         {loading ? (
@@ -47,8 +47,8 @@ const ScanHistory = () => {
           <div className="space-y-2">
             {scans.map(scan => (
               <div key={scan.id} className="flex items-center gap-3 p-3 brutal-card">
-                <div className="w-10 h-10 bg-accent flex items-center justify-center shrink-0 border-[2px] border-border">
-                  <QrCode className="w-5 h-5 text-accent-foreground" />
+                <div className="w-10 h-10 bg-accent dark:bg-accent/15 flex items-center justify-center shrink-0 border-[2px] border-border dark:border-border/50">
+                  <QrCode className="w-5 h-5 text-accent-foreground dark:text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-black truncate uppercase">{scan.product?.name || 'Check-in'}</p>

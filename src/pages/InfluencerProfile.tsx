@@ -168,8 +168,8 @@ const InfluencerProfile = () => {
         <Card>
           <CardContent className="p-4 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-accent border-[2px] border-border flex items-center justify-center">
-                <DollarSign className="w-4 h-4 text-accent-foreground" />
+              <div className="w-8 h-8 bg-accent dark:bg-accent/15 border-[2px] border-border dark:border-border/50 flex items-center justify-center">
+                <DollarSign className="w-4 h-4 text-accent-foreground dark:text-accent" />
               </div>
               <span className="text-sm font-black uppercase tracking-wider">Comissão</span>
             </div>
