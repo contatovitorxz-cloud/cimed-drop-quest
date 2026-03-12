@@ -51,7 +51,7 @@ const Leaderboard = () => {
               return (
                 <div key={entry.id} className={`brutal-card p-3 flex items-center gap-3 ${isMe ? 'border-accent bg-accent/5' : ''}`}>
                   <div className={`w-10 h-10 flex items-center justify-center shrink-0 border-[2px] border-border font-black text-sm ${
-                    rank === 1 ? 'bg-accent text-accent-foreground' : rank <= 3 ? 'bg-accent/50 text-accent-foreground' : 'bg-muted text-muted-foreground'
+                    rank === 1 ? 'bg-accent dark:bg-accent/20 text-accent-foreground dark:text-accent' : rank <= 3 ? 'bg-accent/50 dark:bg-accent/15 text-accent-foreground dark:text-accent' : 'bg-muted text-muted-foreground'
                   }`}>
                     {rank <= 3 ? (
                       rank === 1 ? <Trophy className="w-5 h-5" /> : rank === 2 ? <Medal className="w-5 h-5" /> : <Medal className="w-4 h-4" />

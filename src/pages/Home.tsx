@@ -217,8 +217,8 @@ const Home = () => {
         <div className="space-y-2.5">
           {actionCards.map((card) => (
             <button key={card.path} onClick={() => navigate(card.path)} className="w-full brutal-card brutal-card-hover p-4 flex items-center gap-3 text-left">
-              <div className="w-11 h-11 bg-accent flex items-center justify-center flex-shrink-0 border-[2px] border-border">
-                <card.icon className="w-6 h-6 text-accent-foreground" />
+              <div className="w-11 h-11 bg-accent dark:bg-accent/15 flex items-center justify-center flex-shrink-0 border-[2px] border-border dark:border-border/50">
+                <card.icon className="w-6 h-6 text-accent-foreground dark:text-accent" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-foreground font-black text-sm">{card.title}</p>

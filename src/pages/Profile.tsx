@@ -162,8 +162,8 @@ const Profile = () => {
           ].map(({ icon: Icon, label, path }) => (
             <button key={path} onClick={() => navigate(path)} className="w-full flex items-center justify-between p-3.5 brutal-card brutal-card-hover text-left">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
-                  <Icon className="w-5 h-5 text-accent-foreground" />
+                <div className="w-10 h-10 bg-accent dark:bg-accent/15 flex items-center justify-center border-[2px] border-border dark:border-border/50">
+                  <Icon className="w-5 h-5 text-accent-foreground dark:text-accent" />
                 </div>
                 <span className="font-black text-sm">{label}</span>
               </div>

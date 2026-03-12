@@ -110,7 +110,7 @@ function DropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['drops'][0] })
             </div>
           )}
         </div>
-        <h3 className="font-black text-sm mt-2 text-accent-foreground uppercase">{drop.title}</h3>
+        <h3 className="font-black text-sm mt-2 text-foreground dark:text-accent uppercase">{drop.title}</h3>
       </div>
       <div className="p-4">
         <p className="text-xs text-muted-foreground">{drop.description}</p>
