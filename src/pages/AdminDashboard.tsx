@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
+import { AdminBottomNav } from '@/components/admin/AdminBottomNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -146,7 +147,7 @@ const AdminDashboard = () => {
             </div>
           </header>
 
-          <main className="flex-1 p-4 md:p-6 overflow-auto">
+          <main className="flex-1 p-4 md:p-6 pb-20 md:pb-6 overflow-auto">
             {section === 'dashboard' && <DashboardSection />}
             {section === 'drops' && <DropsSection />}
             {section === 'qrcodes' && <QRCodesSection />}
@@ -156,6 +157,8 @@ const AdminDashboard = () => {
             {section === 'analytics' && <AnalyticsSection />}
             {section === 'settings' && <SettingsSection />}
           </main>
+
+          <AdminBottomNav activeSection={section} onSectionChange={setSection} />
         </div>
       </div>
     </SidebarProvider>
