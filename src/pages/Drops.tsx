@@ -151,7 +151,7 @@ function InfluencerDropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['inf
 
   return (
     <div className="brutal-card overflow-hidden">
-      <div className="bg-accent/20 p-4 border-b-[3px] border-border">
+      <div className="bg-accent/20 dark:bg-accent/10 p-4 border-b-[3px] border-border dark:border-[hsl(0,0%,25%)]">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-accent flex items-center justify-center text-sm font-black text-accent-foreground shrink-0 border-[2px] border-border">
             {initials}
