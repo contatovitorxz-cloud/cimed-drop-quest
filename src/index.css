@@ -357,16 +357,15 @@
   box-shadow: none !important;
 }
 
-/* Custom scrollbar */
+/* Hide scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 0;
+  display: none;
 }
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground));
-  border-radius: 0;
+
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* Safe area for mobile */
