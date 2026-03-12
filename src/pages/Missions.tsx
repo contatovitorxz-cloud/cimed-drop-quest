@@ -98,8 +98,8 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
     <div className={`brutal-card overflow-hidden transition-all ${isCompleted ? 'border-green-500 bg-green-500/5' : ''}`}>
       <button onClick={() => setExpanded(!expanded)} className="w-full p-4 text-left">
         <div className="flex items-start gap-3">
-          <div className="w-12 h-12 bg-accent flex items-center justify-center shrink-0 border-[2px] border-border">
-            <Icon className="w-6 h-6 text-accent-foreground" />
+          <div className="w-12 h-12 bg-accent dark:bg-accent/15 flex items-center justify-center shrink-0 border-[2px] border-border dark:border-border/50">
+            <Icon className="w-6 h-6 text-accent-foreground dark:text-accent" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">

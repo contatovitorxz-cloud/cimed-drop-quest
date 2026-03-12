@@ -98,19 +98,19 @@ function DropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['drops'][0] })
 
   return (
     <div className="brutal-card brutal-card-hover overflow-hidden">
-      <div className="bg-accent p-4 border-b-[3px] border-border">
+      <div className="bg-accent dark:bg-accent/10 p-4 border-b-[3px] border-border">
         <div className="flex items-center justify-between">
           {drop.product?.image_url && (
             <img src={drop.product.image_url} alt={drop.product.name} className="w-8 h-8 object-contain" />
           )}
           {drop.expires_at && (
-            <div className="flex items-center gap-1 bg-background px-2 py-1 border-[2px] border-border">
+            <div className="flex items-center gap-1 bg-card px-2 py-1 border-[2px] border-border">
               <Clock className="w-3 h-3" />
               <span className="text-xs font-black">{timeLeft}</span>
             </div>
           )}
         </div>
-        <h3 className="font-black text-sm mt-2 text-accent-foreground uppercase">{drop.title}</h3>
+        <h3 className="font-black text-sm mt-2 text-foreground dark:text-accent uppercase">{drop.title}</h3>
       </div>
       <div className="p-4">
         <p className="text-xs text-muted-foreground">{drop.description}</p>

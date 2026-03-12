@@ -143,8 +143,8 @@ const Profile = () => {
             { label: 'Seguindo', value: String(following), icon: Zap },
           ].map((stat) => (
             <div key={stat.label} className="brutal-card brutal-card-hover p-2.5 text-center">
-              <div className="w-8 h-8 bg-accent mx-auto mb-1.5 flex items-center justify-center border-[2px] border-border">
-                <stat.icon className="w-4 h-4 text-accent-foreground" />
+              <div className="w-8 h-8 bg-accent dark:bg-accent/15 mx-auto mb-1.5 flex items-center justify-center border-[2px] border-border dark:border-border/50">
+                <stat.icon className="w-4 h-4 text-accent-foreground dark:text-accent" />
               </div>
               <p className="text-sm font-black mt-0.5">{stat.value}</p>
               <p className="text-[9px] text-muted-foreground uppercase font-bold">{stat.label}</p>
@@ -162,8 +162,8 @@ const Profile = () => {
           ].map(({ icon: Icon, label, path }) => (
             <button key={path} onClick={() => navigate(path)} className="w-full flex items-center justify-between p-3.5 brutal-card brutal-card-hover text-left">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent flex items-center justify-center border-[2px] border-border">
-                  <Icon className="w-5 h-5 text-accent-foreground" />
+                <div className="w-10 h-10 bg-accent dark:bg-accent/15 flex items-center justify-center border-[2px] border-border dark:border-border/50">
+                  <Icon className="w-5 h-5 text-accent-foreground dark:text-accent" />
                 </div>
                 <span className="font-black text-sm">{label}</span>
               </div>
