@@ -55,7 +55,7 @@ const Leaderboard = () => {
                       rank === 1 ? <Trophy className="w-5 h-5" /> : rank === 2 ? <Medal className="w-5 h-5" /> : <Medal className="w-4 h-4" />
                     ) : rank}
                   </div>
-                  <div className="w-9 h-9 bg-accent/20 dark:bg-accent/10 flex items-center justify-center shrink-0 border-[2px] border-border dark:border-border/50">
+                  <div className="w-9 h-9 bg-accent/20 dark:bg-accent/10 flex items-center justify-center shrink-0 border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
                     <span className="text-xs font-black">
                       {(entry.username || '?')[0].toUpperCase()}
                     </span>

@@ -129,7 +129,7 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
           {mission.steps.map((step, i) => {
             const done = (progress[step.id] || 0) >= step.target_count;
             return (
-              <div key={step.id} className={`flex items-center gap-3 p-2.5 border-[2px] border-border ${done ? 'bg-green-500/10' : 'bg-muted/50'}`}>
+              <div key={step.id} className={`flex items-center gap-3 p-2.5 border-[2px] border-border dark:border-[hsl(0,0%,25%)] ${done ? 'bg-green-500/10' : 'bg-muted/50'}`}>
                 <div className={`w-6 h-6 flex items-center justify-center shrink-0 border-[2px] border-border ${done ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'}`}>
                   {done ? <Check className="w-3.5 h-3.5" /> : <span className="text-xs font-black">{i + 1}</span>}
                 </div>

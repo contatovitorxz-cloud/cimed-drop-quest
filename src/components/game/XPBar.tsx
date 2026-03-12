@@ -17,7 +17,7 @@ const XPBar = ({ level, xp, maxXp = 1000 }: XPBarProps) => {
           <span className="font-black uppercase">Nível {level}</span>
           <span className="text-muted-foreground font-bold">{xp}/{maxXp} XP</span>
         </div>
-        <div className="h-2 bg-muted overflow-hidden border-[2px] border-border">
+        <div className="h-2 bg-muted overflow-hidden border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
           <div
             className="h-full bg-accent transition-all duration-700"
             style={{ width: `${pct}%` }}

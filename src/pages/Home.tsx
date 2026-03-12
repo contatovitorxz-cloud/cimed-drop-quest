@@ -226,7 +226,7 @@ const Home = () => {
               </div>
               {card.badge ? (
                 <div className="flex items-center gap-1 bg-accent dark:bg-accent/15 px-2.5 py-1 border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
-                  <span className="text-accent-foreground text-xs font-black">{card.badge}</span>
+                  <span className="text-accent-foreground dark:text-accent text-xs font-black">{card.badge}</span>
                   <ChevronRight className="w-4 h-4 text-accent-foreground" />
                 </div>
               ) : (

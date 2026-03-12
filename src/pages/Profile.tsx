@@ -188,7 +188,7 @@ const Profile = () => {
             {badges.map((badge) => {
               const Icon = badgeIconMap[badge.badge_icon] || Trophy;
               return (
-                <div key={badge.id} className="flex flex-col items-center gap-2 p-4 border-[3px] border-border bg-accent text-accent-foreground shadow-[3px_3px_0_hsl(var(--border))]">
+                <div key={badge.id} className="flex flex-col items-center gap-2 p-4 border-[3px] border-border bg-accent dark:bg-accent/15 text-accent-foreground dark:text-accent shadow-[3px_3px_0_hsl(var(--border))] dark:shadow-[3px_3px_0_hsl(0,0%,0%/0.5)]">
                   <div className="w-10 h-10 flex items-center justify-center border-[2px] border-border bg-background">
                     <Icon className="w-5 h-5 text-accent-foreground" />
                   </div>
