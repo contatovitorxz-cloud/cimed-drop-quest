@@ -22,6 +22,7 @@ const InfluencerProfile = () => {
   const [pixKey, setPixKey] = useState('');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [commissionBalance, setCommissionBalance] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
