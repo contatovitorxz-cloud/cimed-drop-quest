@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { X, Camera, Zap, CheckCircle2, AlertCircle } from 'lucide-react';
+import { X, Camera, Zap, Check, AlertCircle, ScanLine, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import cimedSymbol from '@/assets/cimed-symbol.png';
 
 interface QRScannerProps {
   open: boolean;
@@ -15,10 +17,9 @@ const QRScanner = ({ open, onClose }: QRScannerProps) => {
 
   const simulateScan = () => {
     setScanning(false);
-    // Simulate a successful scan
     setTimeout(() => {
       setResult('success');
-    }, 1500);
+    }, 1800);
   };
 
   const handleReset = () => {
@@ -26,108 +27,251 @@ const QRScanner = ({ open, onClose }: QRScannerProps) => {
     setResult(null);
   };
 
+  const now = new Date();
+  const timestamp = now.toLocaleString('pt-BR', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+  });
+  const txId = `CG-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
   return (
-    <div className="fixed inset-0 z-[2000] bg-black">
+    <div className="fixed inset-0 z-[2000] bg-[hsl(0,0%,4%)]">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-4 safe-top">
-        <button onClick={onClose} className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-xl flex items-center justify-center">
-          <X className="w-5 h-5 text-white" />
+        <button onClick={onClose} className="w-10 h-10 bg-[hsl(0,0%,12%)] border-[2px] border-[hsl(0,0%,20%)] flex items-center justify-center">
+          <X className="w-5 h-5 text-[hsl(0,0%,90%)]" />
         </button>
-        <span className="text-white font-bold text-sm">Escanear QR Code</span>
+        <div className="flex items-center gap-2">
+          <ScanLine className="w-4 h-4 text-[hsl(50,100%,50%)]" />
+          <span className="text-[hsl(0,0%,90%)] font-black text-xs uppercase tracking-wider">Scanner QR</span>
+        </div>
         <div className="w-10" />
       </div>
 
-      {/* Camera view (simulated) */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {scanning && !result && (
-          <div className="relative">
-            {/* Scan frame */}
-            <div className="w-64 h-64 relative">
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-accent rounded-tl-xl" />
-              <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-accent rounded-tr-xl" />
-              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-accent rounded-bl-xl" />
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-accent rounded-br-xl" />
+        <AnimatePresence mode="wait">
+          {/* === SCANNING STATE === */}
+          {scanning && !result && (
+            <motion.div
+              key="scanning"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative flex flex-col items-center"
+            >
+              <div className="w-64 h-64 relative">
+                {/* Corner brackets — brutalist squares */}
+                <div className="absolute top-0 left-0 w-10 h-10 border-t-[4px] border-l-[4px] border-[hsl(50,100%,50%)]" />
+                <div className="absolute top-0 right-0 w-10 h-10 border-t-[4px] border-r-[4px] border-[hsl(50,100%,50%)]" />
+                <div className="absolute bottom-0 left-0 w-10 h-10 border-b-[4px] border-l-[4px] border-[hsl(50,100%,50%)]" />
+                <div className="absolute bottom-0 right-0 w-10 h-10 border-b-[4px] border-r-[4px] border-[hsl(50,100%,50%)]" />
 
-              {/* Animated scan line */}
-              <div className="absolute top-0 left-4 right-4 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent animate-[scan-line_2s_ease-in-out_infinite]" 
-                style={{ animation: 'scan-line 2s ease-in-out infinite' }} />
+                {/* Animated scan line */}
+                <motion.div
+                  className="absolute left-4 right-4 h-[3px] bg-[hsl(50,100%,50%)]"
+                  animate={{ top: ['0%', '100%', '0%'] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ boxShadow: '0 0 12px hsl(50 100% 50% / 0.4)' }}
+                />
 
-              {/* Center icon */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Camera className="w-12 h-12 text-white/30" />
-              </div>
-            </div>
-
-            <p className="text-white/60 text-xs text-center mt-6">Aponte a câmera para o QR Code</p>
-
-            {/* Simulate scan button */}
-            <div className="mt-8 flex justify-center">
-              <Button onClick={simulateScan} className="gradient-orange border-0 rounded-xl font-bold">
-                <Zap className="w-4 h-4 mr-2" />
-                Simular Scan
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {!scanning && !result && (
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center animate-pulse">
-              <Zap className="w-8 h-8 text-accent" />
-            </div>
-            <p className="text-white font-bold">Processando...</p>
-          </div>
-        )}
-
-        {result === 'success' && (
-          <div className="flex flex-col items-center gap-4 px-8 text-center">
-            <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center animate-bounce-in">
-              <CheckCircle2 className="w-10 h-10 text-green-400" />
-            </div>
-            <h2 className="text-white text-xl font-black">+50 Pontos!</h2>
-            <p className="text-white/60 text-sm">Check-in realizado com sucesso na Drogasil Paulista</p>
-
-            <div className="w-full mt-4 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🍬</span>
-                <div className="text-left">
-                  <p className="text-white text-sm font-bold">Carmed Fini</p>
-                  <p className="text-white/50 text-xs">Produto escaneado</p>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Camera className="w-10 h-10 text-[hsl(0,0%,30%)]" />
                 </div>
               </div>
-            </div>
 
-            <div className="flex gap-3 mt-4 w-full">
-              <Button onClick={handleReset} variant="outline" className="flex-1 rounded-xl border-white/20 text-white hover:bg-white/10">
-                Escanear outro
-              </Button>
-              <Button onClick={onClose} className="flex-1 gradient-orange border-0 rounded-xl font-bold">
-                Fechar
-              </Button>
-            </div>
-          </div>
-        )}
+              <p className="text-[hsl(0,0%,50%)] text-xs text-center mt-6 font-bold uppercase tracking-wider">
+                Aponte a câmera para o QR Code
+              </p>
 
-        {result === 'error' && (
-          <div className="flex flex-col items-center gap-4 px-8 text-center">
-            <div className="w-20 h-20 rounded-full bg-destructive/20 flex items-center justify-center">
-              <AlertCircle className="w-10 h-10 text-destructive" />
-            </div>
-            <h2 className="text-white text-xl font-black">QR Inválido</h2>
-            <p className="text-white/60 text-sm">Este QR code não é válido ou já expirou.</p>
-            <Button onClick={handleReset} className="gradient-orange border-0 rounded-xl font-bold mt-4">
-              Tentar novamente
-            </Button>
-          </div>
-        )}
+              <div className="mt-8">
+                <Button
+                  onClick={simulateScan}
+                  className="h-12 px-8 bg-[hsl(50,100%,50%)] text-[hsl(0,0%,4%)] border-[3px] border-[hsl(0,0%,4%)] shadow-[4px_4px_0_hsl(0,0%,4%)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-black text-sm uppercase"
+                >
+                  <Zap className="w-4 h-4 mr-2" />
+                  Simular Scan
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* === PROCESSING STATE === */}
+          {!scanning && !result && (
+            <motion.div
+              key="processing"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              className="flex flex-col items-center gap-5"
+            >
+              <motion.div
+                className="w-20 h-20 border-[4px] border-[hsl(50,100%,50%)] flex items-center justify-center"
+                animate={{ rotate: [0, 90, 180, 270, 360] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+              >
+                <ScanLine className="w-8 h-8 text-[hsl(50,100%,50%)]" />
+              </motion.div>
+              <p className="text-[hsl(0,0%,80%)] font-black text-sm uppercase tracking-wider">Processando...</p>
+            </motion.div>
+          )}
+
+          {/* === SUCCESS — RECEIPT COMPROVANTE === */}
+          {result === 'success' && (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+              className="w-full max-w-sm mx-4"
+            >
+              {/* Receipt card */}
+              <div className="bg-[hsl(0,0%,10%)] border-[3px] border-[hsl(0,0%,22%)] shadow-[6px_6px_0_hsl(0,0%,0%/0.6)] overflow-hidden">
+                
+                {/* Header band */}
+                <div className="bg-[hsl(50,100%,50%)] px-5 py-4 border-b-[3px] border-[hsl(0,0%,4%)]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <img src={cimedSymbol} alt="Cimed" className="w-7 h-7" />
+                      <span className="font-black text-[hsl(0,0%,4%)] text-sm uppercase tracking-wider">Cimed GO</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-[hsl(0,0%,4%)/0.6] uppercase">Comprovante</span>
+                  </div>
+                </div>
+
+                {/* Success icon + points */}
+                <div className="flex flex-col items-center pt-8 pb-6">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.2 }}
+                    className="w-[72px] h-[72px] bg-[hsl(142,70%,45%)/0.15] border-[3px] border-[hsl(142,70%,45%)] flex items-center justify-center mb-5"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.5, type: 'spring', stiffness: 500 }}
+                    >
+                      <Check className="w-9 h-9 text-[hsl(142,70%,45%)]" strokeWidth={3} />
+                    </motion.div>
+                  </motion.div>
+
+                  <motion.h2
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="font-black text-3xl text-[hsl(50,100%,50%)] uppercase"
+                  >
+                    +50 Pontos
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.55 }}
+                    className="text-[hsl(0,0%,55%)] text-xs font-bold mt-1.5 uppercase tracking-wider"
+                  >
+                    Check-in realizado com sucesso
+                  </motion.p>
+                </div>
+
+                {/* Dotted separator */}
+                <div className="mx-5 border-t-[2px] border-dashed border-[hsl(0,0%,22%)]" />
+
+                {/* Details section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="px-5 py-4 space-y-3"
+                >
+                  {/* Product */}
+                  <div className="flex items-center gap-3 p-3 bg-[hsl(0,0%,7%)] border-[2px] border-[hsl(0,0%,18%)]">
+                    <div className="w-10 h-10 bg-[hsl(50,100%,50%)/0.1] border-[2px] border-[hsl(0,0%,22%)] flex items-center justify-center flex-shrink-0">
+                      <img src={cimedSymbol} alt="" className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[hsl(0,0%,90%)] text-sm font-black uppercase">Carmed Fini</p>
+                      <p className="text-[hsl(0,0%,45%)] text-[10px] font-bold uppercase">Produto escaneado</p>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center gap-2.5">
+                    <MapPin className="w-3.5 h-3.5 text-[hsl(50,100%,50%)] flex-shrink-0" />
+                    <span className="text-[hsl(0,0%,60%)] text-xs font-bold">Drogasil Paulista</span>
+                  </div>
+
+                  {/* Timestamp */}
+                  <div className="flex items-center gap-2.5">
+                    <Clock className="w-3.5 h-3.5 text-[hsl(50,100%,50%)] flex-shrink-0" />
+                    <span className="text-[hsl(0,0%,60%)] text-xs font-bold">{timestamp}</span>
+                  </div>
+                </motion.div>
+
+                {/* Dotted separator */}
+                <div className="mx-5 border-t-[2px] border-dashed border-[hsl(0,0%,22%)]" />
+
+                {/* Transaction ID */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.75 }}
+                  className="px-5 py-3 flex items-center justify-between"
+                >
+                  <span className="text-[hsl(0,0%,40%)] text-[10px] font-bold uppercase tracking-wider">ID Transação</span>
+                  <span className="text-[hsl(0,0%,55%)] text-[10px] font-mono font-bold">{txId}</span>
+                </motion.div>
+
+                {/* Actions */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.85 }}
+                  className="px-5 pb-5 pt-2 flex gap-3"
+                >
+                  <button
+                    onClick={handleReset}
+                    className="flex-1 h-12 flex items-center justify-center gap-2 bg-[hsl(0,0%,14%)] border-[2px] border-[hsl(0,0%,25%)] text-[hsl(0,0%,80%)] font-black text-xs uppercase tracking-wider hover:bg-[hsl(0,0%,18%)] transition-colors"
+                  >
+                    <ScanLine className="w-4 h-4" />
+                    Escanear Outro
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className="flex-1 h-12 flex items-center justify-center gap-2 bg-[hsl(50,100%,50%)] border-[2px] border-[hsl(0,0%,4%)] text-[hsl(0,0%,4%)] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0_hsl(0,0%,4%)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                  >
+                    Fechar
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* === ERROR STATE === */}
+          {result === 'error' && (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full max-w-sm mx-4"
+            >
+              <div className="bg-[hsl(0,0%,10%)] border-[3px] border-[hsl(0,84%,60%)/0.4] shadow-[6px_6px_0_hsl(0,0%,0%/0.6)] p-8 flex flex-col items-center text-center">
+                <div className="w-16 h-16 border-[3px] border-[hsl(0,84%,60%)] bg-[hsl(0,84%,60%)/0.1] flex items-center justify-center mb-4">
+                  <AlertCircle className="w-8 h-8 text-[hsl(0,84%,60%)]" />
+                </div>
+                <h2 className="text-[hsl(0,0%,90%)] text-xl font-black uppercase">QR Inválido</h2>
+                <p className="text-[hsl(0,0%,50%)] text-sm mt-2 font-bold">Este QR code não é válido ou já expirou.</p>
+                <button
+                  onClick={handleReset}
+                  className="mt-6 h-12 px-8 bg-[hsl(50,100%,50%)] text-[hsl(0,0%,4%)] border-[3px] border-[hsl(0,0%,4%)] shadow-[4px_4px_0_hsl(0,0%,4%)] font-black text-sm uppercase hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <style>{`
-        @keyframes scan-line {
-          0%, 100% { top: 0; }
-          50% { top: calc(100% - 2px); }
-        }
-      `}</style>
     </div>
   );
 };
