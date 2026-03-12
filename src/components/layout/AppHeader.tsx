@@ -44,12 +44,12 @@ const AppHeader = () => {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsDark(!isDark)}
-            className="relative p-2 bg-card border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all shadow-[2px_2px_0_hsl(var(--border))] dark:shadow-[2px_2px_0_hsl(0_0%_0%/0.3)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+            className="relative p-2 bg-card border-[2px] border-border dark:border-[hsl(0,0%,25%)] hover:bg-accent hover:text-accent-foreground transition-all shadow-[2px_2px_0_hsl(var(--border))] dark:shadow-[2px_2px_0_hsl(0,0%,0%/0.4)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
             aria-label="Alternar tema"
           >
             {isDark ? <Sun className="w-5 h-5 text-foreground" strokeWidth={2} /> : <Moon className="w-5 h-5 text-foreground" strokeWidth={2} />}
           </button>
-          <button className="relative p-2 bg-card border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all shadow-[2px_2px_0_hsl(var(--border))] dark:shadow-[2px_2px_0_hsl(0_0%_0%/0.3)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
+          <button className="relative p-2 bg-card border-[2px] border-border dark:border-[hsl(0,0%,25%)] hover:bg-accent hover:text-accent-foreground transition-all shadow-[2px_2px_0_hsl(var(--border))] dark:shadow-[2px_2px_0_hsl(0,0%,0%/0.4)] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none">
             <Bell className="w-5 h-5 text-foreground" strokeWidth={2} />
             <span className="absolute -top-1 -right-1 min-w-[18px] min-h-[18px] bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center border-[2px] border-border">3</span>
           </button>

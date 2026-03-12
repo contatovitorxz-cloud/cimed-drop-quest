@@ -98,13 +98,13 @@ function DropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['drops'][0] })
 
   return (
     <div className="brutal-card brutal-card-hover overflow-hidden">
-      <div className="bg-accent dark:bg-accent/10 p-4 border-b-[3px] border-border">
+      <div className="bg-accent dark:bg-accent/10 p-4 border-b-[3px] border-border dark:border-[hsl(0,0%,25%)]">
         <div className="flex items-center justify-between">
           {drop.product?.image_url && (
             <img src={drop.product.image_url} alt={drop.product.name} className="w-8 h-8 object-contain" />
           )}
           {drop.expires_at && (
-            <div className="flex items-center gap-1 bg-card px-2 py-1 border-[2px] border-border">
+            <div className="flex items-center gap-1 bg-card px-2 py-1 border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
               <Clock className="w-3 h-3" />
               <span className="text-xs font-black">{timeLeft}</span>
             </div>
@@ -151,7 +151,7 @@ function InfluencerDropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['inf
 
   return (
     <div className="brutal-card overflow-hidden">
-      <div className="bg-accent/20 p-4 border-b-[3px] border-border">
+      <div className="bg-accent/20 dark:bg-accent/10 p-4 border-b-[3px] border-border dark:border-[hsl(0,0%,25%)]">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-accent flex items-center justify-center text-sm font-black text-accent-foreground shrink-0 border-[2px] border-border">
             {initials}
@@ -163,7 +163,7 @@ function InfluencerDropCardDB({ drop }: { drop: ReturnType<typeof useDrops>['inf
             </div>
             <p className="text-sm font-black truncate uppercase">{drop.influencer_name}</p>
           </div>
-          <div className="flex items-center gap-1 bg-background px-2 py-1 border-[2px] border-border">
+          <div className="flex items-center gap-1 bg-background px-2 py-1 border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
             <Clock className="w-3 h-3 text-accent" />
             <span className="text-xs font-black text-accent">{timeLeft}</span>
           </div>

@@ -1,71 +1,60 @@
 
 
-## Polish Profissional v3 — Dark Mode Premium
+## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
 
-O dark mode está "achatado" — cards se misturam com o fundo, bordas são quase invisíveis, e não há hierarquia visual. Vou refinar globalmente.
+### Análise das diferenças (comparando imagens com código atual)
 
-### Alterações
+**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
+- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
+- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
+- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
+- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
+- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
 
-**`src/index.css`** — Refinar dark mode variables e classes:
-- Dark `--border`: subir de `0 0% 18%` para `0 0% 22%` — bordas mais visíveis
-- Dark `--muted`: subir de `0 0% 14%` para `0 0% 16%` — skeletons e fundos mais distintos
-- Dark `--card`: subir de `0 0% 10%` para `0 0% 11%` — cards ligeiramente mais claros
-- `.brutal-card` dark: border `hsl(0 0% 25%)` para melhor contraste
-- `.brutal-card-dark` dark: fundo `hsl(0 0% 8%)` com borda `hsl(0 0% 25%)` 
-- `.brutal-header` dark: borda `hsl(0 0% 22%)` + `box-shadow: 0 1px 8px hsl(0 0% 0% / 0.3)` para profundidade
-- Nova classe `.brutal-card-elevated` para cards destaque no dark (borda accent/20)
+**Imagem 2 (image-5)** - Layout com sidebar direita:
+- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
+- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
+- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
+- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
+- Sidebar direita: Ranking dos Drops + Novos Influenciadores
 
-**`src/components/layout/BottomNav.tsx`** — Dark mode premium:
-- Background: `dark:bg-[hsl(0,0%,8%)]` (mais escuro que card, cria separação)
-- Borda top: `dark:border-t-[hsl(0,0%,25%)]` para visibilidade real
-- Center button: adicionar `dark:border-[hsl(0,0%,25%)]` + `dark:shadow-[3px_3px_0_hsl(0,0%,0%/0.5)]`
+**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
 
-**`src/components/layout/AppHeader.tsx`** — Profundidade no dark:
-- Fundo: adicionar `dark:bg-[hsl(0,0%,7%)]` para separar do conteúdo
-- Botões: `dark:border-[hsl(0,0%,25%)]` + `dark:shadow-[2px_2px_0_hsl(0,0%,0%/0.4)]`
+### Mudanças necessárias
 
-**`src/components/game/XPBar.tsx`** — Dark treatment:
-- Level box: `dark:bg-accent/20 dark:text-accent dark:border-[hsl(0,0%,25%)]`
-- Progress bar: `dark:border-accent/40` para visibilidade
+**1. `src/data/mockData.ts`**
+- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
+- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
+- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
+- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
 
-**`src/pages/Home.tsx`** — Refinamento dark:
-- Map container: `dark:border-[hsl(0,0%,25%)]` + `dark:shadow-[4px_4px_0_hsl(0,0%,0%/0.5)]`
-- Action cards icon box: já tem dark treatment — manter
-- Badge counter: `dark:border-[hsl(0,0%,25%)]`
+**2. `src/pages/AdminDashboard.tsx`**
+- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
+- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
+- **Gráfico**:
+  - Eixo X: Meses (Jan, Fev, Mar... Ago)
+  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
+  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
+  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
+  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
+- **Tabela "Últimos Drops Liberados"**:
+  - Header de coluna: "Drop | Resgates | Status | Ações"
+  - Formato resgates: "450/500" (não "2,00 m")
+  - Badge "Encerrado" cinza escuro
+  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
+- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
 
-**`src/pages/Profile.tsx`** — Badges dark mode:
-- Badge grid items no dark: trocar `bg-accent` sólido por `dark:bg-accent/15 dark:text-accent dark:border-[hsl(0,0%,25%)]`
-- Share button: `dark:border-[hsl(0,0%,25%)]`
+**3. `src/components/admin/AdminSidebar.tsx`**
+- Adicionar label "Menu" acima dos itens do menu
+- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
+- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
+- Ícones brancos para itens inativos
 
-**`src/pages/Leaderboard.tsx`** — Contraste:
-- My rank card brutal-card-dark: já usa a classe — melhorado pelo CSS global
-- Rank boxes: `dark:border-[hsl(0,0%,25%)]` para todos
+### Arquivos
 
-**`src/pages/Missions.tsx`** — Dark refinement:
-- Progress bar: `dark:border-[hsl(0,0%,25%)]`
-- Step boxes expanded: `dark:border-[hsl(0,0%,25%)]`
-- Type badges: `dark:border-[hsl(0,0%,25%)]`
-
-**`src/pages/Drops.tsx`** — Dark refinement:
-- Drop card header: `dark:border-b-[hsl(0,0%,25%)]`
-- Timer badges: `dark:border-[hsl(0,0%,25%)]`
-- Influencer drop header: `dark:border-b-[hsl(0,0%,25%)]`
-
-**`src/pages/Social.tsx`** — Stats cards:
-- Stats grid: usa brutal-card — melhorado globalmente
-
-**`src/pages/ScanHistory.tsx`** — Scan items:
-- Já usa brutal-card — melhorado globalmente
-
-**`src/pages/InfluencerDashboard.tsx`** — Cards e lista dark:
-- Metric icon boxes: `dark:border-[hsl(0,0%,25%)]`
-- Drop list items: `dark:border-[hsl(0,0%,25%)] dark:bg-[hsl(0,0%,9%)]`
-- Quick action cards: `dark:border-[hsl(0,0%,25%)]`
-- Chart tooltip: melhorar contraste dark
-
-**`src/pages/InfluencerProfile.tsx`** — Cards dark:
-- Cards usam shadcn Card — adicionar `dark:border-[hsl(0,0%,25%)]` nos Cards via className
-
-### Resultado
-Dark mode com bordas visíveis, cards com profundidade clara, hierarquia entre header/conteúdo/footer, e contraste profissional em todas as telas.
+| Arquivo | Ação |
+|---|---|
+| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
+| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
+| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
 

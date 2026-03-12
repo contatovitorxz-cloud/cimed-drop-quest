@@ -14,7 +14,7 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background dark:bg-card border-t-[3px] border-border dark:border-accent/10 safe-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-background dark:bg-[hsl(0,0%,8%)] border-t-[3px] border-border safe-bottom">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
@@ -27,7 +27,7 @@ const BottomNav = () => {
                 onClick={() => navigate(tab.path)}
                 className="relative -mt-6"
               >
-                <div className="relative w-14 h-14 flex items-center justify-center bg-accent border-[3px] border-border shadow-[3px_3px_0_hsl(var(--border))] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+                <div className="relative w-14 h-14 flex items-center justify-center bg-accent border-[3px] border-border dark:border-[hsl(0,0%,25%)] shadow-[3px_3px_0_hsl(var(--border))] dark:shadow-[3px_3px_0_hsl(0,0%,0%/0.5)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
                   <Icon className="w-7 h-7 text-accent-foreground" />
                 </div>
                 <p className="text-[10px] font-black text-center mt-1 text-accent uppercase">{tab.label}</p>

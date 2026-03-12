@@ -115,7 +115,7 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
                 <span className="text-muted-foreground font-bold">{completedSteps}/{totalSteps} etapas</span>
                 <span className="text-accent font-black">+{mission.reward_value} {mission.reward_type === 'points' ? 'pts' : 'prêmio'}</span>
               </div>
-              <Progress value={pct} className="h-2 bg-muted border-[2px] border-border [&>div]:bg-accent" />
+              <Progress value={pct} className="h-2 bg-muted border-[2px] border-border dark:border-[hsl(0,0%,25%)] [&>div]:bg-accent" />
             </div>
           </div>
           <div className="shrink-0 mt-1">
@@ -125,11 +125,11 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 border-t-[2px] border-border pt-3 space-y-2">
+        <div className="px-4 pb-4 border-t-[2px] border-border dark:border-[hsl(0,0%,25%)] pt-3 space-y-2">
           {mission.steps.map((step, i) => {
             const done = (progress[step.id] || 0) >= step.target_count;
             return (
-              <div key={step.id} className={`flex items-center gap-3 p-2.5 border-[2px] border-border ${done ? 'bg-green-500/10' : 'bg-muted/50'}`}>
+              <div key={step.id} className={`flex items-center gap-3 p-2.5 border-[2px] border-border dark:border-[hsl(0,0%,25%)] ${done ? 'bg-green-500/10' : 'bg-muted/50'}`}>
                 <div className={`w-6 h-6 flex items-center justify-center shrink-0 border-[2px] border-border ${done ? 'bg-green-500 text-white' : 'bg-muted text-muted-foreground'}`}>
                   {done ? <Check className="w-3.5 h-3.5" /> : <span className="text-xs font-black">{i + 1}</span>}
                 </div>
