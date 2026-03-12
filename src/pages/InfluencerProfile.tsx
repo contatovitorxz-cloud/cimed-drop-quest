@@ -179,7 +179,34 @@ const InfluencerProfile = () => {
                 R$ {commissionBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </p>
             </div>
-            <Button variant="outline" className="w-full" disabled={commissionBalance <= 0}>
+            <div className="space-y-2">
+              <Label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Valor do saque</Label>
+              <Input
+                type="number"
+                min="0"
+                step="0.01"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                placeholder="R$ 0,00"
+                className="border-[3px] border-border bg-background text-center text-lg font-black"
+              />
+            </div>
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled={commissionBalance <= 0 || !withdrawAmount || Number(withdrawAmount) <= 0 || Number(withdrawAmount) > commissionBalance}
+              onClick={() => {
+                const val = Number(withdrawAmount);
+                if (val > commissionBalance) {
+                  toast({ title: 'Valor excede o saldo disponível', variant: 'destructive' });
+                } else if (val <= 0) {
+                  toast({ title: 'Digite um valor válido', variant: 'destructive' });
+                } else {
+                  toast({ title: `Saque de R$ ${val.toFixed(2)} solicitado!` });
+                  setWithdrawAmount('');
+                }
+              }}
+            >
               Solicitar Saque
             </Button>
           </CardContent>
