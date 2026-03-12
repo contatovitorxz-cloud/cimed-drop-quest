@@ -1,60 +1,69 @@
 
 
-## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
+## Polish Profissional — Light & Dark Mode
 
-### Análise das diferenças (comparando imagens com código atual)
+Analisei todas as páginas (Home, Missions, Drops, Leaderboard, Profile, Social, Challenges) e identifiquei problemas de consistência e acabamento em ambos os modos.
 
-**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
-- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
-- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
-- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
-- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
-- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
+### Problemas encontrados
 
-**Imagem 2 (image-5)** - Layout com sidebar direita:
-- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
-- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
-- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
-- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
-- Sidebar direita: Ranking dos Drops + Novos Influenciadores
+1. **XPBar** usa `gradient-orange` e `rounded-xl` que não existem no design system — visual quebrado
+2. **EmptyState** usa `rounded-2xl` e `gradient-orange` — inconsistente com neobrutalism
+3. **BottomNav** active state é um bloco amarelo chapado, sem refinamento
+4. **brutal-card-dark** no dark mode: preto sobre fundo escuro = invisível
+5. **Header** bordas dos botões muito finas e sem presença visual
+6. **Todas as páginas**: icon boxes são todos `bg-accent` amarelo idêntico — sem hierarquia
+7. **Progress bars** (XPBar, Missions): estilos misturados entre rounded e brutalist
 
-**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
+---
 
-### Mudanças necessárias
+### Alterações
 
-**1. `src/data/mockData.ts`**
-- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
-- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
-- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
-- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
+**`src/index.css`** — Refinamentos globais:
+- `.brutal-card` no dark: adicionar regra `.dark .brutal-card` com `border-color: hsl(0 0% 22%)` e shadow `hsl(0 0% 0% / 0.4)` — bordas mais visíveis
+- `.brutal-card-dark` no dark mode: usar `background: hsl(0 0% 14%)` em vez do preto puro para criar contraste com o fundo 6%
+- `.brutal-header` no dark: `border-bottom-color: hsl(0 0% 15%)` com accent glow sutil via `box-shadow: 0 1px 0 hsl(var(--accent) / 0.1)`
+- Light mode: manter como está (já funciona bem)
 
-**2. `src/pages/AdminDashboard.tsx`**
-- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
-- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
-- **Gráfico**:
-  - Eixo X: Meses (Jan, Fev, Mar... Ago)
-  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
-  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
-  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
-  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
-- **Tabela "Últimos Drops Liberados"**:
-  - Header de coluna: "Drop | Resgates | Status | Ações"
-  - Formato resgates: "450/500" (não "2,00 m")
-  - Badge "Encerrado" cinza escuro
-  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
-- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
+**`src/components/game/XPBar.tsx`** — Alinhar ao design system:
+- Trocar `rounded-xl gradient-orange` por estilo brutalist: quadrado, `bg-accent border-[2px] border-border`
+- Progress bar: quadrada, `bg-muted border-[2px] border-border`, fill `bg-accent`
 
-**3. `src/components/admin/AdminSidebar.tsx`**
-- Adicionar label "Menu" acima dos itens do menu
-- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
-- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
-- Ícones brancos para itens inativos
+**`src/components/ui/empty-state.tsx`** — Alinhar ao design system:
+- Trocar `rounded-2xl bg-secondary` por quadrado `border-[3px] border-border bg-muted`
+- Remover `gradient-orange rounded-xl` do botão
 
-### Arquivos
+**`src/components/layout/BottomNav.tsx`** — Polir active state:
+- Active tab: remover bg amarelo chapado, usar borda superior accent `border-t-2 border-accent` + texto accent
+- Inactive: manter cinza sutil
+- Dark mode: bg `hsl(var(--card))` em vez de background puro
 
-| Arquivo | Ação |
-|---|---|
-| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
-| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
-| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
+**`src/components/layout/AppHeader.tsx`** — Mais presença:
+- Botões: `bg-card` em vez de transparente para dar corpo
+- Dark mode: borda header mais sutil com toque de accent
+
+**`src/pages/Home.tsx`** — Polir detalhes:
+- Action cards icon boxes: dark mode usar `dark:bg-accent/15 dark:border-border/50` com ícone `dark:text-accent`
+- Map container: dark mode shadow mais profundo
+
+**`src/pages/Profile.tsx`** — Polir stat grid:
+- Dark mode: icon boxes usar `bg-accent/15` em vez de `bg-accent` sólido (menos agressivo)
+- Quick links: dark mode com `bg-card` explícito e bordas mais suaves
+
+**`src/pages/Missions.tsx`** — Polir mission cards:
+- Dark mode: icon box `bg-accent/15` com ícone `text-accent`
+- Progress bar border mais suave no dark
+
+**`src/pages/Drops.tsx`** — Polir drop cards:
+- Header do drop card: dark mode `bg-accent/10` em vez de `bg-accent` sólido
+- Timer badges: dark mode com fundo card
+
+**`src/pages/Leaderboard.tsx`** — Polir ranking:
+- Top 3: dark mode com accent/15 em vez de accent sólido
+- My rank card (brutal-card-dark): vai herdar o fix global
+
+**`src/pages/Social.tsx`** e **`src/pages/Challenges.tsx`**:
+- Herdam os fixes globais do brutal-card e brutal-card-dark
+
+### Resultado
+Visual coeso em ambos os modos com hierarquia clara, componentes alinhados ao design system brutalist, dark mode com camadas distintas e light mode limpo e profissional.
 
