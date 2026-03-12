@@ -207,7 +207,7 @@ const InfluencerDashboard = () => {
                   <p className="text-xs font-black uppercase truncate">{d.title}</p>
                   <p className="text-[10px] text-muted-foreground">{d.remaining_quantity}/{d.total_quantity} restantes</p>
                 </div>
-                <span className={`text-[9px] font-black px-2 py-0.5 border-[2px] border-border dark:border-border/20 ${d.active ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
+                <span className={`text-[9px] font-black px-2 py-0.5 border-[2px] border-border dark:border-[hsl(0,0%,25%)] ${d.active ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
                   {d.active ? 'ATIVO' : 'ENCERRADO'}
                 </span>
               </div>
