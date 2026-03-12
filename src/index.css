@@ -158,8 +158,9 @@
   }
 
   .dark .brutal-header {
-    border-bottom-color: hsl(0 0% 15%);
-    box-shadow: 0 1px 0 hsl(var(--accent) / 0.1);
+    background: hsl(0 0% 7%);
+    border-bottom-color: hsl(0 0% 22%);
+    box-shadow: 0 2px 8px hsl(0 0% 0% / 0.3);
   }
 
   .font-anton {
