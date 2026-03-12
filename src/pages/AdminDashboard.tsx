@@ -945,8 +945,122 @@ function InfluencerProfileDialog({ influencer, open, onOpenChange, onApprove }: 
   );
 }
 
+// ---- Sales Gateway Section ----
+function SalesGatewaySection() {
+  const metrics = [
+    { label: 'RECEITA TOTAL', value: `R$ ${(mockSalesOverview.receitaTotal / 1000).toFixed(0)}k`, icon: DollarSign, accent: true },
+    { label: 'VENDAS INFLUENCER', value: formatValue(mockSalesOverview.vendasInfluencer), icon: TrendingUp },
+    { label: 'VENDAS ORGÂNICAS', value: formatValue(mockSalesOverview.vendasOrganicas), icon: ShoppingCart },
+    { label: 'TAXA CONVERSÃO', value: `${mockSalesOverview.taxaConversao}%`, icon: Percent },
+  ];
+
+  const maxReceita = Math.max(...mockInfluencerSales.map(s => s.receita));
+
+  return (
+    <div className="space-y-4">
+      {/* Metric Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {metrics.map((m) => {
+          const Icon = m.icon;
+          return (
+            <Card key={m.label}>
+              <CardContent className="p-3 md:p-4 flex items-start gap-3">
+                <div className={`w-10 h-10 flex items-center justify-center shrink-0 border-[2px] border-border ${m.accent ? 'bg-accent' : 'bg-muted'}`}>
+                  <Icon className={`w-5 h-5 ${m.accent ? 'text-accent-foreground' : 'text-muted-foreground'}`} />
+                </div>
+                <div className="min-w-0 flex-1 pt-0.5">
+                  <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-widest leading-tight font-black">{m.label}</p>
+                  <p className="text-lg md:text-xl font-black leading-tight mt-1">{m.value}</p>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Chart */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-black uppercase flex items-center gap-2">
+            Orgânico vs Influencer
+            <DemoBadge />
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={mockSalesChart} barGap={2}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 700 }} stroke="hsl(var(--muted-foreground))" />
+              <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+              <Tooltip contentStyle={{ border: '2px solid hsl(var(--border))', borderRadius: 0, fontSize: 12, fontWeight: 700 }} />
+              <Bar dataKey="organico" fill="hsl(var(--muted-foreground))" name="Orgânico" radius={[0, 0, 0, 0]} />
+              <Bar dataKey="influencer" fill="hsl(var(--accent))" name="Influencer" radius={[0, 0, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Ranking Table */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-black uppercase">Ranking de Vendas</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="hidden md:flex items-center gap-3 px-6 py-2.5 border-b-[2px] border-border text-[10px] uppercase tracking-widest text-muted-foreground font-black">
+            <div className="w-6 text-center">#</div>
+            <div className="w-8" />
+            <div className="flex-1">Influenciador</div>
+            <div className="min-w-[70px] text-right">Vendas</div>
+            <div className="min-w-[90px] text-right">Receita</div>
+            <div className="min-w-[80px] text-right">Comissão</div>
+            <div className="min-w-[60px] text-right">Conv.</div>
+          </div>
+          <div className="divide-y-[2px] divide-border">
+            {mockInfluencerSales.map((s, i) => (
+              <div key={s.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
+                <div className={`w-6 h-6 flex items-center justify-center shrink-0 text-xs font-black border-[2px] border-border ${i === 0 ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
+                  {i + 1}
+                </div>
+                <div className="w-8 h-8 bg-accent border-[2px] border-border shrink-0 overflow-hidden flex items-center justify-center">
+                  {s.avatar_url ? (
+                    <img src={s.avatar_url} alt={s.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-[10px] font-black text-accent-foreground">{s.name.slice(0, 2).toUpperCase()}</span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black uppercase truncate">{s.name}</p>
+                  {/* Progress bar */}
+                  <div className="w-full h-1.5 bg-muted mt-1 hidden md:block">
+                    <div className="h-full bg-accent" style={{ width: `${(s.receita / maxReceita) * 100}%` }} />
+                  </div>
+                </div>
+                <div className="min-w-[70px] text-right">
+                  <p className="text-sm font-black">{formatValue(s.vendas)}</p>
+                </div>
+                <div className="min-w-[90px] text-right hidden md:block">
+                  <p className="text-sm font-black">R$ {(s.receita / 1000).toFixed(1)}k</p>
+                </div>
+                <div className="min-w-[80px] text-right hidden md:block">
+                  <p className="text-xs font-bold text-accent">R$ {formatValue(Math.round(s.comissao))}</p>
+                </div>
+                <div className="min-w-[60px] text-right">
+                  <Badge className="text-[9px] px-1.5 py-0 font-black border-[2px] rounded-none uppercase bg-accent/15 text-accent border-accent/30">
+                    {s.conversao}%
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 // ---- Influencers Section ----
 function InfluencersSection() {
+  const [subTab, setSubTab] = useState<'gestao' | 'vendas'>('gestao');
   const [influencers, setInfluencers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInfluencer, setSelectedInfluencer] = useState<any | null>(null);
@@ -998,66 +1112,94 @@ function InfluencersSection() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <h2 className="font-nunito text-xl md:text-2xl font-black uppercase">Gestão de Influenciadores</h2>
-        {isEmpty && <DemoBadge />}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center">
+          <h2 className="font-nunito text-xl md:text-2xl font-black uppercase">Influenciadores</h2>
+          {isEmpty && <DemoBadge />}
+        </div>
       </div>
-      <Card>
-        <CardContent className="p-0">
-          {loading ? (
-            <div className="p-6 text-center text-sm text-muted-foreground">Carregando...</div>
-          ) : (
-            <div className="divide-y-[2px] divide-border">
-              {localData.map((inf: any) => {
-                const profile = inf.profiles;
-                const name = inf.display_name || profile?.username || 'Influenciador';
-                const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
-                const avatarUrl = inf.avatar_url;
-                const isApproved = inf.status === 'approved';
-                return (
-                  <div
-                    key={inf.id}
-                    className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all cursor-pointer"
-                    onClick={() => openProfile(inf)}
-                  >
-                    <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0 overflow-hidden">
-                      {avatarUrl ? (
-                        <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-xs font-black text-accent-foreground">{initials}</span>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <span className="font-black text-sm uppercase">{name}</span>
-                      <p className="text-[10px] text-muted-foreground">Comissão: R$ {Number(inf.commission_balance || 0).toFixed(2)}</p>
-                    </div>
-                    {isApproved ? (
-                      <DropStatusBadge status="approved" label="Aprovado" />
-                    ) : (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleApprove(inf.id); }}
-                        className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-orange-400 text-foreground uppercase hover:bg-orange-500 transition-colors cursor-pointer"
+
+      {/* Sub-tabs */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setSubTab('gestao')}
+          className={`px-4 py-2 text-xs font-black uppercase border-[2px] border-border transition-all ${
+            subTab === 'gestao' ? 'bg-accent text-accent-foreground shadow-[3px_3px_0_hsl(var(--border))]' : 'bg-card text-muted-foreground hover:bg-muted'
+          }`}
+        >
+          Gestão
+        </button>
+        <button
+          onClick={() => setSubTab('vendas')}
+          className={`px-4 py-2 text-xs font-black uppercase border-[2px] border-border transition-all ${
+            subTab === 'vendas' ? 'bg-accent text-accent-foreground shadow-[3px_3px_0_hsl(var(--border))]' : 'bg-card text-muted-foreground hover:bg-muted'
+          }`}
+        >
+          Relatório de Vendas
+        </button>
+      </div>
+
+      {subTab === 'vendas' ? (
+        <SalesGatewaySection />
+      ) : (
+        <>
+          <Card>
+            <CardContent className="p-0">
+              {loading ? (
+                <div className="p-6 text-center text-sm text-muted-foreground">Carregando...</div>
+              ) : (
+                <div className="divide-y-[2px] divide-border">
+                  {localData.map((inf: any) => {
+                    const profile = inf.profiles;
+                    const name = inf.display_name || profile?.username || 'Influenciador';
+                    const initials = name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+                    const avatarUrl = inf.avatar_url;
+                    const isApproved = inf.status === 'approved';
+                    return (
+                      <div
+                        key={inf.id}
+                        className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all cursor-pointer"
+                        onClick={() => openProfile(inf)}
                       >
-                        Aprovar
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-      <InfluencerProfileDialog
-        influencer={selectedInfluencer}
-        open={profileOpen}
-        onOpenChange={setProfileOpen}
-        onApprove={handleApprove}
-      />
+                        <div className="w-9 h-9 bg-accent flex items-center justify-center border-[2px] border-border shrink-0 overflow-hidden">
+                          {avatarUrl ? (
+                            <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="text-xs font-black text-accent-foreground">{initials}</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="font-black text-sm uppercase">{name}</span>
+                          <p className="text-[10px] text-muted-foreground">Comissão: R$ {Number(inf.commission_balance || 0).toFixed(2)}</p>
+                        </div>
+                        {isApproved ? (
+                          <DropStatusBadge status="approved" label="Aprovado" />
+                        ) : (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleApprove(inf.id); }}
+                            className="text-[9px] font-black px-2 py-0.5 border-[2px] border-border bg-accent/60 text-foreground uppercase hover:bg-accent transition-colors cursor-pointer"
+                          >
+                            Aprovar
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+          <InfluencerProfileDialog
+            influencer={selectedInfluencer}
+            open={profileOpen}
+            onOpenChange={setProfileOpen}
+            onApprove={handleApprove}
+          />
+        </>
+      )}
     </div>
   );
 }
-
 // ---- Profiles Section ----
 function ProfilesSection() {
   const [profiles, setProfiles] = useState<any[]>([]);
