@@ -9,7 +9,7 @@ const XPBar = ({ level, xp, maxXp = 1000 }: XPBarProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex items-center justify-center w-10 h-10 bg-accent text-accent-foreground font-black text-sm border-[2px] border-border">
+      <div className="flex items-center justify-center w-10 h-10 bg-accent dark:bg-accent/20 text-accent-foreground dark:text-accent font-black text-sm border-[2px] border-border dark:border-[hsl(0,0%,25%)]">
         {level}
       </div>
       <div className="flex-1">
