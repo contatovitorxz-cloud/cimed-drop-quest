@@ -125,7 +125,7 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 border-t-[2px] border-border pt-3 space-y-2">
+        <div className="px-4 pb-4 border-t-[2px] border-border dark:border-[hsl(0,0%,25%)] pt-3 space-y-2">
           {mission.steps.map((step, i) => {
             const done = (progress[step.id] || 0) >= step.target_count;
             return (
