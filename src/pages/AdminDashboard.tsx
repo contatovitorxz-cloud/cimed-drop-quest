@@ -147,7 +147,7 @@ const AdminDashboard = () => {
             </div>
           </header>
 
-          <main className="flex-1 p-4 md:p-6 overflow-auto">
+          <main className="flex-1 p-4 md:p-6 pb-20 md:pb-6 overflow-auto">
             {section === 'dashboard' && <DashboardSection />}
             {section === 'drops' && <DropsSection />}
             {section === 'qrcodes' && <QRCodesSection />}
@@ -157,6 +157,8 @@ const AdminDashboard = () => {
             {section === 'analytics' && <AnalyticsSection />}
             {section === 'settings' && <SettingsSection />}
           </main>
+
+          <AdminBottomNav activeSection={section} onSectionChange={setSection} />
         </div>
       </div>
     </SidebarProvider>
