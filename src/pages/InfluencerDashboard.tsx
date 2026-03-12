@@ -166,11 +166,6 @@ const InfluencerDashboard = () => {
       </div>
 
       <div className="px-4 pb-8 space-y-5 pt-4">
-        {isDemo && (
-          <div className="bg-accent/20 border-[2px] border-accent px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-accent-foreground text-center">
-            ⚡ DADOS DEMONSTRATIVOS
-          </div>
-        )}
 
         <div>
           <h2 className="font-nunito text-2xl font-black uppercase">
