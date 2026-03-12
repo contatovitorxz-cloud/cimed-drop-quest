@@ -115,7 +115,7 @@ function MissionCardDB({ mission }: { mission: ReturnType<typeof useMissions>['m
                 <span className="text-muted-foreground font-bold">{completedSteps}/{totalSteps} etapas</span>
                 <span className="text-accent font-black">+{mission.reward_value} {mission.reward_type === 'points' ? 'pts' : 'prêmio'}</span>
               </div>
-              <Progress value={pct} className="h-2 bg-muted border-[2px] border-border [&>div]:bg-accent" />
+              <Progress value={pct} className="h-2 bg-muted border-[2px] border-border dark:border-[hsl(0,0%,25%)] [&>div]:bg-accent" />
             </div>
           </div>
           <div className="shrink-0 mt-1">
