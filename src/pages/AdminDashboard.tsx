@@ -21,7 +21,7 @@ import {
 import {
   Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
-  UserCircle, BarChart3, Settings, Check
+  UserCircle, BarChart3, Settings, Check, Sun, Moon
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
@@ -93,6 +93,16 @@ const AdminDashboard = () => {
               <span className="text-sm text-muted-foreground ml-2 font-bold uppercase tracking-wider hidden sm:inline">Dashboard</span>
             </div>
             <div className="flex items-center gap-2 md:gap-3">
+              <button
+                onClick={() => {
+                  const isDark = document.documentElement.classList.toggle('dark');
+                  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                }}
+                className="h-9 w-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors border-[2px] border-border bg-card"
+              >
+                <Sun className="w-4 h-4 hidden dark:block" />
+                <Moon className="w-4 h-4 block dark:hidden" />
+              </button>
               <Button variant="ghost" size="icon" className="text-muted-foreground h-9 w-9 hidden sm:flex">
                 <Calendar className="w-5 h-5" />
               </Button>
