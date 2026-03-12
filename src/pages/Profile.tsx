@@ -127,7 +127,7 @@ const Profile = () => {
               <h2 className="font-black text-lg uppercase">{username}</h2>
               <p className="text-xs text-muted-foreground">{user?.email}</p>
             </div>
-            <button onClick={handleShare} className="p-2 border-[2px] border-border hover:bg-accent hover:text-accent-foreground transition-all">
+            <button onClick={handleShare} className="p-2 border-[2px] border-border dark:border-[hsl(0,0%,25%)] hover:bg-accent hover:text-accent-foreground transition-all">
               <Share2 className="w-4 h-4" />
             </button>
           </div>
