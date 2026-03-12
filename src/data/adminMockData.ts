@@ -88,6 +88,33 @@ export const mockProfiles = [
   { id: '8', username: 'carla_vita', level: 7, total_points: 1800, xp: 1100, created_at: '2024-03-25T15:30:00Z', avatar_url: null },
 ];
 
+export const mockInfluencerSales = [
+  { id: '1', name: 'saBOR energético', avatar_url: saborEnergeticoAvatar, vendas: 1240, receita: 62000, comissao: 8750, conversao: 18.5 },
+  { id: '2', name: 'Ana Costa', avatar_url: 'https://i.pravatar.cc/150?img=9', vendas: 890, receita: 44500, comissao: 2100.75, conversao: 15.2 },
+  { id: '3', name: 'Marina Silva', avatar_url: 'https://i.pravatar.cc/150?img=5', vendas: 620, receita: 31000, comissao: 1250.50, conversao: 12.8 },
+  { id: '4', name: 'Lucas Mendes', avatar_url: 'https://i.pravatar.cc/150?img=12', vendas: 430, receita: 21500, comissao: 890, conversao: 10.1 },
+  { id: '5', name: 'Pedro Oliveira', avatar_url: 'https://i.pravatar.cc/150?img=15', vendas: 256, receita: 12800, comissao: 450.30, conversao: 8.7 },
+];
+
+export const mockSalesOverview = {
+  receitaTotal: 284300,
+  vendasInfluencer: 3436,
+  vendasOrganicas: 5120,
+  taxaConversao: 13.4,
+  ticketMedio: 33.20,
+};
+
+export const mockSalesChart = [
+  { month: 'Jan', organico: 380, influencer: 180 },
+  { month: 'Fev', organico: 420, influencer: 260 },
+  { month: 'Mar', organico: 510, influencer: 340 },
+  { month: 'Abr', organico: 480, influencer: 390 },
+  { month: 'Mai', organico: 620, influencer: 480 },
+  { month: 'Jun', organico: 700, influencer: 560 },
+  { month: 'Jul', organico: 680, influencer: 620 },
+  { month: 'Ago', organico: 830, influencer: 710 },
+];
+
 export const mockAnalyticsData = {
   dailyActiveUsers: [
     { day: 'Seg', users: 320 },

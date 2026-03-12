@@ -34,7 +34,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import {
   mockAdminMetrics, mockEngagementChart, mockDrops, mockQRCodes,
-  mockMissions, mockInfluencers, mockProfiles, mockAnalyticsData
+  mockMissions, mockInfluencers, mockProfiles, mockAnalyticsData,
+  mockInfluencerSales, mockSalesOverview, mockSalesChart
 } from '@/data/adminMockData';
 
 const metricIcons = [Users, Target, QrCode, Gift];
