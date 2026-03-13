@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
@@ -6,6 +6,9 @@ import { AdminBottomNav } from '@/components/admin/AdminBottomNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,13 +23,15 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import {
-  Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
+  Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar as CalendarIcon, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
   UserCircle, BarChart3, Settings, Check, Sun, Moon,
   DollarSign, ShoppingCart, Percent, CreditCard, X, SlidersHorizontal,
   ChevronLeft, ChevronRight, Download, Columns3, Wallet
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { format, isWithinInterval, subDays } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import EmptyState from '@/components/ui/empty-state';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminStats } from '@/hooks/useSupabaseData';
@@ -109,7 +114,7 @@ const AdminDashboard = () => {
                 <Moon className="w-4 h-4 block dark:hidden" />
               </button>
               <Button variant="ghost" size="icon" className="text-muted-foreground h-9 w-9 hidden sm:flex">
-                <Calendar className="w-5 h-5" />
+                <CalendarIcon className="w-5 h-5" />
               </Button>
               <Button variant="ghost" size="icon" className="text-muted-foreground relative h-9 w-9">
                 <Bell className="w-5 h-5" />
@@ -949,9 +954,90 @@ function InfluencerProfileDialog({ influencer, open, onOpenChange, onApprove }: 
 
 // ---- Sales Gateway Section ----
 function SalesGatewaySection() {
+  const PAGE_SIZE = 5;
+  const defaultFrom = subDays(new Date(), 90);
+  const defaultTo = new Date();
+
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(defaultFrom);
+  const [dateTo, setDateTo] = useState<Date | undefined>(defaultTo);
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
+  const [sourceFilters, setSourceFilters] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [visibleCols, setVisibleCols] = useState<Record<string, boolean>>({
+    Data: true, Código: true, Tags: true, Cliente: true,
+    'Tipo Venda': true, Produto: true, Qtd: true, Source: true, Valor: true,
+  });
+
+  const allTypes = useMemo(() => [...new Set(mockSalesTransactions.map(t => t.tipo_venda))], []);
+  const allSources = useMemo(() => [...new Set(mockSalesTransactions.map(t => t.source))], []);
+
+  const filtered = useMemo(() => {
+    return mockSalesTransactions.filter(tx => {
+      const d = new Date(tx.data);
+      if (dateFrom && dateTo && !isWithinInterval(d, { start: dateFrom, end: dateTo })) return false;
+      if (typeFilters.length > 0 && !typeFilters.includes(tx.tipo_venda)) return false;
+      if (sourceFilters.length > 0 && !sourceFilters.includes(tx.source)) return false;
+      return true;
+    });
+  }, [dateFrom, dateTo, typeFilters, sourceFilters]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const filteredTotal = filtered.reduce((a, t) => a + t.valor, 0);
+
+  const activeFilterCount = typeFilters.length + sourceFilters.length;
+
   const totalVendas = mockSalesStatus.aprovados.vendas + mockSalesStatus.aguardando.vendas + mockSalesStatus.reembolsados.vendas;
   const totalValor = mockSalesStatus.aprovados.valor + mockSalesStatus.aguardando.valor + mockSalesStatus.reembolsados.valor;
   const totalComissoes = mockInfluencerSales.reduce((acc, s) => acc + s.comissao, 0);
+
+  const handleExportCSV = () => {
+    const headers = ['Data', 'Código', 'Tags', 'Cliente', 'Tipo Venda', 'SKU', 'Produto', 'Qtd', 'Checkout', 'Source', 'Valor'];
+    const rows = filtered.map(tx => [
+      new Date(tx.data).toLocaleDateString('pt-BR'),
+      tx.codigo, tx.tags.join(';'), tx.cliente, tx.tipo_venda,
+      tx.sku, tx.produto, tx.qtd, tx.cod_checkout, tx.source,
+      tx.valor.toFixed(2),
+    ]);
+    const csv = [headers.join(','), ...rows.map(r => r.map(c => `"${c}"`).join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transacoes-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('CSV exportado com sucesso!');
+  };
+
+  const toggleCol = (col: string) => {
+    setVisibleCols(prev => ({ ...prev, [col]: !prev[col] }));
+  };
+
+  const toggleTypeFilter = (type: string) => {
+    setTypeFilters(prev => prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]);
+    setPage(1);
+  };
+
+  const toggleSourceFilter = (source: string) => {
+    setSourceFilters(prev => prev.includes(source) ? prev.filter(s => s !== source) : [...prev, source]);
+    setPage(1);
+  };
+
+  const clearFilters = () => {
+    setTypeFilters([]);
+    setSourceFilters([]);
+    setPage(1);
+  };
+
+  const clearDateRange = () => {
+    setDateFrom(defaultFrom);
+    setDateTo(defaultTo);
+    setPage(1);
+  };
+
+  const colKeys = Object.keys(visibleCols);
 
   return (
     <div className="space-y-6">
@@ -1123,35 +1209,137 @@ function SalesGatewaySection() {
         <Card className="mb-3">
           <CardContent className="p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1 bg-muted text-[10px] font-black uppercase">
-                Período: 12/12/2025 - 12/03/2026
-                <button className="ml-1 hover:text-destructive"><X className="w-3 h-3" /></button>
-              </div>
-              <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
-                <SlidersHorizontal className="w-3.5 h-3.5" /> Filtros
-                <span className="w-4 h-4 bg-accent text-accent-foreground flex items-center justify-center text-[9px] font-black">3</span>
-              </button>
+              {/* Date Range Popover */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1 bg-muted text-[10px] font-black uppercase">
+                    Período: {dateFrom ? format(dateFrom, 'dd/MM/yy') : '...'} - {dateTo ? format(dateTo, 'dd/MM/yy') : '...'}
+                    <button
+                      className="ml-1 hover:text-destructive"
+                      onClick={(e) => { e.stopPropagation(); clearDateRange(); }}
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 border-[2px] border-border" align="start">
+                  <div className="p-3 space-y-3">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">De</p>
+                    <Calendar
+                      mode="single"
+                      selected={dateFrom}
+                      onSelect={(d) => { setDateFrom(d); setPage(1); }}
+                      className="p-3 pointer-events-auto"
+                      locale={ptBR}
+                    />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Até</p>
+                    <Calendar
+                      mode="single"
+                      selected={dateTo}
+                      onSelect={(d) => { setDateTo(d); setPage(1); }}
+                      className="p-3 pointer-events-auto"
+                      locale={ptBR}
+                    />
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              {/* Filters Popover */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+                    <SlidersHorizontal className="w-3.5 h-3.5" /> Filtros
+                    {activeFilterCount > 0 && (
+                      <span className="w-4 h-4 bg-accent text-accent-foreground flex items-center justify-center text-[9px] font-black">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-56 p-0 border-[2px] border-border" align="start">
+                  <div className="p-3 space-y-3">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Tipo de venda</p>
+                    <div className="space-y-2">
+                      {allTypes.map(type => (
+                        <label key={type} className="flex items-center gap-2 cursor-pointer">
+                          <Checkbox
+                            checked={typeFilters.includes(type)}
+                            onCheckedChange={() => toggleTypeFilter(type)}
+                          />
+                          <span className="text-[11px] font-bold">{type}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <div className="h-[2px] bg-border" />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Source</p>
+                    <div className="space-y-2 max-h-32 overflow-y-auto">
+                      {allSources.map(source => (
+                        <label key={source} className="flex items-center gap-2 cursor-pointer">
+                          <Checkbox
+                            checked={sourceFilters.includes(source)}
+                            onCheckedChange={() => toggleSourceFilter(source)}
+                          />
+                          <span className="text-[11px] font-bold">{source}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {activeFilterCount > 0 && (
+                      <>
+                        <div className="h-[2px] bg-border" />
+                        <button
+                          onClick={clearFilters}
+                          className="text-[10px] font-black uppercase text-destructive hover:underline"
+                        >
+                          Limpar filtros
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+              {/* Export button */}
+              <button
+                onClick={handleExportCSV}
+                className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors"
+              >
                 <Download className="w-3.5 h-3.5" /> Exportar
               </button>
-              <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
-                <Columns3 className="w-3.5 h-3.5" /> Colunas
-              </button>
+
+              {/* Columns Popover */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+                    <Columns3 className="w-3.5 h-3.5" /> Colunas
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-0 border-[2px] border-border" align="end">
+                  <div className="p-3 grid grid-cols-2 gap-2">
+                    {colKeys.map(col => (
+                      <label key={col} className="flex items-center gap-2 cursor-pointer">
+                        <Checkbox
+                          checked={visibleCols[col]}
+                          onCheckedChange={() => toggleCol(col)}
+                        />
+                        <span className="text-[10px] font-bold">{col}</span>
+                      </label>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </CardContent>
         </Card>
 
         {/* Table */}
         <Card className="overflow-hidden">
-          {/* Scrollable table wrapper */}
           <div className="relative">
             <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               <table className="w-full text-left min-w-[900px]">
                 <thead>
                   <tr className="border-b-[2px] border-border bg-muted/30">
-                    {['Data', 'Código', 'Tags', 'Cliente', 'Tipo Venda', 'Produto', 'Qtd', 'Source', 'Valor'].map(col => (
+                    {colKeys.filter(c => visibleCols[c]).map(col => (
                       <th key={col} className="px-3 py-2.5 text-[9px] uppercase tracking-widest font-black text-muted-foreground whitespace-nowrap">
                         {col}
                       </th>
@@ -1159,76 +1347,109 @@ function SalesGatewaySection() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {mockSalesTransactions.map(tx => {
+                  {paginated.length === 0 ? (
+                    <tr>
+                      <td colSpan={colKeys.filter(c => visibleCols[c]).length} className="px-3 py-8 text-center">
+                        <span className="text-[11px] font-bold text-muted-foreground">Nenhuma transação encontrada</span>
+                      </td>
+                    </tr>
+                  ) : paginated.map(tx => {
                     const date = new Date(tx.data);
                     const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}`;
                     return (
                       <tr key={tx.id} className="hover:bg-accent/5 transition-colors">
-                        <td className="px-3 py-2.5">
-                          <span className="text-[11px] font-bold text-muted-foreground">{formatted}</span>
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className="text-[11px] font-black text-accent">{tx.codigo}</span>
-                        </td>
-                        <td className="px-3 py-2.5">
-                          {tx.tags.map(tag => (
-                            <Badge key={tag} className={`text-[8px] px-1.5 py-0 font-black border-[1.5px] rounded-none uppercase mr-1 ${
-                              tag === 'influencer' ? 'bg-accent/15 text-accent border-accent/30' : tag === 'organico' ? 'bg-muted text-muted-foreground border-border' : 'bg-primary/15 text-primary border-primary/30'
-                            }`}>
-                              {tag}
-                            </Badge>
-                          ))}
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className="text-[11px] font-bold text-accent">{tx.cliente}</span>
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className="text-[11px] font-bold">{tx.tipo_venda}</span>
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className="text-[11px] font-bold">{tx.produto}</span>
-                        </td>
-                        <td className="px-3 py-2.5 text-center">
-                          <span className="text-[11px] font-black">{tx.qtd}</span>
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className={`text-[11px] font-bold ${tx.source !== 'Orgânico' ? 'text-accent' : 'text-muted-foreground'}`}>
-                            {tx.source}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2.5 text-right">
-                          <span className="text-[11px] font-black">R$ {tx.valor.toFixed(2)}</span>
-                        </td>
+                        {visibleCols['Data'] && (
+                          <td className="px-3 py-2.5">
+                            <span className="text-[11px] font-bold text-muted-foreground">{formatted}</span>
+                          </td>
+                        )}
+                        {visibleCols['Código'] && (
+                          <td className="px-3 py-2.5">
+                            <span className="text-[11px] font-black text-accent">{tx.codigo}</span>
+                          </td>
+                        )}
+                        {visibleCols['Tags'] && (
+                          <td className="px-3 py-2.5">
+                            {tx.tags.map(tag => (
+                              <Badge key={tag} className={`text-[8px] px-1.5 py-0 font-black border-[1.5px] rounded-none uppercase mr-1 ${
+                                tag === 'influencer' ? 'bg-accent/15 text-accent border-accent/30' : tag === 'organico' ? 'bg-muted text-muted-foreground border-border' : 'bg-primary/15 text-primary border-primary/30'
+                              }`}>
+                                {tag}
+                              </Badge>
+                            ))}
+                          </td>
+                        )}
+                        {visibleCols['Cliente'] && (
+                          <td className="px-3 py-2.5">
+                            <span className="text-[11px] font-bold text-accent">{tx.cliente}</span>
+                          </td>
+                        )}
+                        {visibleCols['Tipo Venda'] && (
+                          <td className="px-3 py-2.5">
+                            <span className="text-[11px] font-bold">{tx.tipo_venda}</span>
+                          </td>
+                        )}
+                        {visibleCols['Produto'] && (
+                          <td className="px-3 py-2.5">
+                            <span className="text-[11px] font-bold">{tx.produto}</span>
+                          </td>
+                        )}
+                        {visibleCols['Qtd'] && (
+                          <td className="px-3 py-2.5 text-center">
+                            <span className="text-[11px] font-black">{tx.qtd}</span>
+                          </td>
+                        )}
+                        {visibleCols['Source'] && (
+                          <td className="px-3 py-2.5">
+                            <span className={`text-[11px] font-bold ${tx.source !== 'Orgânico' ? 'text-accent' : 'text-muted-foreground'}`}>
+                              {tx.source}
+                            </span>
+                          </td>
+                        )}
+                        {visibleCols['Valor'] && (
+                          <td className="px-3 py-2.5 text-right">
+                            <span className="text-[11px] font-black">R$ {tx.valor.toFixed(2)}</span>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
                 </tbody>
                 <tfoot>
                   <tr className="border-t-[2px] border-border bg-muted/20">
-                    <td colSpan={8} className="px-3 py-2.5 text-right">
+                    <td colSpan={colKeys.filter(c => visibleCols[c]).length - 1} className="px-3 py-2.5 text-right">
                       <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total</span>
                     </td>
-                    <td className="px-3 py-2.5 text-right">
-                      <span className="text-sm font-black">R$ {mockSalesTransactions.reduce((a, t) => a + t.valor, 0).toFixed(2)}</span>
-                    </td>
+                    {visibleCols['Valor'] && (
+                      <td className="px-3 py-2.5 text-right">
+                        <span className="text-sm font-black">R$ {filteredTotal.toFixed(2)}</span>
+                      </td>
+                    )}
                   </tr>
                 </tfoot>
               </table>
             </div>
-            {/* Scroll hint gradient — right edge */}
             <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-card to-transparent sm:hidden" />
           </div>
 
-          {/* Pagination — fixed outside scroll */}
+          {/* Pagination */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-4 py-3 border-t-[2px] border-border">
             <p className="text-[10px] text-muted-foreground font-bold">
-              Resultados: <span className="text-foreground font-black">93</span> — Página <span className="text-foreground font-black">1</span> de <span className="text-foreground font-black">10</span>
+              Resultados: <span className="text-foreground font-black">{filtered.length}</span> — Página <span className="text-foreground font-black">{safePage}</span> de <span className="text-foreground font-black">{totalPages}</span>
             </p>
             <div className="flex items-center gap-1.5">
-              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-card text-muted-foreground">
+              <button
+                disabled={safePage <= 1}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-card text-muted-foreground disabled:opacity-40"
+              >
                 <ChevronLeft className="w-3 h-3" /> Anterior
               </button>
-              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-accent text-accent-foreground">
+              <button
+                disabled={safePage >= totalPages}
+                onClick={() => setPage(p => p + 1)}
+                className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-accent text-accent-foreground disabled:opacity-40"
+              >
                 Próxima <ChevronRight className="w-3 h-3" />
               </button>
             </div>
