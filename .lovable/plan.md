@@ -1,60 +1,41 @@
 
 
-## Plano: Refinar Admin Dashboard para fidelidade pixel-perfect com referência
+## Refazer Relatório de Vendas — Estilo Gateway Payt
 
-### Análise das diferenças (comparando imagens com código atual)
+Inspirado nas screenshots do Payt, vou recriar a `SalesGatewaySection` com layout fiel: cards de status agrupados por categoria, tabela detalhada de transações com colunas, paginação, filtro de período, e botões de exportar/personalizar.
 
-**Imagem 1 (8DEC6932)** - Layout mais simples, sem sidebar direita:
-- Header: Logo "CIMED" grande centralizado (não "Cimed GO"), avatar "JP" em círculo amarelo com iniciais
-- Sidebar: Tem label "Menu" acima dos itens, item ativo "Dashboard" com fundo amarelo e texto preto
-- Métricas: Labels em UPPERCASE ("USUÁRIOS ATIVOS", "MISSÕES COMPLETAS", "SCANS QR CODE", "DROPS RESGATADOS"), valores 72.5k, 185.2k, 342.1k +15%, 28.8k +22%
-- Gráfico: Eixo X com meses (Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago), Y até 360000, legenda EMBAIXO do gráfico (não em cima), 4 linhas coloridas (amarela/laranja dominantes subindo forte)
-- Tabela: Colunas "Drop | Resgates | Status | Ações", formato "450/500" para resgates, badge "Encerrado" cinza, ícones de editar (lápis) e menu (3 pontos)
+### Alterações
 
-**Imagem 2 (image-5)** - Layout com sidebar direita:
-- Header: "Cimed GO" logo estilizado (com o O como engrenagem), "Dashboard" no header, avatar real com foto
-- Sidebar: SEM label "Menu", item ativo com fundo azul/amarelo arredondado
-- Métricas: Labels em case normal, valores com badges +18%, +32%, +25%
-- Gráfico: Datas no X-axis, legenda no topo, escala menor (até 12,000)
-- Sidebar direita: Ranking dos Drops + Novos Influenciadores
+**`src/data/adminMockData.ts`** — Adicionar mock de transações individuais:
+- `mockSalesTransactions`: array de ~15 transações com campos: código (alfanumérico), cliente, tipo_venda ("Venda Direta", "Influencer"), produto, quantidade, codigo_checkout, nome_checkout, source (nome do influencer ou "Orgânico"), valor, data
+- `mockSalesStatus`: objeto com { aprovados: { valor, vendas, percent }, aguardando: { valor, vendas, percent }, reembolsados: { valor, vendas, percent } }
+- `mockPaymentMethods`: array com [{ tipo: 'Cartão Crédito', valor, vendas, percent }, { tipo: 'Pix', valor, vendas, percent }, { tipo: 'Boleto', valor, vendas, percent }]
+- `mockTopOffers`: array com [{ posicao, nome, vendas, total }] — top 4 produtos
 
-**Decisão**: Usar a **Imagem 1** como base principal (é a que o usuário enviou agora) e incorporar sidebar direita da Imagem 2.
+**`src/pages/AdminDashboard.tsx`** — Reescrever `SalesGatewaySection` completamente:
 
-### Mudanças necessárias
+**Bloco 1 — 4 cards informativos (grid 1x4 em desktop, 2x2 em mobile):**
+- **Card "Status das vendas"**: Lista vertical — Aprovados (valor verde + vendas + %), Aguardando pagamento (valor laranja), Reembolsados (valor vermelho)
+- **Card "Tipos de vendas"**: Venda Direta, Via Influencer, Orgânica — cada com valor e contagem
+- **Card "Formas de pagamento"**: ícone + nome + valor em cada linha (Crédito, Pix, Boleto)
+- **Card "Top ofertas"**: dropdown fake "Top ofertas", lista 1º-4º lugar com nome produto, vendas, total R$
 
-**1. `src/data/mockData.ts`**
-- Métricas: 72.5k, 185.2k, **342.1k** (+15%), **28.8k** (+22%) — valores diferentes dos atuais
-- Gráfico: Mudar para meses (Jan-Ago) com escala até 360000, curvas ascendentes realistas
-- Tabela: Adicionar campo `total` visível, formato "450/500", nome "Carmed Fini Drop"
-- Campanhas: "Carmed Fini Drop / Drogasil Paulista" com 450/500
+**Bloco 2 — Linha de resumo (3 cards pequenos):**
+- Quantidade de vendas (número grande)
+- Comissões (R$ total)
+- Total de vendas (R$ total)
 
-**2. `src/pages/AdminDashboard.tsx`**
-- **Header**: Logo "CIMED" grande centralizado (texto bold, não SVG pequeno), avatar com iniciais "JP" em círculo amarelo (não foto)
-- **Métricas**: Labels UPPERCASE, valores atualizados (342.1k, 28.8k), badges com cores corretas
-- **Gráfico**:
-  - Eixo X: Meses (Jan, Fev, Mar... Ago)
-  - Eixo Y: Escala grande (0 a 360000), formato "90000", "180000", "270000", "360000"
-  - Legenda EMBAIXO do gráfico (não em cima): "Usuários · Scans · Drops · Missões"
-  - Linhas: Amarela dominante (mais grossa), Laranja forte, Azul e Verde menores
-  - Botão "Últimos 30 dias" com ícone calendário no canto superior direito
-- **Tabela "Últimos Drops Liberados"**:
-  - Header de coluna: "Drop | Resgates | Status | Ações"
-  - Formato resgates: "450/500" (não "2,00 m")
-  - Badge "Encerrado" cinza escuro
-  - Ações: ícone de editar (Pencil) + ícone menu (MoreVertical)
-- **Sidebar direita**: Manter Ranking + Influenciadores mas ajustar layout para combinar
+**Bloco 3 — Filtros e controles:**
+- Badge de período: "Período de Compra: 12/12/2025 - 12/03/2026" com X para remover (apenas visual)
+- Botão "Filtros" com ícone e badge de contagem
+- Paginação: "Anterior" / "Próxima →" com "Resultados encontrados: 93 Página 1 de 10"
+- Botões: "Exportar relatório de vendas" e "Personalizar colunas" (apenas visuais)
 
-**3. `src/components/admin/AdminSidebar.tsx`**
-- Adicionar label "Menu" acima dos itens do menu
-- Item ativo: fundo amarelo sólido (`bg-yellow-500 text-black`) com ícone e texto escuro
-- Logo "CIMED" no topo em bold grande (não "Cimed GO" estilizado), "ADMIN PANEL" abaixo em cinza uppercase
-- Ícones brancos para itens inativos
+**Bloco 4 — Tabela de transações:**
+- Header com colunas: Código, Tags, Cliente, Tipo Venda, SKU, Produto, Qtd, Cód. Checkout, Nome Checkout, Source
+- Linhas com dados mock, scrollable horizontalmente
+- Códigos e clientes em cor accent (links visuais)
+- Estilo NeoBrutalist: border-[2px], font-black nos headers, sem rounded
 
-### Arquivos
-
-| Arquivo | Ação |
-|---|---|
-| `src/data/mockData.ts` | Atualizar métricas (342.1k, 28.8k), gráfico com meses e escala grande, tabela com formato 450/500 |
-| `src/pages/AdminDashboard.tsx` | Header com CIMED centralizado e avatar JP, métricas UPPERCASE, gráfico com meses/legenda embaixo, tabela com colunas header e formato X/Y |
-| `src/components/admin/AdminSidebar.tsx` | Label "Menu", item ativo amarelo, logo "CIMED" + "ADMIN PANEL" |
+Todo o design segue NeoBrutalist (bordas sólidas, sem rounded, font-black uppercase nos headers) mas adaptado ao layout informativo do Payt.
 
