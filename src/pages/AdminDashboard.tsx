@@ -44,8 +44,11 @@ import {
   mockAdminMetrics, mockEngagementChart, mockDrops, mockQRCodes,
   mockMissions, mockInfluencers, mockProfiles, mockAnalyticsData,
   mockInfluencerSales, mockSalesOverview, mockSalesChart,
-  mockSalesStatus, mockPaymentMethods, mockSalesTypes, mockTopOffers, mockSalesTransactions
+  mockSalesStatus, mockPaymentMethods, mockSalesTypes, mockTopOffers, mockSalesTransactions,
+  mockNationalCampaigns
 } from '@/data/adminMockData';
+import { Progress } from '@/components/ui/progress';
+import { Switch } from '@/components/ui/switch';
 
 const metricIcons = [Users, Target, QrCode, Gift];
 
