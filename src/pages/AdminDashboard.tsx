@@ -23,7 +23,7 @@ import {
   DropdownMenuSeparator, DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import {
-  Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
+  Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar as CalendarIcon, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
   UserCircle, BarChart3, Settings, Check, Sun, Moon,
   DollarSign, ShoppingCart, Percent, CreditCard, X, SlidersHorizontal,
