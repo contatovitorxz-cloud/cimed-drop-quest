@@ -30,6 +30,8 @@ import {
   ChevronLeft, ChevronRight, Download, Columns3, Wallet
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { format, isWithinInterval, subDays } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import EmptyState from '@/components/ui/empty-state';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminStats } from '@/hooks/useSupabaseData';
