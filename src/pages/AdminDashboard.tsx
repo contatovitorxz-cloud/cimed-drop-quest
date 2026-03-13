@@ -23,7 +23,8 @@ import {
   Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
   UserCircle, BarChart3, Settings, Check, Sun, Moon,
-  DollarSign, ShoppingCart, Percent
+  DollarSign, ShoppingCart, Percent, CreditCard, X, SlidersHorizontal,
+  ChevronLeft, ChevronRight, Download, Columns3, Wallet
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
