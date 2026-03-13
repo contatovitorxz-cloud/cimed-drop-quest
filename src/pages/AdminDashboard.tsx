@@ -1145,8 +1145,9 @@ function SalesGatewaySection() {
 
         {/* Table */}
         <Card className="overflow-hidden">
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
+          {/* Scrollable table wrapper */}
+          <div className="relative">
+            <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
               <table className="w-full text-left min-w-[900px]">
                 <thead>
                   <tr className="border-b-[2px] border-border bg-muted/30">
@@ -1214,22 +1215,24 @@ function SalesGatewaySection() {
                 </tfoot>
               </table>
             </div>
+            {/* Scroll hint gradient — right edge */}
+            <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-card to-transparent sm:hidden" />
+          </div>
 
-            {/* Pagination — bottom only */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-4 py-3 border-t-[2px] border-border">
-              <p className="text-[10px] text-muted-foreground font-bold">
-                Resultados: <span className="text-foreground font-black">93</span> — Página <span className="text-foreground font-black">1</span> de <span className="text-foreground font-black">10</span>
-              </p>
-              <div className="flex items-center gap-1.5">
-                <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-card text-muted-foreground">
-                  <ChevronLeft className="w-3 h-3" /> Anterior
-                </button>
-                <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-accent text-accent-foreground">
-                  Próxima <ChevronRight className="w-3 h-3" />
-                </button>
-              </div>
+          {/* Pagination — fixed outside scroll */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-4 py-3 border-t-[2px] border-border">
+            <p className="text-[10px] text-muted-foreground font-bold">
+              Resultados: <span className="text-foreground font-black">93</span> — Página <span className="text-foreground font-black">1</span> de <span className="text-foreground font-black">10</span>
+            </p>
+            <div className="flex items-center gap-1.5">
+              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-card text-muted-foreground">
+                <ChevronLeft className="w-3 h-3" /> Anterior
+              </button>
+              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-accent text-accent-foreground">
+                Próxima <ChevronRight className="w-3 h-3" />
+              </button>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>
