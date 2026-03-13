@@ -162,6 +162,7 @@ const AdminDashboard = () => {
 
           <main className="flex-1 p-4 md:p-6 pb-20 md:pb-6 overflow-auto">
             {section === 'dashboard' && <DashboardSection />}
+            {section === 'campanha' && <NationalCampaignSection />}
             {section === 'drops' && <DropsSection />}
             {section === 'qrcodes' && <QRCodesSection />}
             {section === 'missions' && <MissionsSection />}
