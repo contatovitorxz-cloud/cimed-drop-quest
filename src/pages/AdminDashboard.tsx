@@ -1788,6 +1788,489 @@ function AnalyticsSection() {
   );
 }
 
+// ---- National Campaign Section ----
+function NationalCampaignSection() {
+  const [campaigns, setCampaigns] = useState(mockNationalCampaigns);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null);
+
+  const activeCampaign = campaigns.find(c => c.status === 'ativa');
+  const pastCampaigns = campaigns.filter(c => c.status === 'encerrada');
+
+  // Create campaign form state
+  const [formNome, setFormNome] = useState('');
+  const [formDescricao, setFormDescricao] = useState('');
+  const [formInicio, setFormInicio] = useState<Date | undefined>();
+  const [formFim, setFormFim] = useState<Date | undefined>();
+  const [formMeta, setFormMeta] = useState('1000000');
+  const [formDesconto, setFormDesconto] = useState('');
+  const [formMsgPush, setFormMsgPush] = useState('');
+  const [formCanais, setFormCanais] = useState({ push: true, whatsapp: true, instagram: true, tiktok: true, email: true });
+  const [formRegioes, setFormRegioes] = useState<string[]>(['Brasil Todo']);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const allRegioes = ['Brasil Todo', 'Sudeste', 'Sul', 'Nordeste', 'Centro-Oeste', 'Norte'];
+
+  const toggleRegiao = (r: string) => {
+    if (r === 'Brasil Todo') {
+      setFormRegioes(['Brasil Todo']);
+    } else {
+      setFormRegioes(prev => {
+        const without = prev.filter(x => x !== 'Brasil Todo');
+        return without.includes(r) ? without.filter(x => x !== r) : [...without, r];
+      });
+    }
+  };
+
+  const handleCreateCampaign = () => {
+    if (!formNome.trim()) { toast.error('Informe o nome da campanha'); return; }
+    if (!formInicio || !formFim) { toast.error('Informe o período'); return; }
+    setConfirmOpen(true);
+  };
+
+  const confirmLaunch = () => {
+    const newCampaign = {
+      id: crypto.randomUUID(),
+      nome: formNome,
+      descricao: formDescricao,
+      status: 'ativa' as const,
+      inicio: formInicio!.toISOString(),
+      fim: formFim!.toISOString(),
+      metaFaturamento: Number(formMeta) || 1000000,
+      faturamentoAtual: 0,
+      alcanceTotal: 0,
+      resgates: 0,
+      conversao: 0,
+      trafegoExterno: 0,
+      canais: formCanais,
+      regioes: formRegioes,
+      produtos: [],
+      desconto: formDesconto,
+      msgPush: formMsgPush,
+      drops: [],
+      metricas: { pushEnviados: 0, pushAbertos: 0, whatsappEnviados: 0, emailEnviados: 0, cliquesAds: 0 },
+      regiaoBreakdown: [],
+    };
+    setCampaigns(prev => [newCampaign, ...prev]);
+    setCreateOpen(false);
+    setConfirmOpen(false);
+    setFormNome(''); setFormDescricao(''); setFormInicio(undefined); setFormFim(undefined);
+    setFormMeta('1000000'); setFormDesconto(''); setFormMsgPush('');
+    setFormCanais({ push: true, whatsapp: true, instagram: true, tiktok: true, email: true });
+    setFormRegioes(['Brasil Todo']);
+    toast.success('🚀 Campanha Nacional lançada com sucesso!');
+  };
+
+  const fmtMoney = (v: number) => {
+    if (v >= 1000000) return `R$ ${(v / 1000000).toFixed(1)}M`;
+    if (v >= 1000) return `R$ ${(v / 1000).toFixed(0)}k`;
+    return `R$ ${v}`;
+  };
+
+  const fmtNum = (v: number) => {
+    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+    if (v >= 1000) return (v / 1000).toFixed(1) + 'k';
+    return String(v);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Hero Banner */}
+      <Card className="bg-accent border-[3px] border-border shadow-[6px_6px_0_hsl(var(--border))]">
+        <CardContent className="p-6 md:p-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="w-14 h-14 bg-accent-foreground/10 border-[3px] border-accent-foreground/20 flex items-center justify-center shrink-0">
+                <Megaphone className="w-8 h-8 text-accent-foreground" />
+              </div>
+              <div>
+                <h1 className="font-nunito text-2xl md:text-3xl font-black uppercase text-accent-foreground leading-tight">
+                  Campanha Nacional
+                </h1>
+                <p className="text-sm text-accent-foreground/80 font-bold mt-1">
+                  Alcance todos os usuários do Brasil + tráfego externo em um clique
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <Badge className="bg-accent-foreground/20 text-accent-foreground border-accent-foreground/30 border-[2px] rounded-none text-[9px] font-black uppercase px-2">
+                    <Globe className="w-3 h-3 mr-1" /> Multi-canal
+                  </Badge>
+                  <Badge className="bg-accent-foreground/20 text-accent-foreground border-accent-foreground/30 border-[2px] rounded-none text-[9px] font-black uppercase px-2">
+                    <MapPin className="w-3 h-3 mr-1" /> Brasil Todo
+                  </Badge>
+                </div>
+              </div>
+            </div>
+            <Button
+              onClick={() => setCreateOpen(true)}
+              className="h-12 px-6 text-sm font-black uppercase bg-accent-foreground text-accent hover:bg-accent-foreground/90 border-[3px] border-accent-foreground/50 shadow-[4px_4px_0_hsl(var(--border))] rounded-none w-full md:w-auto"
+            >
+              <Plus className="w-5 h-5 mr-2" /> CRIAR CAMPANHA
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Campanha Ativa */}
+      {activeCampaign && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Campanha Ativa</h3>
+            <Badge className="bg-accent text-accent-foreground border-[2px] border-border rounded-none text-[9px] font-black uppercase px-2 animate-pulse">
+              🔴 AO VIVO
+            </Badge>
+            <div className="flex-1 h-[2px] bg-border" />
+          </div>
+
+          <Card className="border-[3px] border-accent shadow-[6px_6px_0_hsl(var(--accent)/0.3)]">
+            <CardContent className="p-5 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h3 className="font-black text-xl uppercase">{activeCampaign.nome}</h3>
+                  <p className="text-xs text-muted-foreground font-bold mt-0.5">{activeCampaign.descricao}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] text-muted-foreground font-black uppercase">
+                    {new Date(activeCampaign.inicio).toLocaleDateString('pt-BR')} — {new Date(activeCampaign.fim).toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+              </div>
+
+              {/* Termômetro de meta */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Meta de Faturamento</span>
+                  <span className="text-sm font-black text-accent">
+                    {fmtMoney(activeCampaign.faturamentoAtual)} / {fmtMoney(activeCampaign.metaFaturamento)}
+                  </span>
+                </div>
+                <Progress
+                  value={(activeCampaign.faturamentoAtual / activeCampaign.metaFaturamento) * 100}
+                  className="h-4 border-[2px] border-border rounded-none bg-muted"
+                />
+                <p className="text-[10px] text-muted-foreground font-bold mt-1 text-right">
+                  {((activeCampaign.faturamentoAtual / activeCampaign.metaFaturamento) * 100).toFixed(1)}% da meta
+                </p>
+              </div>
+
+              {/* Métricas em tempo real */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="border-[2px] border-border p-3 text-center">
+                  <Eye className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
+                  <p className="text-lg font-black">{fmtNum(activeCampaign.alcanceTotal)}</p>
+                  <p className="text-[9px] uppercase font-black text-muted-foreground">Alcance</p>
+                </div>
+                <div className="border-[2px] border-border p-3 text-center">
+                  <Gift className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
+                  <p className="text-lg font-black">{fmtNum(activeCampaign.resgates)}</p>
+                  <p className="text-[9px] uppercase font-black text-muted-foreground">Resgates</p>
+                </div>
+                <div className="border-[2px] border-border p-3 text-center">
+                  <TrendingUp className="w-4 h-4 mx-auto mb-1 text-accent" />
+                  <p className="text-lg font-black text-accent">{activeCampaign.conversao}%</p>
+                  <p className="text-[9px] uppercase font-black text-muted-foreground">Conversão</p>
+                </div>
+                <div className="border-[2px] border-border p-3 text-center">
+                  <Globe className="w-4 h-4 mx-auto mb-1 text-muted-foreground" />
+                  <p className="text-lg font-black">{fmtNum(activeCampaign.trafegoExterno)}</p>
+                  <p className="text-[9px] uppercase font-black text-muted-foreground">Tráfego Externo</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Canais de Distribuição */}
+          <div className="flex items-center gap-3">
+            <h3 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Canais de Distribuição</h3>
+            <div className="flex-1 h-[2px] bg-border" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              { key: 'push', label: 'Push Notification', icon: Smartphone, enviados: activeCampaign.metricas.pushEnviados, abertos: activeCampaign.metricas.pushAbertos },
+              { key: 'whatsapp', label: 'WhatsApp Business', icon: MessageCircle, enviados: activeCampaign.metricas.whatsappEnviados, abertos: 0 },
+              { key: 'instagram', label: 'Instagram / TikTok Ads', icon: Instagram, enviados: activeCampaign.metricas.cliquesAds, abertos: 0 },
+              { key: 'email', label: 'E-mail Marketing', icon: Mail, enviados: activeCampaign.metricas.emailEnviados, abertos: 0 },
+            ].map(canal => {
+              const isActive = activeCampaign.canais[canal.key as keyof typeof activeCampaign.canais];
+              return (
+                <Card key={canal.key} className={isActive ? '' : 'opacity-50'}>
+                  <CardContent className="p-4 flex items-center gap-3">
+                    <div className={`w-10 h-10 flex items-center justify-center border-[2px] border-border shrink-0 ${isActive ? 'bg-accent' : 'bg-muted'}`}>
+                      <canal.icon className={`w-5 h-5 ${isActive ? 'text-accent-foreground' : 'text-muted-foreground'}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-black uppercase">{canal.label}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold">
+                        {fmtNum(canal.enviados)} {canal.key === 'instagram' ? 'cliques' : 'enviados'}
+                      </p>
+                    </div>
+                    <Badge className={`text-[8px] px-1.5 py-0 font-black border-[2px] rounded-none uppercase ${isActive ? 'bg-accent text-accent-foreground border-border' : 'bg-muted text-muted-foreground border-border'}`}>
+                      {isActive ? 'ATIVO' : 'OFF'}
+                    </Badge>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Drops da Campanha */}
+          {activeCampaign.drops.length > 0 && (
+            <>
+              <div className="flex items-center gap-3">
+                <h3 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Drops da Campanha</h3>
+                <div className="flex-1 h-[2px] bg-border" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {activeCampaign.drops.map(drop => {
+                  const pct = drop.estoque > 0 ? (drop.resgatados / drop.estoque) * 100 : 100;
+                  const isEsgotado = drop.status === 'esgotado';
+                  return (
+                    <Card key={drop.id} className={isEsgotado ? 'opacity-60' : ''}>
+                      <CardContent className="p-4 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs font-black uppercase">{drop.nome}</p>
+                          <Badge className={`text-[8px] px-1.5 py-0 font-black border-[2px] rounded-none uppercase ${isEsgotado ? 'bg-destructive/15 text-destructive border-destructive' : 'bg-accent text-accent-foreground border-border'}`}>
+                            {isEsgotado ? 'ESGOTADO' : 'ATIVO'}
+                          </Badge>
+                        </div>
+                        <Progress
+                          value={pct}
+                          className="h-2 border-[1px] border-border rounded-none bg-muted"
+                        />
+                        <div className="flex justify-between text-[10px] font-bold text-muted-foreground">
+                          <span>{fmtNum(drop.resgatados)} resgatados</span>
+                          <span>{fmtNum(drop.estoque)} total</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {/* Regiões */}
+          {activeCampaign.regiaoBreakdown.length > 0 && (
+            <>
+              <div className="flex items-center gap-3">
+                <h3 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Distribuição por Região</h3>
+                <div className="flex-1 h-[2px] bg-border" />
+              </div>
+              <Card>
+                <CardContent className="p-0">
+                  <div className="divide-y-[2px] divide-border">
+                    {activeCampaign.regiaoBreakdown.map(r => (
+                      <div key={r.regiao} className="flex items-center gap-3 px-4 py-3">
+                        <MapPin className="w-4 h-4 text-accent shrink-0" />
+                        <div className="flex-1">
+                          <span className="text-sm font-black uppercase">{r.regiao}</span>
+                        </div>
+                        <div className="text-right flex items-center gap-4">
+                          <div>
+                            <p className="text-xs font-black">{fmtNum(r.alcance)}</p>
+                            <p className="text-[9px] text-muted-foreground font-bold">alcance</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-black text-accent">{fmtNum(r.vendas)}</p>
+                            <p className="text-[9px] text-muted-foreground font-bold">vendas</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Histórico */}
+      {pastCampaigns.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Histórico de Campanhas</h3>
+            <div className="flex-1 h-[2px] bg-border" />
+          </div>
+          <div className="space-y-3">
+            {pastCampaigns.map(c => (
+              <Card key={c.id}>
+                <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-muted flex items-center justify-center border-[2px] border-border shrink-0">
+                      <Megaphone className="w-5 h-5 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-black uppercase">{c.nome}</p>
+                      <p className="text-[10px] text-muted-foreground font-bold">
+                        {new Date(c.inicio).toLocaleDateString('pt-BR')} — {new Date(c.fim).toLocaleDateString('pt-BR')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <p className="text-sm font-black">{fmtMoney(c.faturamentoAtual)}</p>
+                      <p className="text-[9px] text-muted-foreground font-bold">de {fmtMoney(c.metaFaturamento)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-black text-accent">{c.conversao}%</p>
+                      <p className="text-[9px] text-muted-foreground font-bold">conversão</p>
+                    </div>
+                    <Badge className="bg-muted text-muted-foreground border-[2px] border-border rounded-none text-[9px] font-black uppercase px-2">
+                      ENCERRADA
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Modal Criar Campanha */}
+      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+        <DialogContent className="border-[3px] border-border rounded-none max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-black uppercase text-lg flex items-center gap-2">
+              <Megaphone className="w-5 h-5 text-accent" /> Criar Campanha Nacional
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Nome da Campanha *</Label>
+              <Input value={formNome} onChange={e => setFormNome(e.target.value)} placeholder="Ex: Operação Inverno Cimed" className="border-[2px] border-border rounded-none" />
+            </div>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Descrição</Label>
+              <Textarea value={formDescricao} onChange={e => setFormDescricao(e.target.value)} placeholder="Descreva a campanha..." className="border-[2px] border-border rounded-none min-h-[60px]" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-black uppercase">Data Início *</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-bold border-[2px] border-border rounded-none text-xs">
+                      <CalendarIcon className="w-3.5 h-3.5 mr-2" />
+                      {formInicio ? format(formInicio, 'dd/MM/yyyy') : 'Selecionar'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 border-[2px] border-border" align="start">
+                    <Calendar mode="single" selected={formInicio} onSelect={setFormInicio} className="p-3 pointer-events-auto" locale={ptBR} />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-black uppercase">Data Fim *</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-start text-left font-bold border-[2px] border-border rounded-none text-xs">
+                      <CalendarIcon className="w-3.5 h-3.5 mr-2" />
+                      {formFim ? format(formFim, 'dd/MM/yyyy') : 'Selecionar'}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 border-[2px] border-border" align="start">
+                    <Calendar mode="single" selected={formFim} onSelect={setFormFim} className="p-3 pointer-events-auto" locale={ptBR} />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-black uppercase">Meta Faturamento (R$)</Label>
+                <Input type="number" value={formMeta} onChange={e => setFormMeta(e.target.value)} className="border-[2px] border-border rounded-none" />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-black uppercase">Desconto / Benefício</Label>
+                <Input value={formDesconto} onChange={e => setFormDesconto(e.target.value)} placeholder="Ex: 30% OFF" className="border-[2px] border-border rounded-none" />
+              </div>
+            </div>
+
+            {/* Canais */}
+            <div className="space-y-2">
+              <Label className="text-xs font-black uppercase">Canais de Distribuição</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { key: 'push', label: 'Push Notification', icon: Smartphone },
+                  { key: 'whatsapp', label: 'WhatsApp', icon: MessageCircle },
+                  { key: 'instagram', label: 'Instagram/TikTok', icon: Instagram },
+                  { key: 'email', label: 'E-mail', icon: Mail },
+                ].map(c => (
+                  <label key={c.key} className="flex items-center gap-2 border-[2px] border-border p-2 cursor-pointer hover:bg-muted/50 transition-colors">
+                    <Checkbox
+                      checked={formCanais[c.key as keyof typeof formCanais]}
+                      onCheckedChange={(checked) => setFormCanais(prev => ({ ...prev, [c.key]: !!checked }))}
+                    />
+                    <c.icon className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="text-[10px] font-bold">{c.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Regiões */}
+            <div className="space-y-2">
+              <Label className="text-xs font-black uppercase">Regiões Alvo</Label>
+              <div className="flex flex-wrap gap-2">
+                {allRegioes.map(r => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => toggleRegiao(r)}
+                    className={`px-3 py-1.5 text-[10px] font-black uppercase border-[2px] border-border transition-all ${
+                      formRegioes.includes(r) ? 'bg-accent text-accent-foreground shadow-[2px_2px_0_hsl(var(--border))]' : 'bg-card text-muted-foreground hover:bg-muted'
+                    }`}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Mensagem Push */}
+            <div className="space-y-1.5">
+              <Label className="text-xs font-black uppercase">Mensagem Push Notification</Label>
+              <Textarea value={formMsgPush} onChange={e => setFormMsgPush(e.target.value)} placeholder="Ex: 🔥 CAMPANHA CIMED! Desconto exclusivo..." className="border-[2px] border-border rounded-none min-h-[60px]" maxLength={160} />
+              <p className="text-[10px] text-muted-foreground font-bold text-right">{formMsgPush.length}/160</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2">
+            <DialogClose asChild>
+              <Button variant="outline" className="rounded-none">Cancelar</Button>
+            </DialogClose>
+            <Button onClick={handleCreateCampaign} className="rounded-none gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90">
+              <Zap className="w-4 h-4" /> Lançar Campanha
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirmação */}
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent className="border-[3px] border-accent rounded-none max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-black uppercase text-lg text-center">⚠️ Confirmar Lançamento</DialogTitle>
+          </DialogHeader>
+          <div className="text-center space-y-3 py-2">
+            <p className="text-sm font-bold">Você está prestes a lançar:</p>
+            <p className="text-lg font-black uppercase text-accent">{formNome}</p>
+            <p className="text-xs text-muted-foreground font-bold">
+              Esta campanha será enviada para {formRegioes.includes('Brasil Todo') ? 'TODOS os usuários do Brasil' : formRegioes.join(', ')} via {Object.entries(formCanais).filter(([,v]) => v).length} canais.
+            </p>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setConfirmOpen(false)} className="rounded-none">
+              Voltar
+            </Button>
+            <Button onClick={confirmLaunch} className="rounded-none gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90">
+              <Megaphone className="w-4 h-4" /> CONFIRMAR LANÇAMENTO
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
 // ---- Settings Section ----
 function SettingsSection() {
   return (
