@@ -23,7 +23,8 @@ import {
   Users, Target, QrCode, Gift, Plus, TrendingUp, Calendar, Bell,
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
   UserCircle, BarChart3, Settings, Check, Sun, Moon,
-  DollarSign, ShoppingCart, Percent
+  DollarSign, ShoppingCart, Percent, CreditCard, X, SlidersHorizontal,
+  ChevronLeft, ChevronRight, Download, Columns3, Wallet
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import EmptyState from '@/components/ui/empty-state';
@@ -36,7 +37,8 @@ import { toast } from 'sonner';
 import {
   mockAdminMetrics, mockEngagementChart, mockDrops, mockQRCodes,
   mockMissions, mockInfluencers, mockProfiles, mockAnalyticsData,
-  mockInfluencerSales, mockSalesOverview, mockSalesChart
+  mockInfluencerSales, mockSalesOverview, mockSalesChart,
+  mockSalesStatus, mockPaymentMethods, mockSalesTypes, mockTopOffers, mockSalesTransactions
 } from '@/data/adminMockData';
 
 const metricIcons = [Users, Target, QrCode, Gift];
@@ -947,110 +949,238 @@ function InfluencerProfileDialog({ influencer, open, onOpenChange, onApprove }: 
 
 // ---- Sales Gateway Section ----
 function SalesGatewaySection() {
-  const metrics = [
-    { label: 'RECEITA TOTAL', value: `R$ ${(mockSalesOverview.receitaTotal / 1000).toFixed(0)}k`, icon: DollarSign, accent: true },
-    { label: 'VENDAS INFLUENCER', value: formatValue(mockSalesOverview.vendasInfluencer), icon: TrendingUp },
-    { label: 'VENDAS ORGÂNICAS', value: formatValue(mockSalesOverview.vendasOrganicas), icon: ShoppingCart },
-    { label: 'TAXA CONVERSÃO', value: `${mockSalesOverview.taxaConversao}%`, icon: Percent },
-  ];
-
-  const maxReceita = Math.max(...mockInfluencerSales.map(s => s.receita));
+  const totalVendas = mockSalesStatus.aprovados.vendas + mockSalesStatus.aguardando.vendas + mockSalesStatus.reembolsados.vendas;
+  const totalValor = mockSalesStatus.aprovados.valor + mockSalesStatus.aguardando.valor + mockSalesStatus.reembolsados.valor;
+  const totalComissoes = mockInfluencerSales.reduce((acc, s) => acc + s.comissao, 0);
 
   return (
     <div className="space-y-4">
-      {/* Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {metrics.map((m) => {
-          const Icon = m.icon;
-          return (
-            <Card key={m.label}>
-              <CardContent className="p-3 md:p-4 flex items-start gap-3">
-                <div className={`w-10 h-10 flex items-center justify-center shrink-0 border-[2px] border-border ${m.accent ? 'bg-accent' : 'bg-muted'}`}>
-                  <Icon className={`w-5 h-5 ${m.accent ? 'text-accent-foreground' : 'text-muted-foreground'}`} />
-                </div>
-                <div className="min-w-0 flex-1 pt-0.5">
-                  <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-widest leading-tight font-black">{m.label}</p>
-                  <p className="text-lg md:text-xl font-black leading-tight mt-1">{m.value}</p>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {/* Block 1 — 4 info cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Status das vendas */}
+        <Card>
+          <CardHeader className="pb-2 px-4 pt-4">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Status das vendas</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-accent" />
+                <span className="text-[11px] font-bold">Aprovados</span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-black text-accent">R$ {(mockSalesStatus.aprovados.valor / 1000).toFixed(1)}k</span>
+                <span className="text-[9px] text-muted-foreground ml-1.5">{mockSalesStatus.aprovados.vendas} vendas</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-[hsl(40_90%_55%)]" />
+                <span className="text-[11px] font-bold">Aguardando</span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-black">R$ {(mockSalesStatus.aguardando.valor / 1000).toFixed(1)}k</span>
+                <span className="text-[9px] text-muted-foreground ml-1.5">{mockSalesStatus.aguardando.vendas} vendas</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-destructive" />
+                <span className="text-[11px] font-bold">Reembolsados</span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-black text-destructive">R$ {(mockSalesStatus.reembolsados.valor / 1000).toFixed(1)}k</span>
+                <span className="text-[9px] text-muted-foreground ml-1.5">{mockSalesStatus.reembolsados.vendas} vendas</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Chart */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-black uppercase flex items-center gap-2">
-            Orgânico vs Influencer
-            <DemoBadge />
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={mockSalesChart} barGap={2}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 700 }} stroke="hsl(var(--muted-foreground))" />
-              <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
-              <Tooltip contentStyle={{ border: '2px solid hsl(var(--border))', borderRadius: 0, fontSize: 12, fontWeight: 700 }} />
-              <Bar dataKey="organico" fill="hsl(var(--muted-foreground))" name="Orgânico" radius={[0, 0, 0, 0]} />
-              <Bar dataKey="influencer" fill="hsl(var(--accent))" name="Influencer" radius={[0, 0, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      {/* Ranking Table */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-black uppercase">Ranking de Vendas</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="hidden md:flex items-center gap-3 px-6 py-2.5 border-b-[2px] border-border text-[10px] uppercase tracking-widest text-muted-foreground font-black">
-            <div className="w-6 text-center">#</div>
-            <div className="w-8" />
-            <div className="flex-1">Influenciador</div>
-            <div className="min-w-[70px] text-right">Vendas</div>
-            <div className="min-w-[90px] text-right">Receita</div>
-            <div className="min-w-[80px] text-right">Comissão</div>
-            <div className="min-w-[60px] text-right">Conv.</div>
-          </div>
-          <div className="divide-y-[2px] divide-border">
-            {mockInfluencerSales.map((s, i) => (
-              <div key={s.id} className="flex items-center gap-3 px-4 md:px-6 py-3 hover:bg-accent/10 transition-all">
-                <div className={`w-6 h-6 flex items-center justify-center shrink-0 text-xs font-black border-[2px] border-border ${i === 0 ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
-                  {i + 1}
-                </div>
-                <div className="w-8 h-8 bg-accent border-[2px] border-border shrink-0 overflow-hidden flex items-center justify-center">
-                  {s.avatar_url ? (
-                    <img src={s.avatar_url} alt={s.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-[10px] font-black text-accent-foreground">{s.name.slice(0, 2).toUpperCase()}</span>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-black uppercase truncate">{s.name}</p>
-                  {/* Progress bar */}
-                  <div className="w-full h-1.5 bg-muted mt-1 hidden md:block">
-                    <div className="h-full bg-accent" style={{ width: `${(s.receita / maxReceita) * 100}%` }} />
-                  </div>
-                </div>
-                <div className="min-w-[70px] text-right">
-                  <p className="text-sm font-black">{formatValue(s.vendas)}</p>
-                </div>
-                <div className="min-w-[90px] text-right hidden md:block">
-                  <p className="text-sm font-black">R$ {(s.receita / 1000).toFixed(1)}k</p>
-                </div>
-                <div className="min-w-[80px] text-right hidden md:block">
-                  <p className="text-xs font-bold text-accent">R$ {formatValue(Math.round(s.comissao))}</p>
-                </div>
-                <div className="min-w-[60px] text-right">
-                  <Badge className="text-[9px] px-1.5 py-0 font-black border-[2px] rounded-none uppercase bg-accent/15 text-accent border-accent/30">
-                    {s.conversao}%
-                  </Badge>
+        {/* Tipos de vendas */}
+        <Card>
+          <CardHeader className="pb-2 px-4 pt-4">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Tipos de vendas</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4 space-y-2.5">
+            {mockSalesTypes.map(t => (
+              <div key={t.tipo} className="flex items-center justify-between">
+                <span className="text-[11px] font-bold">{t.tipo}</span>
+                <div className="text-right">
+                  <span className="text-xs font-black">R$ {(t.valor / 1000).toFixed(1)}k</span>
+                  <span className="text-[9px] text-muted-foreground ml-1.5">{t.vendas}</span>
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        {/* Formas de pagamento */}
+        <Card>
+          <CardHeader className="pb-2 px-4 pt-4">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Formas de pagamento</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4 space-y-2.5">
+            {mockPaymentMethods.map(p => {
+              const icon = p.tipo === 'Pix' ? Wallet : p.tipo === 'Boleto' ? BarChart3 : CreditCard;
+              const Icon = icon;
+              return (
+                <div key={p.tipo} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span className="text-[11px] font-bold">{p.tipo}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-black">R$ {(p.valor / 1000).toFixed(1)}k</span>
+                    <span className="text-[9px] text-muted-foreground ml-1.5">{p.percent}%</span>
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Top ofertas */}
+        <Card>
+          <CardHeader className="pb-2 px-4 pt-4">
+            <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Top ofertas</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 pb-4 space-y-2.5">
+            {mockTopOffers.map(o => (
+              <div key={o.posicao} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className={`w-5 h-5 flex items-center justify-center text-[9px] font-black border-[2px] border-border ${o.posicao === 1 ? 'bg-accent text-accent-foreground' : 'bg-muted text-muted-foreground'}`}>
+                    {o.posicao}
+                  </span>
+                  <span className="text-[11px] font-bold truncate max-w-[100px]">{o.nome}</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-black">R$ {(o.total / 1000).toFixed(1)}k</span>
+                  <span className="text-[9px] text-muted-foreground ml-1.5">{o.vendas}</span>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Block 2 — Summary row */}
+      <div className="grid grid-cols-3 gap-3">
+        <Card>
+          <CardContent className="p-3 md:p-4 text-center">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">Qtd de vendas</p>
+            <p className="text-2xl md:text-3xl font-black mt-1">{totalVendas}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-3 md:p-4 text-center">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">Comissões</p>
+            <p className="text-2xl md:text-3xl font-black mt-1 text-accent">R$ {(totalComissoes / 1000).toFixed(1)}k</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-3 md:p-4 text-center">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-widest font-black">Total vendas</p>
+            <p className="text-2xl md:text-3xl font-black mt-1">R$ {(totalValor / 1000).toFixed(0)}k</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Block 3 — Filters & controls */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1 bg-muted text-[10px] font-black uppercase">
+            Período: 12/12/2025 - 12/03/2026
+            <button className="ml-1 hover:text-destructive"><X className="w-3 h-3" /></button>
+          </div>
+          <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+            <SlidersHorizontal className="w-3.5 h-3.5" /> Filtros
+            <span className="w-4 h-4 bg-accent text-accent-foreground flex items-center justify-center text-[9px] font-black">3</span>
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+            <Download className="w-3.5 h-3.5" /> Exportar
+          </button>
+          <button className="flex items-center gap-1.5 border-[2px] border-border px-2.5 py-1.5 bg-card text-[10px] font-black uppercase hover:bg-muted transition-colors">
+            <Columns3 className="w-3.5 h-3.5" /> Colunas
+          </button>
+        </div>
+      </div>
+
+      {/* Block 4 — Transaction table */}
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[900px]">
+              <thead>
+                <tr className="border-b-[2px] border-border">
+                  {['Código', 'Tags', 'Cliente', 'Tipo Venda', 'SKU', 'Produto', 'Qtd', 'Checkout', 'Source', 'Valor'].map(col => (
+                    <th key={col} className="px-3 py-2.5 text-[9px] uppercase tracking-widest font-black text-muted-foreground whitespace-nowrap">
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {mockSalesTransactions.map(tx => (
+                  <tr key={tx.id} className="hover:bg-accent/5 transition-colors">
+                    <td className="px-3 py-2.5">
+                      <span className="text-[11px] font-black text-accent">{tx.codigo}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      {tx.tags.map(tag => (
+                        <Badge key={tag} className={`text-[8px] px-1.5 py-0 font-black border-[1.5px] rounded-none uppercase mr-1 ${
+                          tag === 'influencer' ? 'bg-accent/15 text-accent border-accent/30' : tag === 'organico' ? 'bg-muted text-muted-foreground border-border' : 'bg-primary/15 text-primary border-primary/30'
+                        }`}>
+                          {tag}
+                        </Badge>
+                      ))}
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className="text-[11px] font-bold text-accent">{tx.cliente}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className="text-[11px] font-bold">{tx.tipo_venda}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className="text-[10px] font-mono text-muted-foreground">{tx.sku}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className="text-[11px] font-bold">{tx.produto}</span>
+                    </td>
+                    <td className="px-3 py-2.5 text-center">
+                      <span className="text-[11px] font-black">{tx.qtd}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className="text-[10px] font-mono text-muted-foreground">{tx.cod_checkout}</span>
+                    </td>
+                    <td className="px-3 py-2.5">
+                      <span className={`text-[11px] font-bold ${tx.source !== 'Orgânico' ? 'text-accent' : 'text-muted-foreground'}`}>
+                        {tx.source}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2.5 text-right">
+                      <span className="text-[11px] font-black">R$ {tx.valor.toFixed(2)}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 px-4 py-3 border-t-[2px] border-border">
+            <p className="text-[10px] text-muted-foreground font-bold">
+              Resultados encontrados: <span className="text-foreground font-black">93</span> — Página <span className="text-foreground font-black">1</span> de <span className="text-foreground font-black">10</span>
+            </p>
+            <div className="flex items-center gap-1.5">
+              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-card text-muted-foreground">
+                <ChevronLeft className="w-3 h-3" /> Anterior
+              </button>
+              <button className="flex items-center gap-1 border-[2px] border-border px-2.5 py-1 text-[10px] font-black uppercase bg-accent text-accent-foreground">
+                Próxima <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </CardContent>
       </Card>

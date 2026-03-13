@@ -115,6 +115,46 @@ export const mockSalesChart = [
   { month: 'Ago', organico: 830, influencer: 710 },
 ];
 
+export const mockSalesStatus = {
+  aprovados: { valor: 198500, vendas: 312, percent: 78.2 },
+  aguardando: { valor: 42300, vendas: 58, percent: 14.5 },
+  reembolsados: { valor: 18200, vendas: 29, percent: 7.3 },
+};
+
+export const mockPaymentMethods = [
+  { tipo: 'Cartão Crédito', valor: 142800, vendas: 198, percent: 55.1 },
+  { tipo: 'Pix', valor: 89400, vendas: 156, percent: 34.5 },
+  { tipo: 'Boleto', valor: 26800, vendas: 45, percent: 10.4 },
+];
+
+export const mockSalesTypes = [
+  { tipo: 'Venda Direta', valor: 118200, vendas: 186, percent: 45.6 },
+  { tipo: 'Via Influencer', valor: 98700, vendas: 142, percent: 35.6 },
+  { tipo: 'Orgânica', valor: 42100, vendas: 71, percent: 17.8 },
+];
+
+export const mockTopOffers = [
+  { posicao: 1, nome: 'Vitamina C 1000mg', vendas: 89, total: 4450 },
+  { posicao: 2, nome: 'Lavitan A-Z', vendas: 72, total: 3600 },
+  { posicao: 3, nome: 'Protetor Solar FPS50', vendas: 58, total: 4060 },
+  { posicao: 4, nome: 'Benegrip Multi', vendas: 43, total: 2580 },
+];
+
+export const mockSalesTransactions = [
+  { id: '1', codigo: 'VND-0847A3', tags: ['influencer'], cliente: 'João da Silva', tipo_venda: 'Via Influencer', sku: 'CIM-VIT-001', produto: 'Vitamina C 1000mg', qtd: 2, cod_checkout: 'CHK-9182', nome_checkout: 'Checkout Cimed GO', source: 'saBOR energético', valor: 99.80, data: '2026-03-12T14:30:00Z' },
+  { id: '2', codigo: 'VND-0848B1', tags: ['organico'], cliente: 'Maria Oliveira', tipo_venda: 'Orgânica', sku: 'CIM-LAV-002', produto: 'Lavitan A-Z', qtd: 1, cod_checkout: 'CHK-9183', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 49.90, data: '2026-03-12T13:15:00Z' },
+  { id: '3', codigo: 'VND-0849C7', tags: ['influencer'], cliente: 'Pedro Santos', tipo_venda: 'Via Influencer', sku: 'CIM-PROT-003', produto: 'Protetor Solar FPS50', qtd: 1, cod_checkout: 'CHK-9184', nome_checkout: 'Checkout Cimed GO', source: 'Ana Costa', valor: 69.90, data: '2026-03-12T11:45:00Z' },
+  { id: '4', codigo: 'VND-0850D2', tags: ['direto'], cliente: 'Ana Ferreira', tipo_venda: 'Venda Direta', sku: 'CIM-BEN-004', produto: 'Benegrip Multi', qtd: 3, cod_checkout: 'CHK-9185', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 89.70, data: '2026-03-11T16:20:00Z' },
+  { id: '5', codigo: 'VND-0851E9', tags: ['influencer'], cliente: 'Lucas Mendes', tipo_venda: 'Via Influencer', sku: 'CIM-NEO-005', produto: 'Neosaldina', qtd: 2, cod_checkout: 'CHK-9186', nome_checkout: 'Checkout Cimed GO', source: 'Marina Silva', valor: 39.80, data: '2026-03-11T10:00:00Z' },
+  { id: '6', codigo: 'VND-0852F4', tags: ['organico'], cliente: 'Carla Ribeiro', tipo_venda: 'Orgânica', sku: 'CIM-VIT-001', produto: 'Vitamina C 1000mg', qtd: 1, cod_checkout: 'CHK-9187', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 49.90, data: '2026-03-10T09:30:00Z' },
+  { id: '7', codigo: 'VND-0853G8', tags: ['influencer'], cliente: 'Roberto Lima', tipo_venda: 'Via Influencer', sku: 'CIM-LAV-002', produto: 'Lavitan A-Z', qtd: 4, cod_checkout: 'CHK-9188', nome_checkout: 'Checkout Cimed GO', source: 'saBOR energético', valor: 199.60, data: '2026-03-10T15:45:00Z' },
+  { id: '8', codigo: 'VND-0854H1', tags: ['direto'], cliente: 'Fernanda Costa', tipo_venda: 'Venda Direta', sku: 'CIM-PROT-003', produto: 'Protetor Solar FPS50', qtd: 1, cod_checkout: 'CHK-9189', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 69.90, data: '2026-03-09T12:00:00Z' },
+  { id: '9', codigo: 'VND-0855I5', tags: ['influencer'], cliente: 'Thiago Alves', tipo_venda: 'Via Influencer', sku: 'CIM-BEN-004', produto: 'Benegrip Multi', qtd: 1, cod_checkout: 'CHK-9190', nome_checkout: 'Checkout Cimed GO', source: 'Pedro Oliveira', valor: 29.90, data: '2026-03-09T08:20:00Z' },
+  { id: '10', codigo: 'VND-0856J3', tags: ['organico'], cliente: 'Juliana Martins', tipo_venda: 'Orgânica', sku: 'CIM-VIT-001', produto: 'Vitamina C 1000mg', qtd: 2, cod_checkout: 'CHK-9191', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 99.80, data: '2026-03-08T14:10:00Z' },
+  { id: '11', codigo: 'VND-0857K7', tags: ['influencer'], cliente: 'Marcos Souza', tipo_venda: 'Via Influencer', sku: 'CIM-NEO-005', produto: 'Neosaldina', qtd: 1, cod_checkout: 'CHK-9192', nome_checkout: 'Checkout Cimed GO', source: 'Lucas Mendes', valor: 19.90, data: '2026-03-08T11:30:00Z' },
+  { id: '12', codigo: 'VND-0858L2', tags: ['direto'], cliente: 'Patricia Gomes', tipo_venda: 'Venda Direta', sku: 'CIM-LAV-002', produto: 'Lavitan A-Z', qtd: 1, cod_checkout: 'CHK-9193', nome_checkout: 'Checkout Cimed GO', source: 'Orgânico', valor: 49.90, data: '2026-03-07T17:00:00Z' },
+];
+
 export const mockAnalyticsData = {
   dailyActiveUsers: [
     { day: 'Seg', users: 320 },
