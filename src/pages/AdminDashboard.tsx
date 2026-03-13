@@ -27,7 +27,8 @@ import {
   ChevronDown, MoreVertical, Pencil, Search, LogOut, LayoutDashboard,
   UserCircle, BarChart3, Settings, Check, Sun, Moon,
   DollarSign, ShoppingCart, Percent, CreditCard, X, SlidersHorizontal,
-  ChevronLeft, ChevronRight, Download, Columns3, Wallet
+  ChevronLeft, ChevronRight, Download, Columns3, Wallet, Megaphone,
+  Smartphone, MessageCircle, Instagram, Mail, Globe, MapPin, Zap, Eye, MousePointerClick
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { format, isWithinInterval, subDays } from 'date-fns';
