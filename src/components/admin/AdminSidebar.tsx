@@ -1,4 +1,4 @@
-import { LayoutDashboard, Gift, QrCode, Target, Users, BarChart3, Settings, ChevronRight, Sun, Moon, UserCircle } from 'lucide-react';
+import { LayoutDashboard, Gift, QrCode, Target, Users, BarChart3, Settings, ChevronRight, Sun, Moon, UserCircle, Megaphone } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 
 const menuItems = [
   { title: 'Dashboard', key: 'dashboard', icon: LayoutDashboard },
+  { title: 'Campanha Nacional', key: 'campanha', icon: Megaphone, highlight: true },
   { title: 'Drops', key: 'drops', icon: Gift },
   { title: 'QR Codes', key: 'qrcodes', icon: QrCode },
   { title: 'Missões', key: 'missions', icon: Target },
@@ -73,11 +74,20 @@ export function AdminSidebar({ activeSection, onSectionChange }: AdminSidebarPro
                       className={`cursor-pointer transition-all duration-150 rounded-none ${
                         isActive
                           ? 'bg-accent text-accent-foreground font-black border-l-[3px] border-accent-foreground'
+                          : item.highlight
+                          ? 'text-accent font-black hover:bg-accent/10 border-l-[3px] border-accent'
                           : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground font-bold'
                       }`}
                     >
-                      <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-accent-foreground' : ''}`} />
-                      {!collapsed && <span className="flex-1 text-sm uppercase tracking-wider">{item.title}</span>}
+                      <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-accent-foreground' : item.highlight ? 'text-accent' : ''}`} />
+                      {!collapsed && (
+                        <span className="flex-1 text-sm uppercase tracking-wider flex items-center gap-1.5">
+                          {item.title}
+                          {item.highlight && !isActive && (
+                            <span className="text-[7px] bg-accent text-accent-foreground px-1 py-0 font-black leading-tight">NOVO</span>
+                          )}
+                        </span>
+                      )}
                       {!collapsed && item.hasSubmenu && <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
