@@ -1,7 +1,8 @@
-import { LayoutDashboard, BarChart3, Users, Gift } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Users, Gift, Megaphone } from 'lucide-react';
 
 const tabs = [
   { key: 'dashboard', label: 'DASHBOARD', icon: LayoutDashboard },
+  { key: 'campanha', label: 'NACIONAL', icon: Megaphone },
   { key: 'analytics', label: 'ANALYTICS', icon: BarChart3 },
   { key: 'influencers', label: 'INFLUENCERS', icon: Users },
   { key: 'drops', label: 'DROPS', icon: Gift },
@@ -19,6 +20,7 @@ export function AdminBottomNav({ activeSection, onSectionChange }: AdminBottomNa
         {tabs.map((tab) => {
           const active = activeSection === tab.key;
           const Icon = tab.icon;
+          const isNacional = tab.key === 'campanha';
 
           return (
             <button
@@ -26,8 +28,11 @@ export function AdminBottomNav({ activeSection, onSectionChange }: AdminBottomNa
               onClick={() => onSectionChange(tab.key)}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all relative ${active ? 'border-t-2 border-accent -mt-[2px]' : ''}`}
             >
-              <Icon className={`w-6 h-6 ${active ? 'text-accent' : 'text-muted-foreground'}`} strokeWidth={active ? 2.5 : 1.5} />
-              <span className={`text-[9px] font-black ${active ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
+              <Icon className={`w-6 h-6 ${active ? 'text-accent' : isNacional ? 'text-accent' : 'text-muted-foreground'}`} strokeWidth={active ? 2.5 : 1.5} />
+              <span className={`text-[9px] font-black ${active ? 'text-accent' : isNacional ? 'text-accent' : 'text-muted-foreground'}`}>{tab.label}</span>
+              {isNacional && !active && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent" />
+              )}
             </button>
           );
         })}
