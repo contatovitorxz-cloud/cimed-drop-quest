@@ -114,7 +114,7 @@ const AdminDashboard = () => {
                 <Moon className="w-4 h-4 block dark:hidden" />
               </button>
               <Button variant="ghost" size="icon" className="text-muted-foreground h-9 w-9 hidden sm:flex">
-                <Calendar className="w-5 h-5" />
+                <CalendarIcon className="w-5 h-5" />
               </Button>
               <Button variant="ghost" size="icon" className="text-muted-foreground relative h-9 w-9">
                 <Bell className="w-5 h-5" />
